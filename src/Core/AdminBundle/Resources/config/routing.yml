@@ -1,0 +1,54 @@
+##### ADMINISTRATOR :: LOGIN #####
+start:
+    pattern:  /
+    defaults: { _controller: CoreAdminBundle:Login:login }
+
+##### ADMINISTRATOR :: LOGIN #####
+
+admin:
+    pattern:  /admin
+    defaults: { _controller: CoreAdminBundle:Admin:admin }
+
+admin_login:
+    pattern:  /admin/login
+    defaults: { _controller: CoreAdminBundle:Admin:login }
+
+admin_home:
+    pattern:  /admin/{session}
+    defaults: { _controller: CoreAdminBundle:Admin:home }
+
+##### ADMINISTRATOR :: USUARIOS #####
+
+admin_usuarios_crear:
+    pattern:  /admin/users/new/{session}
+    defaults: { _controller: CoreAdminBundle:Users:new }
+
+admin_usuarios_modificar:
+    pattern:  /admin/users/edit/{session}/{id}
+    defaults: { _controller: CoreAdminBundle:Users:edit }
+
+admin_usuarios_eliminar:
+    pattern:  /admin/users/del/{session}/{id}
+    defaults: { _controller: CoreAdminBundle:Users:del }
+
+admin_usuarios_listar:
+    pattern:  /admin/users/list/{session}
+    defaults: { _controller: CoreAdminBundle:Users:list }
+
+admin_usuarios_activos:
+    pattern:  /admin/users/active/{session}
+    defaults: { _controller: CoreAdminBundle:Users:active }
+
+##### PORTAL :: LOGIN #####
+
+portal:
+    pattern:  /login
+    defaults: { _controller: CoreAdminBundle:Login:login }
+
+portal_change_pass:
+    pattern:  /changepass
+    defaults: { _controller: CoreAdminBundle:Login:change }
+
+portal_reset_pass:
+    pattern:  /resetpass
+    defaults: { _controller: CoreAdminBundle:Login:reset }
