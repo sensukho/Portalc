@@ -1,0 +1,43 @@
+{% extends 'CoreAdminBundle:admin:layout.html.twig' %}
+{% block content %}
+    
+    <div class="container">
+
+        <div class="hero-unit">
+            <h1>Usuarios :: Listado</h1>
+            <p>{{ mensaje }}</p>
+        </div>
+
+        <div class="row">
+            <table id="listuser" border="1" width="85%" align="center">
+                <tr>
+                    <th width="5%">ID</th>
+                    <th width="25%">Nombre</th>
+                    <th width="15%">Usuario</th>
+                    <th width="10%">Pass</th>
+                    <th width="15%">E-mail</th>
+                    <th width="20%">Fecha</th>
+                    <!--<th width="5%">Editar</th>
+                    <th width="5%">Eliminar</th>-->
+                </tr>
+                {% for usuario in usuarios %}
+                <tr>
+                    <td>{{ usuario.id }}</td>
+                    <td>{{ usuario.nombre }}</td>
+                     <td>{{ usuario.username }}</td>
+                     <td>{{ usuario.genpass }}</td>
+                     <td>{{ usuario.email }}</td>
+                     <td>{{ usuario.fecha|date("m/d/Y") }}</td>
+                    <!--<td align="center"><a href="{{ path('admin_usuarios_modificar', {session: session_id, id: usuario.id}) }}"><img src="{{ asset('bundles/core/img/users/edit.png') }}" width="32px"></a></td>
+                    <td align="center"><a href="{{ path('admin_usuarios_eliminar', {session: session_id, id: usuario.id}) }}"><img src="{{ asset('bundles/core/img/users/del.png') }}" width="32px"></a></td>-->
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <hr>
+
+        <footer></footer>
+
+    </div>
+
+{% endblock %}

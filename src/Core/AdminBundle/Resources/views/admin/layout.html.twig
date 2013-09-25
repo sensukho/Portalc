@@ -81,7 +81,8 @@
                                     <li class="divider"></li>
                                     <li class="nav-header">Administrar</li>
                                     <li><a href="{{ path('admin_usuarios_crear', {session: session_id}) }}">Crear</a></li>
-                                    <li><a href="{{ path('admin_usuarios_listar', {session: session_id}) }}">Listar</a></li>
+                                    <li><a href="{{ path('admin_usuarios_listar_reg', {session: session_id}) }}">Listar Registrados</a></li>
+                                    <li><a href="{{ path('admin_usuarios_listar_unreg', {session: session_id}) }}">Listar Pendientes</a></li>
                                     <li class="divider"></li>
                                     <li class="nav-header">Ayuda</li>
                                     <li><a href="#">FAQ</a></li>

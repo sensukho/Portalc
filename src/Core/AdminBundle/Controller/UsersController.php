@@ -87,7 +87,7 @@ class UsersController extends Controller
         return $this->render('CoreAdminBundle:users:del.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuario' => $usuario ));
     }
 
-    public function listAction($session)
+    public function listregAction($session)
     {
         $em = $this->getDoctrine()->getManager();
         $usuarios = $em->getRepository('CoreAdminBundle:radcheck')->findAll();
@@ -99,7 +99,16 @@ class UsersController extends Controller
 
         $mensaje = '';
 
-        return $this->render('CoreAdminBundle:users:list.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios ));
+        return $this->render('CoreAdminBundle:users:listreg.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios ));
+    }
+
+    public function listunregAction($session)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $usuarios = $em->getRepository('CoreAdminBundle:Users')->findAll();
+        $mensaje = '';
+
+        return $this->render('CoreAdminBundle:users:listunreg.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios ));
     }
 
     public function activeAction($session)
