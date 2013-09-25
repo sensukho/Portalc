@@ -59,7 +59,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <a class="brand" href="/web/">UVM :: Acceso</a>
+                    <a class="brand" href="/portalc/web/">UVM :: Acceso</a>
                     <div class="nav-collapse collapse">
                         <ul class="nav">
                             <li class="active"><a href="{{ path('portal_change_pass') }}">Obtener acceso</a></li>
@@ -86,11 +86,11 @@
                         <table border="0px" width="40%" height="auto" cellspacing="5" cellpading="5">
                             <tr>
                                 <td><font size="5">Usuario:</font></td>
-                                <td><input type="text" name="username" value="{{ user }}"></td>
+                                <td><input type="text" name="username" placeholder="nombre de usuario" value="{{ user }}"></td>
                             </tr>
                             <tr>
                                 <td><font size="5">Password:</font></td>
-                                <td><input type="password" name="password" value="{{ pass }}"></td>
+                                <td><input type="password" name="password"  placeholder="contraseña" value="{{ pass }}"></td>
                             </tr>
                             <tr>
                                 <td align="right"><input type="checkbox" name="chk_rec" value="chk_rec" {{ chk }} ></td>

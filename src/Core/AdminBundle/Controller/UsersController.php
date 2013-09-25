@@ -5,34 +5,38 @@ namespace Core\AdminBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Core\AdminBundle\Entity\radcheck;
+use Core\AdminBundle\Entity\Users;
 
 class UsersController extends Controller
 {
 ########## USERS ##########
-    public function newAction($session)
+    public function newAction(Request $request,$session)
     {
-        $request = Request::createFromGlobals();
-        $user = $request->request->get('user',NULL);
-        $pass = $request->request->get('pass',NULL);
+        $usuario = new Users();
+        $usuario->setFecha( new \DateTime('today') );
+        $msg = '';
+        $form = $this->createFormBuilder($usuario)
+            ->setAction($this->generateUrl('admin_usuarios_crear', array('session' => $session)))
+            ->add('nombre', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'nombre completo')))
+            ->add('username', 'text', array('label' => 'Usuario','attr' => array('placeholder' => 'nombre de usuario')))
+            ->add('genpass', 'password', array('label' => 'Password','attr' => array('placeholder' => 'contraseña')))
+            ->add('newpass', 'hidden', array('attr' => array('value' => '0')))
+            ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
+            ->add('fecha', 'date', array('years' => range(date('Y') -60, date('Y')),'label' => 'Fecha de nacimiento'))
+            ->add('enviar', 'submit')
+        ->getForm();
+        $formreq = $form;
 
-        if($user && $pass){
-            $usuario = new Radcheck();
-
-            $usuario->setUsername($user);
-            $usuario->setAttribute('MD5-Password');
-            $usuario->setOp(':=');
-            $usuario->setValue($pass);
-
+        if ($request->isMethod('POST')) {
+            $formreq->bind($request);
             $em = $this->getDoctrine()->getManager();
             $em->persist($usuario);
             $em->flush();
-
-            $mensaje = 'Usuario ingresado con éxito !';
-        }else{
-            $mensaje = '';
+            $usuario = new Users();
+            $msg = 'El usuario se ha agregado con éxito.';
         }
 
-        return $this->render('CoreAdminBundle:users:new.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje ));
+        return $this->render('CoreAdminBundle:users:new.html.twig', array( 'session' => $session, 'session_id' => $session, 'form' => $form->createView(), 'msg' => $msg ));
     }
 
     public function editAction($session,$id)

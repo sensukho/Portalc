@@ -92,9 +92,9 @@ class LoginController extends Controller
                 $usuario->setFecha( new \DateTime('today') );
                 $form = $this->createFormBuilder($usuario)
                     ->setAction($this->generateUrl('portal_change_pass'))
-                    ->add('username', 'text', array('label' => 'Usuario'))
-                    ->add('genpass', 'text', array('label' => 'Password (Actual)'))
-                    ->add('newpass', 'text', array('label' => 'Password (Nuevo)'))
+                    ->add('username', 'text', array('label' => 'Usuario','attr' => array('placeholder' => 'nombre de usuario')))
+                    ->add('genpass', 'password', array('label' => 'Password (Actual)','attr' => array('placeholder' => 'contraseña actual')))
+                    ->add('newpass', 'password', array('label' => 'Password (Nuevo)','attr' => array('placeholder' => 'contraseña nueva')))
                     ->add('fecha', 'date', array('years' => range(date('Y') -60, date('Y')),'label' => 'Fecha de nacimiento'))
                     ->add('enviar', 'submit')
                 ->getForm();
@@ -105,11 +105,11 @@ class LoginController extends Controller
             $usuario->setFecha( new \DateTime('today') );
             $form = $this->createFormBuilder($usuario)
                 ->setAction($this->generateUrl('portal_change_pass'))
-                ->add('username', 'text', array('label' => 'Usuario'))
-                ->add('genpass', 'text', array('label' => 'Password (Actual)'))
-                ->add('newpass', 'text', array('label' => 'Password (Nuevo)'))
-                ->add('fecha', 'date', array('years' => range(date('Y') -60, date('Y')),'label' => 'Fecha de nacimiento'))
-                ->add('enviar', 'submit')
+                    ->add('username', 'text', array('label' => 'Usuario','attr' => array('placeholder' => 'nombre de usuario')))
+                    ->add('genpass', 'password', array('label' => 'Password (Actual)','attr' => array('placeholder' => 'contraseña actual')))
+                    ->add('newpass', 'password', array('label' => 'Password (Nuevo)','attr' => array('placeholder' => 'contraseña nueva')))
+                    ->add('fecha', 'date', array('years' => range(date('Y') -60, date('Y')),'label' => 'Fecha de nacimiento'))
+                    ->add('enviar', 'submit')
             ->getForm();
             return $this->render('CoreAdminBundle:login:change.html.twig', array( 'form' => $form->createView(), 'msg' => $msg ));
         }
@@ -163,7 +163,7 @@ class LoginController extends Controller
                 $defaultData = array('message' => 'Type your message here');
                 $form = $this->createFormBuilder($defaultData)
                     ->setAction($this->generateUrl('portal_reset_pass'))
-                    ->add('email', 'email', array('label' => 'Ingresa la dirección de correo a la cual quieres que se envíe tu nueva contraseña.'))
+                    ->add('email', 'email', array('label' => 'Ingresa la dirección de correo a la cual quieres que se envíe tu nueva contraseña.','attr' => array('placeholder' => 'correo electronico')))
                     ->add('enviar', 'submit')
                 ->getForm();
                 return $this->render('CoreAdminBundle:login:reset.html.twig', array( 'form' => $form->createView(), 'msg' => $msg ));
@@ -172,7 +172,7 @@ class LoginController extends Controller
             $defaultData = array('message' => 'Type your message here');
             $form = $this->createFormBuilder($defaultData)
                 ->setAction($this->generateUrl('portal_reset_pass'))
-                ->add('email', 'email', array('label' => 'Ingresa la dirección de correo a la cual quieres que se envíe tu nueva contraseña.'))
+                ->add('email', 'email', array('label' => 'Ingresa la dirección de correo a la cual quieres que se envíe tu nueva contraseña.','attr' => array('placeholder' => 'correo electronico')))
                 ->add('enviar', 'submit')
             ->getForm();
             return $this->render('CoreAdminBundle:login:reset.html.twig', array( 'form' => $form->createView(), 'msg' => $msg ));

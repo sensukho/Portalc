@@ -5,24 +5,17 @@
 
         <div class="hero-unit">
             <h1>Usuarios :: Agregar</h1>
-            <p>{{ mensaje }}</p>
+            <p>{{ msg }}</p>
         </div>
 
         <div class="row">
-            <form name="ususrios" action="{{ path('admin_usuarios_crear', {session: session_id}) }}" method="POST">
-                <table border="1" width="500px" align="center">
-                    <tr>
-                        <th width="35%">Usuario</th>
-                        <th width="35%">Password</th>
-                        <th width="15%"></th>
-                    </tr>
-                    <tr>
-                        <td><input type="text" name="user" value=""></td>
-                        <td><input type="text" name="pass" value=""></td>
-                        <td align="center"><input type="image" src="{{ asset('bundles/core/img/users/aprove.png') }}" width="32px" value="Submit" alt="Submit"></td>
+                <table border="0" width="100%">
+                    <tr align="left">
+                        <th width="20%"></th>
+                        <th width="60%"> {{ form(form) }} </th>
+                        <th width="20%"></th>
                     </tr>
                 </table>
-            </form>
         </div>
         <hr>
 
