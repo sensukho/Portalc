@@ -70,7 +70,7 @@ class LoginController extends Controller
                     'username'  => $data['form']['username'],
                     'genpass' => $data['form']['genpass'],
                     'fecha' => new \DateTime($data['form']['fecha']["year"]."-".$data['form']['fecha']["month"]."-".$data['form']['fecha']["day"]),
-                    'newpass' => ''
+                    'newpass' => '0'
                 )
             );
             if ($user) {

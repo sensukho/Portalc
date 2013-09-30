@@ -117,7 +117,7 @@ class UsersController extends Controller
         //$usuarios = $em->getRepository('CoreAdminBundle:radacct')->findAll();
 
         $query = $em->createQuery(
-            'SELECT r.username,r.id,r.framedipaddress,r.callingstationid,r.acctinputoctets,r.acctoutputoctets
+            'SELECT r.username,r.id,r.framedipaddress,r.callingstationid,SUM(r.acctinputoctets),SUM(r.acctoutputoctets)
             FROM CoreAdminBundle:radacct r
             GROUP BY r.username
             ORDER BY r.username ASC'
@@ -127,8 +127,8 @@ class UsersController extends Controller
 
         $i=0;
         foreach ($usuarios as $usuario) {
-            $usuarios[$i]['acctinputoctets'] = round($usuario['acctinputoctets'] * 0.000000953674316,1);
-            $usuarios[$i]['acctoutputoctets'] = round($usuario['acctoutputoctets'] * 0.000000953674316,1);
+            $usuarios[$i]['acctinputoctets'] = round($usuario['1'] * 0.000000953674316,1);
+            $usuarios[$i]['acctoutputoctets'] = round($usuario['2'] * 0.000000953674316,1);
             $i++;
         }
 
