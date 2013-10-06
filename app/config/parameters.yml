@@ -1,0 +1,16 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_driver: pdo_mysql
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: xradius
+    database_user: root
+    database_password: 32274105
+    mailer_transport: smtp
+    mailer_host: smtp.gmail.com
+    encryption: ssl
+    auth_mode:  login
+    mailer_user: sensukho@gmail.com
+    mailer_password: Wafflez.$
+    locale: es
+    secret: f4stw3b4102
