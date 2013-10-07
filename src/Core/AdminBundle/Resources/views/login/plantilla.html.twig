@@ -1,0 +1,53 @@
+<div class="container">
+    <table border="0px" width="100%" height="auto" cellspacing="3" cellpading="3">
+        <!--  BANER SUPERIOR -->
+        <tr cellspan="3">
+            <td align="center"><img src="bundles/login/imgs/BannerH.jpg"></td>
+        </tr>
+        <tr cellspan="3"><td>&nbsp;<br />&nbsp;</td></tr>
+        <tr>
+            <td width="80%" align="center">
+                <!--  IMPRIME LA CABECERA DEL FORM (NO MODIFICAR) -->
+                <script type="text/javascript">
+                    document.write('<form method=POST action="http://' + get_param("sip") + ':9997/login">');
+                </script>
+                <table class="table_first" border="0px" width="40%" height="auto" cellspacing="5" cellpading="5">
+                    <tr>
+                        <td><font size="5">Usuario:</font></td>
+                        <td><input type="text" name="username" placeholder="nombre de usuario" value="{{ user }}"></td>
+                    </tr>
+                    <tr>
+                        <td><font size="5">Password:</font></td>
+                        <td><input type="password" name="password"  placeholder="contraseña" value="{{ pass }}"></td>
+                    </tr>
+                    <!--  IMPRIME EL CHECKBOX (NO MODIFICAR) -->
+                    <tr>
+                        <td align="right"><input type="checkbox" name="chk_rec" value="chk_rec" {{ chk }} ></td>
+                        <td align="left">Recordar usuario y contrase&ntilde;a</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td align="right"><input type="submit" name="entrar" value="Accesar"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">&nbsp;<br />&nbsp;</td>
+                    </tr>
+                    <!--  IMPRIME LOS BOTONES DE REGISTRO Y RECUPERACION (NO MODIFICAR) -->
+                    <tr>
+                        <td align="left"><a href="changepass"><button type="button" name="" value="" class="css3button">Registro</button></a></td>
+                        <td align="right"><a href="resetpass"><button type="button" name="" value="" class="css3button">Recuperar contraseña</button></a></td>
+                    </tr>
+                </table>
+                </form>
+            </td>
+        </tr>
+        <tr cellspan="3"><td>&nbsp;<br />&nbsp;</td></tr>
+        <!--  BANER SUPERIOR -->
+        <tr>
+            <td align="center"><img src="bundles/login/imgs/BannerH.jpg"</td>
+        </tr>
+    </table>
+</div>
