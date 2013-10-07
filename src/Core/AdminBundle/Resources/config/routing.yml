@@ -1,9 +1,4 @@
 ##### ADMINISTRATOR :: LOGIN #####
-start:
-    pattern:  /
-    defaults: { _controller: CoreAdminBundle:Login:login }
-
-##### ADMINISTRATOR :: LOGIN #####
 
 admin:
     pattern:  /admin
@@ -44,6 +39,10 @@ admin_usuarios_activos:
     defaults: { _controller: CoreAdminBundle:Users:active }
 
 ##### PORTAL :: LOGIN #####
+
+start:
+    pattern:  /
+    defaults: { _controller: CoreAdminBundle:Login:login }
 
 portal:
     pattern:  /login
