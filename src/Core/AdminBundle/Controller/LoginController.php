@@ -53,7 +53,7 @@ class LoginController extends Controller
             $pass = $request->cookies->get('pass');
             $chk = "checked";
         }
-        return $this->render('CoreAdminBundle:login:index.html.twig', array( 'user' => $user, 'pass' => $pass, 'chk' => $chk, 'msg' => $msg ));
+        return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => $user, 'pass' => $pass, 'chk' => $chk, 'msg' => $msg ));
     }
 
     public function changeAction(Request $request)
@@ -87,7 +87,7 @@ class LoginController extends Controller
                 $em->flush();
 
                 $msg = "Tu contraseña se ha cambiado con éxito, ya puedes ingresar.";
-                return $this->render('CoreAdminBundle:login:index.html.twig', array( 'user' => '', 'pass' => '', 'chk' => '', 'msg' => $msg ));
+                return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => '', 'pass' => '', 'chk' => '', 'msg' => $msg ));
             }else{
                 $usuario->setFecha( new \DateTime('today') );
                 $form = $this->createFormBuilder($usuario)
@@ -157,7 +157,7 @@ class LoginController extends Controller
                 $this->get('mailer')->send($message);
 
                 $msg = 'Se ha enviado un correo con tu nueva contraseña a: '.$data['form']['email'];
-                return $this->render('CoreAdminBundle:login:index.html.twig', array( 'user' => '', 'pass' => '', 'chk' => '', 'msg' => $msg ));
+                return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => '', 'pass' => '', 'chk' => '', 'msg' => $msg ));
             }else{
                 $msg = 'La cuenta de correo: '.$data['form']['email']." no se encuentra registrada en nuestro sistema.";
                 $defaultData = array('message' => 'Type your message here');
