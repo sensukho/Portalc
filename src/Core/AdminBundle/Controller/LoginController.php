@@ -56,6 +56,11 @@ class LoginController extends Controller
         return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => $user, 'pass' => $pass, 'chk' => $chk, 'msg' => $msg ));
     }
 
+    public function welcomeAction()
+    {
+        return $this->render('CoreAdminBundle:login:bienvenida.html.twig', array());
+    }
+    
     public function changeAction(Request $request)
     {
         $usuario = new Users();

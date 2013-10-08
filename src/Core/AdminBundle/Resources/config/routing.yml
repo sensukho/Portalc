@@ -55,3 +55,9 @@ portal_change_pass:
 portal_reset_pass:
     pattern:  /resetpass
     defaults: { _controller: CoreAdminBundle:Login:reset }
+
+portal_welcome:
+    pattern:  /bienvenida.{_format}
+    defaults: { _controller: CoreAdminBundle:Login:welcome, _format: html }
+    requirements:
+      _format:  html
