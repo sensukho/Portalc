@@ -24,9 +24,23 @@ class Users
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=64)
      */
-    private $nombre;
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="firstname", type="string", length=64)
+     */
+    private $firstname;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="secondname", type="string", length=64)
+     */
+    private $secondname;
 
     /**
      * @var string
@@ -75,26 +89,72 @@ class Users
     }
 
     /**
-     * Set nombre
+     * Set name
      *
-     * @param string $nombre
-     * @return Users
+     * @param string $name
+     * @return radcheck
      */
-    public function setNombre($nombre)
+    public function setName($name)
     {
-        $this->nombre = $nombre;
+        $this->name = $name;
     
         return $this;
     }
 
     /**
-     * Get nombre
+     * Get name
      *
      * @return string 
      */
-    public function getNombre()
+    public function getName()
     {
-        return $this->nombre;
+        return $this->name;
+    }
+
+    /**
+     * Set firstname
+     *
+     * @param string $firstname
+     * @return radcheck
+     */
+    public function setFirstname($firstname)
+    {
+        $this->firstname = $firstname;
+    
+        return $this;
+    }
+
+    /**
+     * Get firstname
+     *
+     * @return string 
+     */
+    public function getFirstname()
+    {
+        return $this->firstname;
+    }
+
+    /**
+     * Set secondname
+     *
+     * @param string $secondname
+     * @return radcheck
+     */
+    public function setSecondname($secondname)
+    {
+        $this->secondname = $secondname;
+    
+        return $this;
+    }
+
+    /**
+     * Get secondname
+     *
+     * @return string 
+     */
+    public function getSecondname()
+    {
+        return $this->secondname;
     }
 
     /**

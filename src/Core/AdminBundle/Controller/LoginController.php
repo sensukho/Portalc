@@ -67,48 +67,79 @@ class LoginController extends Controller
             $em = $this->getDoctrine()->getManager();
             $user = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
                 array(
-                    'username'  => $data['form']['username'],
-                    'genpass' => $data['form']['genpass'],
-                    'fecha' => new \DateTime($data['form']['fecha']["year"]."-".$data['form']['fecha']["month"]."-".$data['form']['fecha']["day"]),
-                    'newpass' => '0'
+                    'username'  => $data['form']['username']
                 )
             );
-            if ($user) {
-                $user->setNewpass(1);
-                $em->persist($user);
-                $em->flush();
+            if (!$user) {
+                $user = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
+                    array(
+                        'name'  => $data['form']['name'],
+                        'firstname'  => $data['form']['firstname'],
+                        'secondname'  => $data['form']['secondname'],
+                        'genpass' => $data['form']['genpass'],
+                        'fecha' => new \DateTime($data['form']['fecha']["year"]."-".$data['form']['fecha']["month"]."-".$data['form']['fecha']["day"]),
+                        'newpass' => '0'
+                    )
+                );
+                if ($user) {
+                    $user->setNewpass($data['form']['newpass']);
+                    $user->setUsername($data['form']['username']);
+                    $em->persist($user);
+                    $em->flush();
 
-                $raduser = new Radcheck();
-                $raduser->setUsername($data['form']['username']);
-                $raduser->setAttribute('MD5-Password');
-                $raduser->setOp(':=');
-                $raduser->setValue($data['form']['newpass']);
-                $em->persist($raduser);
-                $em->flush();
+                    $raduser = new Radcheck();
+                    $raduser->setUsername($data['form']['username']);
+                    $raduser->setAttribute('MD5-Password');
+                    $raduser->setOp(':=');
+                    $raduser->setValue($data['form']['newpass']);
+                    $em->persist($raduser);
+                    $em->flush();
 
-                $msg = "Tu contraseña se ha cambiado con éxito, ya puedes ingresar.";
-                return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => '', 'pass' => '', 'chk' => '', 'msg' => $msg ));
+                    $msg = "Tu registro se ha completado con éxito, ya puedes ingresar.";
+                    return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => '', 'pass' => '', 'chk' => '', 'msg' => $msg ));
+                }else{
+                    $usuario->setFecha( new \DateTime('today') );
+                    $form = $this->createFormBuilder($usuario)
+                        ->setAction($this->generateUrl('portal_change_pass'))
+                        ->add('name', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
+                        ->add('firstname', 'text', array('label' => 'Apellido paterno','attr' => array('placeholder' => 'Apellido paterno')))
+                        ->add('secondname', 'text', array('label' => 'Apellido materno','attr' => array('placeholder' => 'Apellido materno')))
+                        ->add('genpass', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
+                        ->add('fecha', 'date', array('years' => range(date('Y') -60, date('Y')),'label' => 'Fecha de nacimiento'))
+                        ->add('username', 'text', array('label' => 'Usuario','attr' => array('placeholder' => 'Mínimo de 5 caracteres.', 'pattern' => '.{5,}')))
+                        ->add('newpass', 'password', array('label' => 'Password','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
+                        ->add('enviar', 'submit')
+                    ->getForm();
+                    $msg = "Datos Inválidos - favor de contactar la oficina de soporte UVM.";
+                    return $this->render('CoreAdminBundle:login:change.html.twig', array( 'form' => $form->createView(), 'msg' => $msg ));
+                }
             }else{
                 $usuario->setFecha( new \DateTime('today') );
                 $form = $this->createFormBuilder($usuario)
                     ->setAction($this->generateUrl('portal_change_pass'))
-                    ->add('username', 'text', array('label' => 'Usuario','attr' => array('placeholder' => 'nombre de usuario')))
-                    ->add('genpass', 'password', array('label' => 'Password (Actual)','attr' => array('placeholder' => 'contraseña actual')))
-                    ->add('newpass', 'password', array('label' => 'Password (Nuevo)','attr' => array('placeholder' => 'contraseña nueva')))
+                    ->add('name', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
+                    ->add('firstname', 'text', array('label' => 'Apellido paterno','attr' => array('placeholder' => 'Apellido paterno')))
+                    ->add('secondname', 'text', array('label' => 'Apellido materno','attr' => array('placeholder' => 'Apellido materno')))
+                    ->add('genpass', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
                     ->add('fecha', 'date', array('years' => range(date('Y') -60, date('Y')),'label' => 'Fecha de nacimiento'))
+                    ->add('username', 'text', array('label' => 'Usuario','attr' => array('placeholder' => 'Mínimo de 5 caracteres.', 'pattern' => '.{5,}')))
+                    ->add('newpass', 'password', array('label' => 'Password','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
                     ->add('enviar', 'submit')
                 ->getForm();
-                $msg = "Usuario no válido, favor de verificar sus datos.";
+                $msg = "El nombre de usuario ya esta registrado, por favor eliga otro para continuar.";
                 return $this->render('CoreAdminBundle:login:change.html.twig', array( 'form' => $form->createView(), 'msg' => $msg ));
             }
         }else{
             $usuario->setFecha( new \DateTime('today') );
             $form = $this->createFormBuilder($usuario)
                 ->setAction($this->generateUrl('portal_change_pass'))
-                    ->add('username', 'text', array('label' => 'Usuario','attr' => array('placeholder' => 'nombre de usuario')))
-                    ->add('genpass', 'password', array('label' => 'Password (Actual)','attr' => array('placeholder' => 'contraseña actual')))
-                    ->add('newpass', 'password', array('label' => 'Password (Nuevo)','attr' => array('placeholder' => 'contraseña nueva')))
+                    ->add('name', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
+                    ->add('firstname', 'text', array('label' => 'Apellido paterno','attr' => array('placeholder' => 'Apellido paterno')))
+                    ->add('secondname', 'text', array('label' => 'Apellido materno','attr' => array('placeholder' => 'Apellido materno')))
+                    ->add('genpass', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
                     ->add('fecha', 'date', array('years' => range(date('Y') -60, date('Y')),'label' => 'Fecha de nacimiento'))
+                    ->add('username', 'text', array('label' => 'Usuario','attr' => array('placeholder' => 'Mínimo de 5 caracteres.', 'pattern' => '.{5,}')))
+                    ->add('newpass', 'password', array('label' => 'Password','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
                     ->add('enviar', 'submit')
             ->getForm();
             return $this->render('CoreAdminBundle:login:change.html.twig', array( 'form' => $form->createView(), 'msg' => $msg ));
