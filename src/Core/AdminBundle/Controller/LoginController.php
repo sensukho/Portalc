@@ -46,7 +46,7 @@ class LoginController extends Controller
 
         $user = '';
         $pass = '';
-        var_dump( $_SERVER['REMOTE_ADDR'] );
+        var_dump( $_SERVER['HTTP_HOST'] );
 
         $request = $this->get('request');
         if($request->cookies->has('usu') && $request->cookies->has('pass') ){
