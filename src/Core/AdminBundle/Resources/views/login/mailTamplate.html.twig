@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <body>
-    Estimado(a) <b>{{ name }}</b> esta es su nueva contraseña: <br /><br />
+    Estimado(a) <b>{{ name }} {{ firstname }}</b> esta es su nueva contraseña: <br /><br />
     <b>Nombre de usuario:</b> {{ user }} <br />
     <b>Password:</b> {{ pass }} <br />
-    Ingrese al portal y seleccione la opcion "Obtener contraseña" y rellene los datos.
+    Ingrese a la siguiente dirección para cambiar su password: <a href='http://{{ hostname }}:{{ port }}/web/changepass'>CAMBIAR PASSWORD</a>
 </body>
 </html>

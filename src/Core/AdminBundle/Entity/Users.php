@@ -52,6 +52,13 @@ class Users
     /**
      * @var string
      *
+     * @ORM\Column(name="matricula", type="string", length=255)
+     */
+    private $matricula;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="genpass", type="string", length=255)
      */
     private $genpass;
@@ -62,6 +69,13 @@ class Users
      * @ORM\Column(name="newpass", type="string", length=255)
      */
     private $newpass;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="newpasssecond", type="string", length=255)
+     */
+    private $newpasssecond;
 
     /**
      * @var \DateTime
@@ -181,6 +195,29 @@ class Users
     }
 
     /**
+     * Set matricula
+     *
+     * @param string $matricula
+     * @return Users
+     */
+    public function setMatricula($matricula)
+    {
+        $this->matricula = $matricula;
+    
+        return $this;
+    }
+
+    /**
+     * Get matricula
+     *
+     * @return string 
+     */
+    public function getMatricula()
+    {
+        return $this->matricula;
+    }
+
+    /**
      * Set genpass
      *
      * @param string $genpass
@@ -224,6 +261,29 @@ class Users
     public function getNewpass()
     {
         return $this->newpass;
+    }
+
+    /**
+     * Set newpasssecondf
+     *
+     * @param string $newpasssecond
+     * @return Users
+     */
+    public function setNewpasssecond($newpasssecond)
+    {
+        $this->newpasssecond = $newpasssecond;
+    
+        return $this;
+    }
+
+    /**
+     * Get newpasssecond
+     *
+     * @return string 
+     */
+    public function getNewpasssecond()
+    {
+        return $this->newpasssecond;
     }
 
     /**
