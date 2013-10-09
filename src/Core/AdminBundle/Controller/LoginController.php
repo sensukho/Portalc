@@ -176,7 +176,7 @@ class LoginController extends Controller
                     $em->persist($user);
                     $em->flush();
 
-                    $raduser = $em->getRepository('CoreAdminBundle:Radcheck')->findOneBy(
+                    $raduser = $em->getRepository('CoreAdminBundle:radcheck')->findOneBy(
                         array(
                             'username'  => $data['form']['username']
                         )
