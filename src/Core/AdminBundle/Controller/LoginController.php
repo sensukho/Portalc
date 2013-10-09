@@ -46,6 +46,7 @@ class LoginController extends Controller
 
         $user = '';
         $pass = '';
+        var_dump( $_SERVER['REMOTE_ADDR'] );
 
         $request = $this->get('request');
         if($request->cookies->has('usu') && $request->cookies->has('pass') ){
@@ -53,7 +54,7 @@ class LoginController extends Controller
             $pass = $request->cookies->get('pass');
             $chk = "checked";
         }
-        return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => $user, 'pass' => $pass, 'chk' => $chk, 'msg' => $msg ));
+        return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => $user, 'pass' => $pass, 'chk' => $chk, 'msg' => $msg, ));
     }
 
     public function welcomeAction()
@@ -258,6 +259,8 @@ class LoginController extends Controller
                 $em->persist($user);
                 $em->flush();
 
+                $ip = $_SERVER['REMOTE_ADDR'];
+
                 $message = \Swift_Message::newInstance()
                     ->setSubject('Portal UVM :: Reseteo de contraseña')
                     ->setFrom('soporte@uvm.com')
@@ -265,7 +268,7 @@ class LoginController extends Controller
                     ->setBody(
                         $this->renderView(
                             'CoreAdminBundle:login:mailTamplate.html.twig',
-                            array('name' => $user->getName(),'firstname' => $user->getFirstname(),'user' => $user->getUsername(),'pass' => $newpass, 'hostname' => $_SERVER['SERVER_ADDR'], 'port' => $_SERVER['SERVER_PORT'] )
+                            array('name' => $user->getName(),'firstname' => $user->getFirstname(),'user' => $user->getUsername(),'pass' => $newpass, 'hostname' => $ip, 'port' => $_SERVER['SERVER_PORT'] )
                         ), 'text/html'
                     )
                 ;
