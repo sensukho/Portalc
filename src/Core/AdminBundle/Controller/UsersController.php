@@ -137,5 +137,18 @@ class UsersController extends Controller
 
         return $this->render('CoreAdminBundle:users:active.html.twig', array( 'session' => $session, 'session_id' => $session, 'usuarios' => $usuarios ));
     }
+
+    public function resetmacsAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $usuarios = $em->getRepository('CoreAdminBundle:ssidmacauth')->findAll();
+
+        foreach ($usuarios as $usuario => $value) {
+            $user = $em->getRepository('CoreAdminBundle:ssidmacauth')->find( $value->getId() );
+            $em->remove($user);
+            $em->flush();
+        }
+        return $this->render('CoreAdminBundle:users:resetmacs.html.twig', array());
+    }
 ##########  ##########
 }

@@ -38,7 +38,7 @@ class ssidmacauth
     /**
      * @var string
      *
-     * @ORM\Column(name="ssid", type="string", length=10)
+     * @ORM\Column(name="ssid", type="string", length=100)
      */
     private $ssid;
 

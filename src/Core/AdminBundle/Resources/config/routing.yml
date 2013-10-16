@@ -38,6 +38,10 @@ admin_usuarios_activos:
     pattern:  /admin/users/active/{session}
     defaults: { _controller: CoreAdminBundle:Users:active }
 
+admin_reset_macs:
+    pattern:  /admin/users/resetmacs
+    defaults: { _controller: CoreAdminBundle:Users:resetmacs }
+
 ##### PORTAL :: LOGIN #####
 
 start:
