@@ -148,7 +148,7 @@ class UsersController extends Controller
             $em->remove($user);
             $em->flush();
         }
-        return $this->render('CoreAdminBundle:users:resetmacs.html.twig', array());
+        return $this->render('CoreAdminBundle:users:resetmacs.html.twig', array( 'fecha' => date('d-M-Y H:m a') ));
     }
 ##########  ##########
 }
