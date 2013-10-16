@@ -78,7 +78,6 @@ class LoginController extends Controller
             if (!$user) {
                 $user = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
                     array(
-                        'name'  => $data['form']['name'],
                         'firstname'  => $data['form']['firstname'],
                         'secondname'  => $data['form']['secondname'],
                         'matricula' => $data['form']['matricula'],
@@ -89,6 +88,7 @@ class LoginController extends Controller
                 if ($user) {
                     $user->setNewpass($data['form']['newpass']);
                     $user->setUsername($data['form']['username']);
+                    $user->setEmail($data['form']['email']);
                     $em->persist($user);
                     $em->flush();
 
@@ -101,15 +101,16 @@ class LoginController extends Controller
                     $em->flush();
 
                     $msg = "Tu registro se ha completado con éxito, ya puedes ingresar.";
-                    return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => '', 'pass' => '', 'chk' => '', 'msg' => $msg ));
+                    //return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => '', 'pass' => '', 'chk' => '', 'msg' => $msg ));
+                    return $this->redirect( $this->generateUrl('portal') );
                 }else{
                     $usuario->setFecha( new \DateTime('today') );
                     $form = $this->createFormBuilder($usuario)
                         ->setAction($this->generateUrl('portal_register'))
-                        ->add('name', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
-                        ->add('firstname', 'text', array('label' => 'Apellido paterno','attr' => array('placeholder' => 'Apellido paterno')))
-                        ->add('secondname', 'text', array('label' => 'Apellido materno','attr' => array('placeholder' => 'Apellido materno')))
+                        ->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
+                        ->add('secondname', 'text', array('label' => 'Apellidos','attr' => array('placeholder' => 'Apellidos')))
                         ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
+                        ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
                         ->add('fecha', 'date', array('years' => range(date('Y') -60, date('Y')),'label' => 'Fecha de nacimiento'))
                         ->add('username', 'text', array('label' => 'Usuario','attr' => array('placeholder' => 'Mínimo de 5 caracteres.', 'pattern' => '.{5,}')))
                         ->add('newpass', 'password', array('label' => 'Password','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
@@ -122,10 +123,10 @@ class LoginController extends Controller
                 $usuario->setFecha( new \DateTime('today') );
                 $form = $this->createFormBuilder($usuario)
                     ->setAction($this->generateUrl('portal_register'))
-                    ->add('name', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
-                    ->add('firstname', 'text', array('label' => 'Apellido paterno','attr' => array('placeholder' => 'Apellido paterno')))
-                    ->add('secondname', 'text', array('label' => 'Apellido materno','attr' => array('placeholder' => 'Apellido materno')))
+                    ->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
+                    ->add('secondname', 'text', array('label' => 'Apellidos','attr' => array('placeholder' => 'Apellidos')))
                     ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
+                    ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
                     ->add('fecha', 'date', array('years' => range(date('Y') -60, date('Y')),'label' => 'Fecha de nacimiento'))
                     ->add('username', 'text', array('label' => 'Usuario','attr' => array('placeholder' => 'Mínimo de 5 caracteres.', 'pattern' => '.{5,}')))
                     ->add('newpass', 'password', array('label' => 'Password','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
@@ -138,10 +139,10 @@ class LoginController extends Controller
             $usuario->setFecha( new \DateTime('today') );
             $form = $this->createFormBuilder($usuario)
                 ->setAction($this->generateUrl('portal_register'))
-                    ->add('name', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
-                    ->add('firstname', 'text', array('label' => 'Apellido paterno','attr' => array('placeholder' => 'Apellido paterno')))
-                    ->add('secondname', 'text', array('label' => 'Apellido materno','attr' => array('placeholder' => 'Apellido materno')))
+                    ->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
+                    ->add('secondname', 'text', array('label' => 'Apellidos','attr' => array('placeholder' => 'Apellidos')))
                     ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
+                    ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
                     ->add('fecha', 'date', array('years' => range(date('Y') -60, date('Y')),'label' => 'Fecha de nacimiento'))
                     ->add('username', 'text', array('label' => 'Usuario','attr' => array('placeholder' => 'Mínimo de 5 caracteres.', 'pattern' => '.{5,}')))
                     ->add('newpass', 'password', array('label' => 'Password','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))

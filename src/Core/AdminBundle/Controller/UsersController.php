@@ -17,15 +17,14 @@ class UsersController extends Controller
         $msg = '';
         $form = $this->createFormBuilder($usuario)
             ->setAction($this->generateUrl('admin_usuarios_crear', array('session' => $session)))
-            ->add('name', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
-            ->add('firstname', 'text', array('label' => 'Apellido paterno','attr' => array('placeholder' => 'Apellido paterno')))
-            ->add('secondname', 'text', array('label' => 'Apellido materno','attr' => array('placeholder' => 'Apellido materno')))
+            ->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
+            ->add('secondname', 'text', array('label' => 'Apellidos','attr' => array('placeholder' => 'Apellidos')))
             ->add('username', 'hidden', array('attr' => array('value' => '---')))
             ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'matricula')))
             ->add('genpass', 'hidden', array('attr' => array('value' => '0')))
             ->add('newpass', 'hidden', array('attr' => array('value' => '0')))
             ->add('newpasssecond', 'hidden', array('attr' => array('value' => '0')))
-            ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
+            ->add('email', 'hidden', array('attr' => array('value' => '0')))
             ->add('fecha', 'date', array('years' => range(date('Y') -60, date('Y')),'label' => 'Fecha de nacimiento'))
             ->add('enviar', 'submit')
         ->getForm();

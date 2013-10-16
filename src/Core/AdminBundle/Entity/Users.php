@@ -24,13 +24,6 @@ class Users
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=64)
-     */
-    private $name;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="firstname", type="string", length=64)
      */
     private $firstname;
