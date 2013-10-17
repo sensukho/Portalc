@@ -12,8 +12,16 @@ use Core\AdminBundle\Entity\radcheck;
 class LoginController extends Controller
 {
 ########## LOGIN ##########
-    public function loginAction()
+    public function loginAction(Request $request)
     {
+
+        $url = '?';
+        foreach ($request->query->all() as $key => $value) {
+            $url .= $key.'='.$value.'&';
+        }
+
+        $this->get('cache')->save('url', serialize($url));
+
         $request = Request::createFromGlobals();
         $user = $request->request->get('username',NULL);
         $pass = $request->request->get('password',NULL);
@@ -53,7 +61,7 @@ class LoginController extends Controller
             $pass = $request->cookies->get('pass');
             $chk = "checked";
         }
-        return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => $user, 'pass' => $pass, 'chk' => $chk, 'msg' => $msg, ));
+        return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => $user, 'pass' => $pass, 'chk' => $chk, 'msg' => $msg ));
     }
 
     public function welcomeAction()
@@ -63,6 +71,11 @@ class LoginController extends Controller
     
     public function registerAction(Request $request)
     {
+        if ($url = $this->get('cache')->fetch('url')) {
+            $url = unserialize($url);
+        }
+        //var_dump($url);
+
         $usuario = new Users();
         $form = $this->createFormBuilder($usuario);
         $msg = '';
@@ -102,7 +115,7 @@ class LoginController extends Controller
 
                     $msg = "Tu registro se ha completado con éxito, ya puedes ingresar.";
                     //return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => '', 'pass' => '', 'chk' => '', 'msg' => $msg ));
-                    return $this->redirect( $this->generateUrl('portal') );
+                    return $this->redirect( '/web/login'.$url );
                 }else{
                     $usuario->setFecha( new \DateTime('today') );
                     $form = $this->createFormBuilder($usuario)
@@ -118,6 +131,7 @@ class LoginController extends Controller
                     ->getForm();
                     $msg = "Datos Inválidos - favor de contactar la oficina de soporte UVM.";
                     return $this->render('CoreAdminBundle:login:register.html.twig', array( 'form' => $form->createView(), 'msg' => $msg ));
+                    //return $this->redirect( '/web/login'.$url );
                 }
             }else{
                 $usuario->setFecha( new \DateTime('today') );
