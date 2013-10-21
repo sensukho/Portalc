@@ -74,7 +74,6 @@ class LoginController extends Controller
         if ($url = $this->get('cache')->fetch('url')) {
             $url = unserialize($url);
         }
-        //var_dump($url);
 
         $usuario = new Users();
         $form = $this->createFormBuilder($usuario);
@@ -114,6 +113,7 @@ class LoginController extends Controller
                     $em->flush();
 
                     $msg = "Tu registro se ha completado con éxito, ya puedes ingresar.";
+                    $url .= 'msg='.$msg;
                     //return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => '', 'pass' => '', 'chk' => '', 'msg' => $msg ));
                     return $this->redirect( '/web/login'.$url );
                 }else{
