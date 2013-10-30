@@ -108,7 +108,11 @@ class UsersController extends Controller
     public function listunregAction($session)
     {
         $em = $this->getDoctrine()->getManager();
-        $usuarios = $em->getRepository('CoreAdminBundle:Users')->findAll();
+        $usuarios = $em->getRepository('CoreAdminBundle:Users')->findBy(
+            array(
+                'username'  => '---'
+            )
+        );
         $mensaje = '';
 
         return $this->render('CoreAdminBundle:users:listunreg.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios ));
