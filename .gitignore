@@ -3,3 +3,6 @@
 !app/cache/.gitkeep
 !app/logs/.gitkeep
 /composer.phar
+/phpinfo.php
+/portalc.tar
+/resetmacs_lod/*
