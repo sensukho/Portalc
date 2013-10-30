@@ -63,12 +63,12 @@ class LoginController extends Controller
         }
         return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => $user, 'pass' => $pass, 'chk' => $chk, 'msg' => $msg ));
     }
-
+    /***************************************************************************/
     public function welcomeAction()
     {
         return $this->render('CoreAdminBundle:login:bienvenida.html.twig', array());
     }
-    
+    /***************************************************************************/
     public function registerAction(Request $request)
     {
         if ($url = $this->get('cache')->fetch('url')) {
@@ -114,7 +114,7 @@ class LoginController extends Controller
 
                     $msg = "Tu registro se ha completado con éxito, ya puedes ingresar.";
                     $url .= 'msg='.$msg;
-                    //return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => '', 'pass' => '', 'chk' => '', 'msg' => $msg ));
+
                     return $this->redirect( '/web/login'.$url );
                 }else{
                     $usuario->setFecha( new \DateTime('today') );
@@ -131,7 +131,6 @@ class LoginController extends Controller
                     ->getForm();
                     $msg = "Datos Inválidos - favor de contactar la oficina de soporte UVM.";
                     return $this->render('CoreAdminBundle:login:register.html.twig', array( 'form' => $form->createView(), 'msg' => $msg ));
-                    //return $this->redirect( '/web/login'.$url );
                 }
             }else{
                 $usuario->setFecha( new \DateTime('today') );
@@ -165,7 +164,7 @@ class LoginController extends Controller
             return $this->render('CoreAdminBundle:login:register.html.twig', array( 'form' => $form->createView(), 'msg' => $msg ));
         }
     }
-
+    /***************************************************************************/
     public function changeAction(Request $request)
     {
         $usuario = new Users();
@@ -244,7 +243,7 @@ class LoginController extends Controller
             return $this->render('CoreAdminBundle:login:change.html.twig', array( 'form' => $form->createView(), 'msg' => $msg ));
         }
     }
-
+    /***************************************************************************/
     public function resetAction(Request $request)
     {
         $form = $this->createFormBuilder();

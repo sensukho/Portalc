@@ -12,7 +12,7 @@ class AdminController extends Controller
     {
         return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'error' => '00X0' ));
     }
-
+    /***************************************************************************/
     public function loginAction()
     {
         $request = Request::createFromGlobals();
@@ -25,7 +25,7 @@ class AdminController extends Controller
             }else{ return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'error' => '00X1' )); }
         }else{ return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'error' => '00X2' )); }
     }
-
+    /***************************************************************************/
     public function homeAction($session)
     {
         $s = base64_encode( md5('admin'.'12345'.date('Y-n-d') ) );

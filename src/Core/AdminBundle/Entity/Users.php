@@ -84,6 +84,20 @@ class Users
      */
     private $email;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="campus", type="string", length=255)
+     */
+    private $campus;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tipo", type="string", length=255)
+     */
+    private $tipo;
+
 
     /**
      * Get id
@@ -300,5 +314,51 @@ class Users
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * Set campus
+     *
+     * @param string $campus
+     * @return radcheck
+     */
+    public function setCampus($campus)
+    {
+        $this->campus = $campus;
+    
+        return $this;
+    }
+
+    /**
+     * Get campus
+     *
+     * @return string 
+     */
+    public function getCampus()
+    {
+        return $this->campus;
+    }
+
+    /**
+     * Set tipo
+     *
+     * @param string $tipo
+     * @return radcheck
+     */
+    public function setTipo($tipo)
+    {
+        $this->tipo = $tipo;
+    
+        return $this;
+    }
+
+    /**
+     * Get tipo
+     *
+     * @return string 
+     */
+    public function getTipo()
+    {
+        return $this->tipo;
     }
 }

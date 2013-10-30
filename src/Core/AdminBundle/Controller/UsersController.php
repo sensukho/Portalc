@@ -41,7 +41,7 @@ class UsersController extends Controller
 
         return $this->render('CoreAdminBundle:users:new.html.twig', array( 'session' => $session, 'session_id' => $session, 'form' => $form->createView(), 'msg' => $msg ));
     }
-
+    /***************************************************************************/
     public function editAction($session,$id)
     {
         $request = Request::createFromGlobals();
@@ -67,7 +67,7 @@ class UsersController extends Controller
 
         return $this->render('CoreAdminBundle:users:edit.html.twig', array( 'session' => $session, 'session_id' => $session, 'usuario' => $usuario ));
     }
-
+    /***************************************************************************/
     public function delAction($session,$id)
     {
         $request = Request::createFromGlobals();
@@ -89,7 +89,7 @@ class UsersController extends Controller
 
         return $this->render('CoreAdminBundle:users:del.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuario' => $usuario ));
     }
-
+    /***************************************************************************/
     public function listregAction($session)
     {
         $em = $this->getDoctrine()->getManager();
@@ -104,7 +104,7 @@ class UsersController extends Controller
 
         return $this->render('CoreAdminBundle:users:listreg.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios ));
     }
-
+    /***************************************************************************/
     public function listunregAction($session)
     {
         $em = $this->getDoctrine()->getManager();
@@ -113,35 +113,7 @@ class UsersController extends Controller
 
         return $this->render('CoreAdminBundle:users:listunreg.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios ));
     }
-
-    public function activeAction($session)
-    {
-        $em = $this->getDoctrine()->getManager();
-        //$usuarios = $em->getRepository('CoreAdminBundle:radacct')->findAll();
-
-        $query = $em->createQuery(
-            'SELECT r.username,r.id,r.framedipaddress,r.callingstationid,SUM(r.acctinputoctets),SUM(r.acctoutputoctets),SUM(r.acctsessiontime)
-            FROM CoreAdminBundle:radacct r
-            GROUP BY r.username
-            ORDER BY r.username ASC'
-        );
-
-        $usuarios = $query->getResult();
-
-        $i=0;
-        foreach ($usuarios as $usuario) {
-            //$usuarios[$i]['hora'] = round($usuario['3'] / 3600);
-            //$usuarios[$i]['min'] = round( ($usuario['3'] - ($usuarios[$i]['hora'] * 3600)) / 60 );
-            //$usuarios[$i]['seg'] = round( ($usuario['3'] - ( ( $usuarios[$i]['hora'] * 3600 ) + ( $usuarios[$i]['min'] * 3600 ) ) ) / 60 );
-            $usuarios[$i]['acctsessiontime'] = $this->parseTime($usuario['3']);
-            $usuarios[$i]['acctinputoctets'] = round($usuario['1'] * 0.000000953674316,1);
-            $usuarios[$i]['acctoutputoctets'] = round($usuario['2'] * 0.000000953674316,1);
-            $i++;
-        }
-
-        return $this->render('CoreAdminBundle:users:active.html.twig', array( 'session' => $session, 'session_id' => $session, 'usuarios' => $usuarios ));
-    }
-
+    /***************************************************************************/
     public function resetmacsAction()
     {
         $em = $this->getDoctrine()->getManager();
@@ -155,21 +127,5 @@ class UsersController extends Controller
         return $this->render('CoreAdminBundle:users:resetmacs.html.twig', array( 'fecha' => date('d-M-Y H:m a') ));
     }
 
-    function parseTime($segundos){
-        $minutos = $segundos/60;
-        $horas = floor($minutos/60);
-        $minutos2 = $minutos%60;
-        $segundos_2 = $segundos%60%60%60;
-        if($minutos2 < 10) $minutos2 = '0'.$minutos2;
-        if($segundos_2 < 10) $segundos_2 = '0'.$segundos_2;
-        if($segundos < 60){
-            $resultado = round($segundos).' seg.';
-        }elseif($segundos > 60 && $segundos < 3600){
-            $resultado= $minutos2.':'.$segundos_2.' min.';
-        }else{
-            $resultado= $horas.':'.$minutos2.':'.$segundos_2.' hrs.';
-        }
-        return $resultado;
-    }
 ##########  ##########
 }

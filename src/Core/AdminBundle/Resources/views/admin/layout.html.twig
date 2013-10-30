@@ -44,29 +44,25 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuarios <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li class="nav-header">Estadisticas</li>
-                                    <li><a href="{{ path('admin_usuarios_activos', {session: session_id}) }}">Activos</a></li>
-                                    <li class="divider"></li>
                                     <li class="nav-header">Administrar</li>
                                     <li><a href="{{ path('admin_usuarios_crear', {session: session_id}) }}">Crear</a></li>
-                                    <li><a href="{{ path('admin_usuarios_listar_reg', {session: session_id}) }}">Listar Registrados</a></li>
-                                    <li><a href="{{ path('admin_usuarios_listar_unreg', {session: session_id}) }}">Listar Pendientes</a></li>
+                                    <li><a href="{{ path('admin_usuarios_listar_reg', {session: session_id}) }}">Registrados</a></li>
+                                    <li><a href="{{ path('admin_usuarios_listar_unreg', {session: session_id}) }}">Pendientes</a></li>
+                                    <!--<li class="divider"></li>-->
                                     <li class="divider"></li>
                                     <li class="nav-header">Ayuda</li>
-                                    <li><a href="#">FAQ</a></li>
+                                    <li><a href="#">FAQs</a></li>
                                 </ul>
                             </li>
 
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Usuarios</a></li>
-                                    <li><a href="#">Estadisticas</a></li>
-                                    <li><a href="#">Servicios</a></li>
-                                    <li><a href="#">Cobranza</a></li>
+                                    <li><a href="{{ path('admin_reportes_activos', {session: session_id}) }}">Activos</a></li>
+                                    <li><a href="{{ path('admin_reportes_historial', {session: session_id}) }}">Historial</a></li>
                                     <li class="divider"></li>
                                     <li class="nav-header">Ayuda</li>
-                                    <li><a href="#">FAQ</a></li>
+                                    <li><a href="#">FAQs</a></li>
                                 </ul>
                             </li>
                             <li><a href="#">Cobranza</a></li>

@@ -34,13 +34,19 @@ admin_usuarios_listar_unreg:
     pattern:  /admin/users/listunreg/{session}
     defaults: { _controller: CoreAdminBundle:Users:listunreg }
 
-admin_usuarios_activos:
-    pattern:  /admin/users/active/{session}
-    defaults: { _controller: CoreAdminBundle:Users:active }
-
 admin_reset_macs:
     pattern:  /admin/users/resetmacs
     defaults: { _controller: CoreAdminBundle:Users:resetmacs }
+
+##### ADMINISTRATOR :: REPORTES #####
+
+admin_reportes_activos:
+    pattern:  /admin/reports/active/{session}
+    defaults: { _controller: CoreAdminBundle:Reports:active }
+
+admin_reportes_historial:
+    pattern:  /admin/reports/history/{session}
+    defaults: { _controller: CoreAdminBundle:Reports:history }
 
 ##### PORTAL :: LOGIN #####
 

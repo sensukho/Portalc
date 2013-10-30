@@ -5,7 +5,7 @@
     <div class="container">
 
         <div class="hero-unit">
-            <h1>Usuarios :: Activos</h1>
+            <h1>Reportes :: Activos</h1>
             <p></p>
         </div>
 
@@ -13,21 +13,23 @@
             <table id="listuser" border="1" width="80%" align="center">
                 <tr>
                     <th width="4%">#</th>
-                    <th width="31%">Usuario(IP)</th>
-                    <th width="25%">MAC</th>
-                    <th width="14%">T. Act</th>
-                    <th width="13%">IN (Mb)</th>
-                    <th width="13%">OUT (Mb)</th>
+                    <th width="31%">Usuario( IP )</th>
+                    <th width="14%">Tiempo Activo</th>
+                    <th width="13%">Recibidos</th>
+                    <th width="13%">Enviados</th>
+                    <th width="25%">SSID</th>
                 </tr>
+                {% set i = 1 %}
                 {% for usuario in usuarios %}
                 <tr>
-                    <th>{{ usuario.id }}</th>
+                    <th>{{ i }}</th>
                     <th align="left">&nbsp;&nbsp;&nbsp;{{ usuario.username }} ( {{ usuario.framedipaddress }} )</th>
-                    <th>{{ usuario.callingstationid }}</th>
                     <th align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ usuario.acctsessiontime }}</th>
-                    <th align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ usuario.acctinputoctets }}</th>
-                    <th align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ usuario.acctoutputoctets }}</th>
+                    <th align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ usuario.acctinputoctets }} Mb.</th>
+                    <th align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ usuario.acctoutputoctets }} Mb.</th>
+                    <th>{{ usuario.calledstationid }}</th>
                 </tr>
+                {% set i = i + 1 %}
                 {% endfor %}
             </table>
         </div>

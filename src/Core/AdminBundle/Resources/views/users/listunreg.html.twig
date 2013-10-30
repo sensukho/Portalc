@@ -4,7 +4,7 @@
     <div class="container">
 
         <div class="hero-unit">
-            <h1>Usuarios :: Listado</h1>
+            <h1>Usuarios :: Pendientes</h1>
             <p>{{ mensaje }}</p>
         </div>
 
@@ -20,9 +20,10 @@
                     <!--<th width="5%">Editar</th>
                     <th width="5%">Eliminar</th>-->
                 </tr>
+                {% set i = 1 %}
                 {% for usuario in usuarios %}
                 <tr>
-                    <td>{{ usuario.id }}</td>
+                    <td>{{ i }}</td>
                     <td>{{ usuario.firstname }} {{ usuario.secondname }}</td>
                      <td>{{ usuario.username }}</td>
                      <td>{{ usuario.genpass }}</td>
@@ -31,6 +32,7 @@
                     <!--<td align="center"><a href="{{ path('admin_usuarios_modificar', {session: session_id, id: usuario.id}) }}"><img src="{{ asset('bundles/core/img/users/edit.png') }}" width="32px"></a></td>
                     <td align="center"><a href="{{ path('admin_usuarios_eliminar', {session: session_id, id: usuario.id}) }}"><img src="{{ asset('bundles/core/img/users/del.png') }}" width="32px"></a></td>-->
                 </tr>
+                {% set i = i + 1 %}
                 {% endfor %}
             </table>
         </div>
