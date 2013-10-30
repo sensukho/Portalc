@@ -58,7 +58,7 @@ class UsersController extends Controller
             $em->persist($usuario);
             $em->flush();
 
-            $mensaje = 'Usuario ingresado con éxito !';
+            $mensaje = 'Usuario modificado con éxito !';
             $usuarios = $em->getRepository('CoreAdminBundle:radcheck')->findAll();
             return $this->redirect( $this->generateUrl('admin_usuarios_listar', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios )) );
         }else{
@@ -120,7 +120,7 @@ class UsersController extends Controller
         //$usuarios = $em->getRepository('CoreAdminBundle:radacct')->findAll();
 
         $query = $em->createQuery(
-            'SELECT r.username,r.id,r.framedipaddress,r.callingstationid,SUM(r.acctinputoctets),SUM(r.acctoutputoctets)
+            'SELECT r.username,r.id,r.framedipaddress,r.callingstationid,SUM(r.acctinputoctets),SUM(r.acctoutputoctets),SUM(r.acctsessiontime)
             FROM CoreAdminBundle:radacct r
             GROUP BY r.username
             ORDER BY r.username ASC'
@@ -130,6 +130,10 @@ class UsersController extends Controller
 
         $i=0;
         foreach ($usuarios as $usuario) {
+            //$usuarios[$i]['hora'] = round($usuario['3'] / 3600);
+            //$usuarios[$i]['min'] = round( ($usuario['3'] - ($usuarios[$i]['hora'] * 3600)) / 60 );
+            //$usuarios[$i]['seg'] = round( ($usuario['3'] - ( ( $usuarios[$i]['hora'] * 3600 ) + ( $usuarios[$i]['min'] * 3600 ) ) ) / 60 );
+            $usuarios[$i]['acctsessiontime'] = $this->parseTime($usuario['3']);
             $usuarios[$i]['acctinputoctets'] = round($usuario['1'] * 0.000000953674316,1);
             $usuarios[$i]['acctoutputoctets'] = round($usuario['2'] * 0.000000953674316,1);
             $i++;
@@ -149,6 +153,23 @@ class UsersController extends Controller
             $em->flush();
         }
         return $this->render('CoreAdminBundle:users:resetmacs.html.twig', array( 'fecha' => date('d-M-Y H:m a') ));
+    }
+
+    function parseTime($segundos){
+        $minutos = $segundos/60;
+        $horas = floor($minutos/60);
+        $minutos2 = $minutos%60;
+        $segundos_2 = $segundos%60%60%60;
+        if($minutos2 < 10) $minutos2 = '0'.$minutos2;
+        if($segundos_2 < 10) $segundos_2 = '0'.$segundos_2;
+        if($segundos < 60){
+            $resultado = round($segundos).' seg.';
+        }elseif($segundos > 60 && $segundos < 3600){
+            $resultado= $minutos2.':'.$segundos_2.' min.';
+        }else{
+            $resultado= $horas.':'.$minutos2.':'.$segundos_2.' hrs.';
+        }
+        return $resultado;
     }
 ##########  ##########
 }

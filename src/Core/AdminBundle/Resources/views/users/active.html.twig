@@ -10,23 +10,23 @@
         </div>
 
         <div class="row">
-            <table id="listuser" border="1" width="800px" align="center">
+            <table id="listuser" border="1" width="80%" align="center">
                 <tr>
                     <th width="4%">#</th>
                     <th width="31%">Usuario(IP)</th>
                     <th width="25%">MAC</th>
-                    <th width="10%">T. Act</th>
-                    <th width="15%">IN (Mb)</th>
-                    <th width="15%">OUT (Mb)</th>
+                    <th width="14%">T. Act</th>
+                    <th width="13%">IN (Mb)</th>
+                    <th width="13%">OUT (Mb)</th>
                 </tr>
                 {% for usuario in usuarios %}
                 <tr>
                     <th>{{ usuario.id }}</th>
                     <th align="left">&nbsp;&nbsp;&nbsp;{{ usuario.username }} ( {{ usuario.framedipaddress }} )</th>
                     <th>{{ usuario.callingstationid }}</th>
-                    <th> --- </th>
-                    <th>{{ usuario.acctinputoctets }}</th>
-                    <th>{{ usuario.acctoutputoctets }}</th>
+                    <th align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ usuario.acctsessiontime }}</th>
+                    <th align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ usuario.acctinputoctets }}</th>
+                    <th align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ usuario.acctoutputoctets }}</th>
                 </tr>
                 {% endfor %}
             </table>
