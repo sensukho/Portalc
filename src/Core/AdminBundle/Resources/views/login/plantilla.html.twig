@@ -7,17 +7,15 @@
         <tr cellspan="3">
             <td align="center"><img src="bundles/login/imgs/BannerT.jpg"></td>
         </tr>
-        <!--  IMPRESION DE MENSAJES (NO MODIFICAR) -->
-        {% if msg %}
-            <tr><div id="msg">{{ msg }}<div></tr>
-        {% endif %}
+    <!--  IMPRESION DE MENSAJES (NO MODIFICAR) -->
+    {% if msg %}
+        <tr cellspan="3"><td>&nbsp;<br />&nbsp;</td></tr>
+        <tr><td><div id="msg">{{ msg }}</div></td></tr>
+    {% endif %}
         <tr cellspan="3"><td>&nbsp;<br />&nbsp;</td></tr>
         <tr>
             <td width="80%" align="center">
-                <!--  IMPRIME LA CABECERA DEL FORM (NO MODIFICAR) -->
-                <script type="text/javascript">
-                    document.write('<form method=POST action="http://' + get_param("sip") + ':9997/login">');
-                </script>
+                <form method=POST action="{{ path('portal') }}">
                 <table class="table_first" border="0px" width="40%" height="auto" cellspacing="5" cellpading="5">
                     <tr>
                         <td><font size="5">Usuario:</font></td>

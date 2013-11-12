@@ -15,12 +15,17 @@ class LoginController extends Controller
     public function loginAction(Request $request)
     {
 
-        $url = '?';
-        foreach ($request->query->all() as $key => $value) {
-            $url .= $key.'='.$value.'&';
+        if( $url = $request->query->all()){
+            $this->get('cache')->save('url', serialize($url));
+        }else{
+            $url = $this->get('cache')->fetch('url');
+            $url = unserialize($url);
         }
 
-        $this->get('cache')->save('url', serialize($url));
+        $params = '?';
+        foreach ($url as $key => $value) {
+            $params .= $key.'='.$value.'&';
+        }
 
         $request = Request::createFromGlobals();
         $user = $request->request->get('username',NULL);
@@ -32,6 +37,7 @@ class LoginController extends Controller
         $response = new Response();
 
         if ($user != NULL && $pass != NULL) {
+
             if ($chk_rec == "chk_rec"){
                 $user = htmlspecialchars(trim($user));
                 $pass = trim($pass);
@@ -50,6 +56,66 @@ class LoginController extends Controller
                 $response->headers->clearCookie('pass');
                 $response->send();
             }
+
+            $em = $this->getDoctrine()->getManager();
+            /***** VERIFICA USUARIO *****/
+            $raduser1 = $em->getRepository('CoreAdminBundle:radcheck')->findOneBy(
+                array(
+                    'username'  => $user,
+                    'value'  => $pass
+                )
+            );
+
+            if (!$raduser1) {
+                $msg = 'Usuario y/o contraseña inválido';
+                return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => $user, 'pass' => $pass, 'chk' => $chk, 'msg' => $msg ));
+            }
+
+            /***** VERIFICA MAC PERTENECIENTE AL USUARIO *****/
+            $raduser2 = $em->getRepository('CoreAdminBundle:ssidmacauth')->findBy(
+                array(
+                    'username'  => $user,
+                    'ssid'  => $url['ssid']
+                )
+            );
+
+            $ver_mac_1 = 1;
+            if (count($raduser2) == 2) {
+                $ver_mac_1 = 0;
+                foreach ($raduser2 as $ruser) {
+                    if ( $ruser->getMacaddress() == $this->formatMac( $url['client_mac']) ) {
+                        $ver_mac_1 = 1;
+                    }
+                }
+            }
+            /***** VERIFICA MAC EXISTENTE EN OTRAS CENTAS *****/
+            $raduser3 = $em->getRepository('CoreAdminBundle:ssidmacauth')->findOneBy(
+                array(
+                    'macaddress'  => $this->formatMac( $url['client_mac'])
+                )
+            );
+            $ver_mac_2 = 1;
+            if ($raduser3) {
+                $ver_mac_2 = 0;
+                if ( $raduser3->getUsername() == $user ) {
+                    $ver_mac_2 = 1;
+                }
+            }
+
+            if ($ver_mac_1 == 0) {
+                $msg = 'Ya existen dos dispositivos registrados con esa cuenta, lo cual es el máximo permitido por cuenta. Deberás esperar hasta el dia siguiente para poder registrar un dispositivo diferente.';
+            }elseif ($ver_mac_1 == 0 && $ver_mac_2 == 0) {
+                $msg = 'Ya existen dos dispositivos registrados con esa cuenta, lo cual es el máximo permitido por cuenta. Deberás esperar hasta el dia siguiente para poder registrar un dispositivo diferente.';
+            }elseif ($ver_mac_1 == 1 && $ver_mac_2 == 0) {
+                $msg = 'Ese dispositivo ya está registrado en otra cuenta. No puede registrarse el mismo dispositivo en cuentas diferentes. Favor de utilizar las credenciales de la primer cuenta con la que se conectó el dispositivo.';
+            }elseif ($ver_mac_1 == 1 && $ver_mac_2 == 1) {
+                //return $this->redirect( 'http://'.$url['sip'].':9997/login'.$params );
+                $url = "http://".$url['sip'].":9997/login";
+                return $this->render('CoreAdminBundle:login:layout_zd.html.twig', array( 'user' => $user, 'pass' => $pass, 'url' => $url ));
+            }
+
+            return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => $user, 'pass' => $pass, 'chk' => $chk, 'msg' => $msg ));
+
         }
 
         $user = '';
@@ -61,6 +127,7 @@ class LoginController extends Controller
             $pass = $request->cookies->get('pass');
             $chk = "checked";
         }
+
         return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => $user, 'pass' => $pass, 'chk' => $chk, 'msg' => $msg ));
     }
     /***************************************************************************/
@@ -113,9 +180,10 @@ class LoginController extends Controller
                     $em->flush();
 
                     $msg = "Tu registro se ha completado con éxito, ya puedes ingresar.";
-                    $url .= 'msg='.$msg;
+                    //$url .= 'msg='.$msg;
 
-                    return $this->redirect( '/web/login'.$url );
+                    //return $this->redirect( '/web/login'.$url );
+                    return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => '', 'pass' => '', 'chk' => '', 'msg' => $msg ));
                 }else{
                     $usuario->setFecha( new \DateTime('today') );
                     $form = $this->createFormBuilder($usuario)
@@ -279,7 +347,7 @@ class LoginController extends Controller
                     ->setBody(
                         $this->renderView(
                             'CoreAdminBundle:login:mailTamplate.html.twig',
-                            array('name' => $user->getName(),'firstname' => $user->getFirstname(),'user' => $user->getUsername(),'pass' => $newpass, 'hostname' => $_SERVER['HTTP_HOST'] )
+                            array('firstname' => $user->getFirstname(),'user' => $user->getUsername(),'pass' => $newpass, 'hostname' => $_SERVER['HTTP_HOST'] )
                         ), 'text/html'
                     )
                 ;
@@ -306,6 +374,19 @@ class LoginController extends Controller
             ->getForm();
             return $this->render('CoreAdminBundle:login:reset.html.twig', array( 'form' => $form->createView(), 'msg' => $msg ));
         }
+    }
+    /***************************************************************************/
+    public function formatMac($mac)
+    {
+        $longitud = strlen($mac);
+            $macaddress = '';
+            for($i = 0; $i < $longitud; ++$i)
+                if($i%2==0)
+                    if($i == 0)
+                        $macaddress .= $mac[$i].$mac[$i+1];
+                    else
+                        $macaddress .= '-'.$mac[$i].$mac[$i+1];
+        return $macaddress;
     }
 ##########  ##########
 }
