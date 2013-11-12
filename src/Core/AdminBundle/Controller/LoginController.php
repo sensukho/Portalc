@@ -342,7 +342,7 @@ class LoginController extends Controller
 
                 $message = \Swift_Message::newInstance()
                     ->setSubject('Portal UVM :: Reseteo de contraseña')
-                    ->setFrom('soporte@uvm.com')
+                    ->setFrom(array('soporte@uvm.com' => 'Soporte'))
                     ->setTo($data['form']['email'])
                     ->setBody(
                         $this->renderView(
