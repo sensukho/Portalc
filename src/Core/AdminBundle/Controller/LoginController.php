@@ -322,6 +322,7 @@ class LoginController extends Controller
             $em = $this->getDoctrine()->getManager();
             $user = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
                 array(
+                    'username' => $data['form']['username'],
                     'email' => $data['form']['email']
                 )
             );
@@ -357,10 +358,11 @@ class LoginController extends Controller
                 return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => '', 'pass' => '', 'chk' => '', 'msg' => $msg ));
             }else{
                 $msg = 'La cuenta de correo: '.$data['form']['email']." no se encuentra registrada en nuestro sistema.";
-                $defaultData = array('message' => 'Type your message here');
+                $defaultData = array('message' => '');
                 $form = $this->createFormBuilder($defaultData)
                     ->setAction($this->generateUrl('portal_reset_pass'))
-                    ->add('email', 'email', array('label' => 'Ingresa la dirección de correo a la cual quieres que se envíe tu nueva contraseña.','attr' => array('placeholder' => 'correo electronico')))
+                    ->add('username', 'text', array('label' => 'Verifica tu nombre de usuario','attr' => array('placeholder' => 'username')))
+                    ->add('email', 'email', array('label' => 'Ingresa la dirección de correo con la cual te registraste para poder recibir tu nueva contraseña.','attr' => array('placeholder' => 'correo electronico')))
                     ->add('enviar', 'submit')
                 ->getForm();
                 return $this->render('CoreAdminBundle:login:reset.html.twig', array( 'form' => $form->createView(), 'msg' => $msg ));
@@ -369,7 +371,8 @@ class LoginController extends Controller
             $defaultData = array('message' => 'Type your message here');
             $form = $this->createFormBuilder($defaultData)
                 ->setAction($this->generateUrl('portal_reset_pass'))
-                ->add('email', 'email', array('label' => 'Ingresa la dirección de correo a la cual quieres que se envíe tu nueva contraseña.','attr' => array('placeholder' => 'correo electronico')))
+                ->add('username', 'text', array('label' => 'Verifica tu nombre de usuario','attr' => array('placeholder' => 'username')))
+                ->add('email', 'email', array('label' => 'Ingresa la dirección de correo con la cual te registraste para poder recibir tu nueva contraseña.','attr' => array('placeholder' => 'correo electronico')))
                 ->add('enviar', 'submit')
             ->getForm();
             return $this->render('CoreAdminBundle:login:reset.html.twig', array( 'form' => $form->createView(), 'msg' => $msg ));

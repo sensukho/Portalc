@@ -10,7 +10,7 @@ class AdminController extends Controller
 ########## ADMINISTRATOR ##########
     public function adminAction()
     {
-        return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'error' => '00X0' ));
+        return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => '' ));
     }
     /***************************************************************************/
     public function loginAction()
@@ -22,14 +22,18 @@ class AdminController extends Controller
             if( $pass == '12345' ){
                 $session = base64_encode( md5( $user.$pass.date('Y-n-d') ) );
                 return $this->redirect( $this->generateUrl('admin_home', array( 'session' => $session )) );
-            }else{ return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'error' => '00X1' )); }
-        }else{ return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'error' => '00X2' )); }
+            }else{ return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => 'Usuario y/o contraseña iválidos.' )); }
+        }else{ return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => 'Usuario y/o contraseña iválidos.' )); }
     }
     /***************************************************************************/
     public function homeAction($session)
     {
         $s = base64_encode( md5('admin'.'12345'.date('Y-n-d') ) );
-        return $this->render('CoreAdminBundle:admin:lpg.html.twig', array( 'session' => $session, 'session_id' => $s ));
+        if ($s === $session ) {
+            return $this->render('CoreAdminBundle:admin:lpg.html.twig', array( 'session' => $session, 'session_id' => $s ));
+        }else{
+            return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => 'Su sesión ha caducado, ingrese de nuevo por favor.' ));
+        }
     }
 ########## WEBSPOTS ##########
 }

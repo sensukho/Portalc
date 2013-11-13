@@ -53,6 +53,10 @@
                  <tr>
                     <td align="center"><img src="{{ asset('bundles/login/imgs/bg-l.png') }}"></td>
                 </tr>
+                {% if msg %}
+                    <tr cellspan="3"><td>&nbsp;<br />&nbsp;</td></tr>
+                    <tr><td align="right"><div><h2>{{ msg }}</h1></div></td></tr>
+                {% endif %}
             </table>
         </div>
         
