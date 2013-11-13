@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Core\AdminBundle\Entity\radcheck;
 use Core\AdminBundle\Entity\Users;
+use Doctrine\Common\Collections;
 
 class UsersController extends Controller
 {

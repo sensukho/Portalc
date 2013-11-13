@@ -357,7 +357,7 @@ class LoginController extends Controller
                 $msg = 'Se ha enviado un correo con tu nueva contraseña a: '.$data['form']['email'];
                 return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => '', 'pass' => '', 'chk' => '', 'msg' => $msg ));
             }else{
-                $msg = 'La cuenta de correo: '.$data['form']['email']." no se encuentra registrada en nuestro sistema.";
+                $msg = 'La cuenta de correo y/o el usuario no se encuentran registrados en nuestro sistema';
                 $defaultData = array('message' => '');
                 $form = $this->createFormBuilder($defaultData)
                     ->setAction($this->generateUrl('portal_reset_pass'))

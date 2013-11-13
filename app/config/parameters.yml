@@ -10,7 +10,7 @@ parameters:
     mailer_encryption: ssl
     mailer_auth_mode: login
     mailer_host: smtp.gmail.com
-    mailer_user: sstuart.rko@gmail.com
-    mailer_password: 32274105
+    mailer_user: soporte@fastweb.com.mx
+    mailer_password: soport312
     locale: es
     secret: f4stw3b4102
