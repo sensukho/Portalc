@@ -4,6 +4,19 @@
    Author's custom styles
    ========================================================================== */
 
+body {
+    background-color: #fff;
+    padding-top: 10px;
+}
+#msg{
+    background-color: #17039b;
+    border: 0px solid #000;
+    text-align: center;
+    color: #FFF;
+    font-size: 16px;
+    padding: 5px;
+}
+
 #listuser td{
 	text-align: center;
 }
