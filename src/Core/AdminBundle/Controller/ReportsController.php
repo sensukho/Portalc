@@ -17,7 +17,7 @@ class ReportsController extends Controller
         $query = $em->createQuery(
             "SELECT r.username,r.id,r.framedipaddress,r.calledstationid,SUM(r.acctinputoctets),SUM(r.acctoutputoctets),SUM(r.acctsessiontime)
             FROM CoreAdminBundle:radacct r
-            WHERE r.acctterminatecause = ''
+            WHERE r.acctstoptime = '0000-00-00 00:00:00'
             GROUP BY r.username
             ORDER BY r.username ASC"
         );

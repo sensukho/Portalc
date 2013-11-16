@@ -192,7 +192,7 @@ class LoginController extends Controller
                         ->add('newpass', 'password', array('label' => 'Password (mínimo 6 caracteres, no se diferencian mayúsculas de minúsculas)','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
                         ->add('enviar', 'submit')
                     ->getForm();
-                    $msg = "Datos Inválidos - Verifica que tu nombre y apellidos estén escritos correctamente y sin acentos ni espacios adicionales. Valida también que tu número de matrícula sea correcto. Si el probelma persiste, contacta la mesa de ayuda de tu plantel UVM.";
+                    $msg = "Datos Inválidos - Verifica que tu nombre y apellidos estén escritos correctamente y sin acentos ni espacios adicionales. Valida también que tu número de matrícula sea correcto. Si el probelma persiste, contacta al centro de computo de tu plantel.";
                     return $this->render('CoreAdminBundle:login:register.html.twig', array( 'form' => $form->createView(), 'msg' => $msg ));
                 }
             }else{
