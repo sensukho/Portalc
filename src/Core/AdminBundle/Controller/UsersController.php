@@ -137,7 +137,7 @@ class UsersController extends Controller
             $usuarios = $em->getRepository('CoreAdminBundle:radcheck')->findAll();
             $users_total = count($usuarios);
             $items_per_page = 50;
-            $total_pages = 0;
+            $total_pages = $users_total/$items_per_page;
 
             $usuarios = $em->getRepository('CoreAdminBundle:radcheck')->findBy(array(), array(), $items_per_page, ($offset-1)*$items_per_page);
             foreach ($usuarios as $usuario => $value) {
