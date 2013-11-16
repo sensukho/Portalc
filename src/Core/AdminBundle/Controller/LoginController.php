@@ -189,10 +189,10 @@ class LoginController extends Controller
                         ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
                         ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
                         ->add('username', 'text', array('label' => 'Usuario (elije un nombre de usuario de por lo menos 5 caracteres)','attr' => array('placeholder' => 'Mínimo de 5 caracteres.', 'pattern' => '.{5,}')))
-                        ->add('newpass', 'password', array('label' => 'Password (mínimo 6 caracteres, no se diferencian mayúsculas de minúsculas)','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
+                        ->add('newpass', 'password', array('label' => 'Password (mínimo 6 caracteres, no se diferencian mayúsculas de minúsculas y utiliza solo caracteres alfanuméricos)','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
                         ->add('enviar', 'submit')
                     ->getForm();
-                    $msg = "Datos Inválidos - Verifica que tu nombre y apellidos estén escritos correctamente y sin acentos ni espacios adicionales. Valida también que tu número de matrícula sea correcto. Si el probelma persiste, contacta al centro de cómputo de tu plantel.";
+                    $msg = "Datos Inválidos - Verifica que tu nombre y apellidos estén escritos correctamente y sin acentos ni espacios adicionales. Valida también que tu número de matrícula sea correcto. Si el problema persiste, contacta al centro de cómputo de tu plantel.";
                     return $this->render('CoreAdminBundle:login:register.html.twig', array( 'form' => $form->createView(), 'msg' => $msg ));
                 }
             }else{

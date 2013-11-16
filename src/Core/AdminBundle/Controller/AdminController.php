@@ -23,14 +23,22 @@ class AdminController extends Controller
                 $session = base64_encode( md5( $user.$pass.date('Y-n-d') ) );
                 return $this->redirect( $this->generateUrl('admin_home', array( 'session' => $session )) );
             }else{ return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => 'Usuario y/o contraseña iválidos.' )); }
+        }elseif( $user == 'uvmtoluca' ){
+            if( $pass == 't01uc4' ){
+                $session = base64_encode( md5( $user.$pass.date('Y-n-d') ) );
+                return $this->redirect( $this->generateUrl('admin_home', array( 'session' => $session )) );
+            }else{ return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => 'Usuario y/o contraseña iválidos.' )); }
         }else{ return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => 'Usuario y/o contraseña iválidos.' )); }
     }
     /***************************************************************************/
     public function homeAction($session)
     {
-        $s = base64_encode( md5('admin'.'12345'.date('Y-n-d') ) );
-        if ($s === $session ) {
-            return $this->render('CoreAdminBundle:admin:lpg.html.twig', array( 'session' => $session, 'session_id' => $s ));
+        $s1 = base64_encode( md5('admin'.'12345'.date('Y-n-d') ) );
+        $s2 = base64_encode( md5('uvmtoluca'.'t01uc4'.date('Y-n-d') ) );
+        if ($s1 === $session ) {
+            return $this->render('CoreAdminBundle:admin:lpg.html.twig', array( 'session' => $session, 'session_id' => $s1 ));
+        }elseif ($s2 === $session ) {
+            return $this->render('CoreAdminBundle:admin:lpg.html.twig', array( 'session' => $session, 'session_id' => $s2 ));
         }else{
             return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => 'Su sesión ha caducado, ingrese de nuevo por favor.' ));
         }
