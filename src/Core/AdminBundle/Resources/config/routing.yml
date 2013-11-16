@@ -27,11 +27,11 @@ admin_usuarios_eliminar:
     defaults: { _controller: CoreAdminBundle:Users:del }
 
 admin_usuarios_listar_reg:
-    pattern:  /admin/users/listreg/{session}
+    pattern:  /admin/users/listreg/{session}/{offset}
     defaults: { _controller: CoreAdminBundle:Users:listreg }
 
 admin_usuarios_listar_unreg:
-    pattern:  /admin/users/listunreg/{session}
+    pattern:  /admin/users/listunreg/{session}/{offset}
     defaults: { _controller: CoreAdminBundle:Users:listunreg }
 
 admin_reset_macs:

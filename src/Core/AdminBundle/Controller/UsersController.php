@@ -75,48 +75,118 @@ class UsersController extends Controller
         $confirm = $request->request->get('confirm',NULL);
 
         $em = $this->getDoctrine()->getManager();
-        $usuario = $em->getRepository('CoreAdminBundle:radcheck')->find($id);
+
+        $usuario_radchek = $em->getRepository('CoreAdminBundle:radcheck')->find($id);
+        $usuario_ssidmacauth = $em->getRepository('CoreAdminBundle:ssidmacauth')->findBy(array('username' => $usuario_radchek->getUsername()));
+        $usuario_users = $em->getRepository('CoreAdminBundle:Users')->findOneBy(array('username' => $usuario_radchek->getUsername()));
+
 
         if($confirm){
-            $em->remove($usuario);
+            $em->remove($usuario_radchek);
             $em->flush();
+
+            foreach ($usuario_ssidmacauth as $user) {
+                $em->remove($user);
+                $em->flush();
+            }
+
+            $usuario_users->setUsername('---');
+            $usuario_users->setGenpass(0);
+            $usuario_users->setNewpass(0);
+            $usuario_users->setEmail('');
+
+            $em->persist($usuario_users);
+            $em->flush();
+
 
             $mensaje = 'Usuario eliminado con éxito !';
             $usuarios = $em->getRepository('CoreAdminBundle:radcheck')->findAll();
-            return $this->redirect( $this->generateUrl('admin_usuarios_listar', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios )) );
+            return $this->redirect( $this->generateUrl('admin_usuarios_listar_reg', array( 'session' => $session, 'offset' => '1', 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios )) );
         }else{
             $mensaje = '¿Seguro que desea eliminar al usuario?';
         }
 
-        return $this->render('CoreAdminBundle:users:del.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuario' => $usuario ));
+        return $this->render('CoreAdminBundle:users:del.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuario' => $usuario_radchek ));
     }
     /***************************************************************************/
-    public function listregAction($session)
+    public function listregAction($session,$offset)
     {
         $em = $this->getDoctrine()->getManager();
-        $usuarios = $em->getRepository('CoreAdminBundle:radcheck')->findAll();
-        foreach ($usuarios as $usuario => $value) {
-            $dql = "select a.macaddress from CoreAdminBundle:ssidmacauth a where a.username='".$value->getUsername()."'";
-            $query = $em->createQuery($dql);
-            $value->setValue($query->getResult());
+
+        $request = Request::createFromGlobals();
+        $q = $request->request->get('q',NULL);
+
+        if ($q != NULL) {
+            $usuarios = $em->getRepository("CoreAdminBundle:radcheck")->createQueryBuilder('r')
+               ->where('r.username LIKE :user')
+               ->setParameter('user', '%'.$q.'%')
+               ->getQuery()
+               ->getResult();
+
+            $users_total = count($usuarios);
+            $items_per_page = 50;
+            $total_pages = 0;
+            
+            foreach ($usuarios as $usuario => $value) {
+                $dql = "select a.macaddress from CoreAdminBundle:ssidmacauth a where a.username='".$value->getUsername()."'";
+                $query = $em->createQuery($dql);
+                $value->setValue($query->getResult());
+            }
+
+        }else{
+            $usuarios = $em->getRepository('CoreAdminBundle:radcheck')->findAll();
+            $users_total = count($usuarios);
+            $items_per_page = 50;
+            $total_pages = 0;
+
+            $usuarios = $em->getRepository('CoreAdminBundle:radcheck')->findBy(array(), array(), $items_per_page, ($offset-1)*$items_per_page);
+            foreach ($usuarios as $usuario => $value) {
+                $dql = "select a.macaddress from CoreAdminBundle:ssidmacauth a where a.username='".$value->getUsername()."'";
+                $query = $em->createQuery($dql);
+                $value->setValue($query->getResult());
+            }
         }
 
+        
+
         $mensaje = '';
 
-        return $this->render('CoreAdminBundle:users:listreg.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios ));
+        return $this->render('CoreAdminBundle:users:listreg.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios, 'offset' => $offset, 'total_pages' => $total_pages ));
     }
     /***************************************************************************/
-    public function listunregAction($session)
+    public function listunregAction($session,$offset)
     {
         $em = $this->getDoctrine()->getManager();
-        $usuarios = $em->getRepository('CoreAdminBundle:Users')->findBy(
-            array(
-                'username'  => '---'
-            )
-        );
+
+        $request = Request::createFromGlobals();
+        $q = $request->request->get('q',NULL);
+
+        if ($q != NULL) {
+            $usuarios = $em->getRepository("CoreAdminBundle:Users")->createQueryBuilder('u')
+               ->where('u.username LIKE :user')
+               //->where('u.firstname LIKE :fname')
+               //->orwhere('u.secondname LIKE :q')
+               ->setParameter('user', '%'.$q.'%')
+               //->setParameter('fname', '%'.$q.'%')
+               ->getQuery()
+               ->getResult();
+
+            $users_total = count($usuarios);
+            $items_per_page = 1500;
+            $total_pages = 0;
+        }else{
+            $items_per_page = 1500;
+            $usuarios = $em->getRepository('CoreAdminBundle:Users')->findBy(array('username'  => '---'), array(), $items_per_page, ($offset-1)*$items_per_page);
+            $users_total = count($usuarios);
+            $items_per_page = 50;
+            $total_pages = $users_total/$items_per_page;
+
+            $usuarios = $em->getRepository('CoreAdminBundle:Users')->findBy(array('username'  => '---'), array(), $items_per_page, ($offset-1)*$items_per_page);
+        }
+        //var_dump($usuarios);
         $mensaje = '';
 
-        return $this->render('CoreAdminBundle:users:listunreg.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios ));
+        return $this->render('CoreAdminBundle:users:listunreg.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios, 'offset' => $offset, 'total_pages' => $total_pages ));
     }
     /***************************************************************************/
     public function resetmacsAction()
