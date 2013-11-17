@@ -32,12 +32,23 @@ class UsersController extends Controller
         $formreq = $form;
 
         if ($request->isMethod('POST')) {
-            $formreq->bind($request);
+            $data = $request->request->all();
             $em = $this->getDoctrine()->getManager();
-            $em->persist($usuario);
-            $em->flush();
-            $usuario = new Users();
-            $msg = 'El usuario se ha agregado con éxito.';
+            $user = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
+                array(
+                    'matricula'  => $data['form']['matricula']
+                )
+            );
+            if ($user) {
+                $msg = 'La matricula que ingreso ya existe en el sistema.';
+            }else{
+                $formreq->bind($request);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($usuario);
+                $em->flush();
+                $usuario = new Users();
+                $msg = 'El usuario se ha agregado con éxito.';
+            }
         }
 
         return $this->render('CoreAdminBundle:users:new.html.twig', array( 'session' => $session, 'session_id' => $session, 'form' => $form->createView(), 'msg' => $msg ));
