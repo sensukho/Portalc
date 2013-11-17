@@ -60,7 +60,7 @@
                         {% endif %}
                     <td align="center">{{ usuario.campus }}</td>
                     <td align="center">{{ usuario.tipo }}</td>
-                    <td align="center"><a href="{{ path('admin_usuarios_modificar', {session: session_id, id: usuario.id}) }}"><img src="{{ asset('bundles/core/img/users/edit.png') }}" width="22px"></a></td>
+                    <td align="center"><a href="{{ path('admin_usuarios_modificar', {session: session_id, id: usuario.id, usr: usuario.username}) }}"><img src="{{ asset('bundles/core/img/users/edit.png') }}" width="22px"></a></td>
                     <td align="center"><a href="{{ path('admin_usuarios_eliminar', {session: session_id, id: usuario.id}) }}"><img src="{{ asset('bundles/core/img/users/del.png') }}" width="22px"></a></td>
                 </tr>
                 {% set j = j + 1 %}

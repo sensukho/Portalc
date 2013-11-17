@@ -19,7 +19,7 @@ admin_usuarios_crear:
     defaults: { _controller: CoreAdminBundle:Users:new }
 
 admin_usuarios_modificar:
-    pattern:  /admin/users/edit/{session}/{id}
+    pattern:  /admin/users/edit/{session}/{id}/{usr}
     defaults: { _controller: CoreAdminBundle:Users:edit }
 
 admin_usuarios_eliminar:

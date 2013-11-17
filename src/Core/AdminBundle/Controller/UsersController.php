@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Core\AdminBundle\Entity\radcheck;
 use Core\AdminBundle\Entity\Users;
+use Core\AdminBundle\Entity\ssidmacauth;
 use Doctrine\Common\Collections;
 
 class UsersController extends Controller
@@ -68,7 +69,7 @@ class UsersController extends Controller
         return $this->render('CoreAdminBundle:users:new.html.twig', array( 'session' => $session, 'session_id' => $session, 'form' => $form->createView(), 'msg' => $msg ));
     }
     /***************************************************************************/
-    public function editAction($session,$id)
+    public function editAction($session,$id,$usr)
     {
         $request = Request::createFromGlobals();
         $user = $request->request->get('user',NULL);
@@ -76,12 +77,33 @@ class UsersController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $usuario = $em->getRepository('CoreAdminBundle:radcheck')->find($id);
+        $usuario1 = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
+            array(
+                'username'  => $usr
+            )
+        );
+        $usuario2 = $em->getRepository('CoreAdminBundle:ssidmacauth')->findOneBy(
+            array(
+                'username'  => $usr,
+            )
+        );
 
         if($user && $pass){
             $usuario->setUsername($user);
             $usuario->setValue($pass);
 
             $em->persist($usuario);
+            $em->flush();
+
+            $usuario1->setUsername($user);
+            $usuario1->setNewpass($pass);
+
+            $em->persist($usuario1);
+            $em->flush();
+
+            $usuario2->setUsername($user);
+
+            $em->persist($usuario2);
             $em->flush();
 
             $mensaje = 'Usuario modificado con éxito !';

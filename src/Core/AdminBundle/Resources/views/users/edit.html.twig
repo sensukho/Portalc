@@ -9,7 +9,7 @@
         </div>
 
         <div class="row">
-            <form name="ususrios" action="{{ path('admin_usuarios_modificar', {session: session_id, id: usuario.id}) }}" method="POST">
+            <form name="ususrios" action="{{ path('admin_usuarios_modificar', {session: session_id, id: usuario.id, usr: usuario.username}) }}" method="POST">
                 <table border="1" width="500px" align="center">
                     <tr>
                         <th width="35%">Usuario</th>

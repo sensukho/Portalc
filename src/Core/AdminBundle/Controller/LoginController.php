@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Cookie;
 use Core\AdminBundle\Entity\Users;
 use Core\AdminBundle\Entity\radcheck;
+use Core\AdminBundle\Entity\ssidmacauth;
 
 class LoginController extends Controller
 {
