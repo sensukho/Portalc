@@ -22,6 +22,8 @@ class UsersController extends Controller
             ->add('secondname', 'text', array('label' => 'Apellidos','attr' => array('placeholder' => 'Apellidos')))
             ->add('username', 'hidden', array('attr' => array('value' => '---')))
             ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'matricula')))
+            ->add('campus', 'text', array('label' => 'Campus','attr' => array('placeholder' => 'campus')))
+            ->add('tipo', 'choice', array('label' => 'Tipo', 'choices' => array('ALUM' => 'ALUMNO','EMP' => 'EMPLEADO'), 'attr' => array('placeholder' => 'tipo')))
             ->add('genpass', 'hidden', array('attr' => array('value' => '0')))
             ->add('newpass', 'hidden', array('attr' => array('value' => '0')))
             ->add('newpasssecond', 'hidden', array('attr' => array('value' => '0')))
@@ -42,11 +44,23 @@ class UsersController extends Controller
             if ($user) {
                 $msg = 'La matricula que ingreso ya existe en el sistema.';
             }else{
-                $formreq->bind($request);
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($usuario);
+                $user = new Users();
+                //$formreq->bind($request);
+                //$em = $this->getDoctrine()->getManager();
+                $user->setFirstname($data['form']['firstname']);
+                $user->setSecondname($data['form']['secondname']);
+                $user->setUsername('---');
+                $user->setMatricula($data['form']['matricula']);
+                $user->setCampus($data['form']['campus']);
+                $user->setTipo($data['form']['tipo']);
+                $user->setGenpass(0);
+                $user->setNewpass(0);
+                $user->setNewpasssecond(0);
+                $user->setEmail('');
+                $user->setFecha( new \DateTime('today') );
+                $em->persist($user);
                 $em->flush();
-                $usuario = new Users();
+                //$usuario = new Users();
                 $msg = 'El usuario se ha agregado con éxito.';
             }
         }
