@@ -115,22 +115,147 @@ class UsersController extends Controller
 
         $request = Request::createFromGlobals();
         $q = $request->request->get('q',NULL);
+        $where_search = '';
+
+        $campus = unserialize( $this->get('cache')->fetch('session_admin') );
+
+        switch ( $campus ) {
+            case $campus:
+                $where_campus = " u.campus = '".$campus."' AND ";
+            break;
+
+            default:
+                $where_campus = "";
+            break;
+        }
 
         if ($q != NULL) {
-            $usuarios = $em->getRepository("CoreAdminBundle:radcheck")->createQueryBuilder('r')
-               ->where('r.username LIKE :user')
-               ->setParameter('user', '%'.$q.'%')
-               ->getQuery()
-               ->getResult();
+            $where_search = " ( u.username LIKE '%".$q."%' OR u.firstname LIKE '%".$q."%' OR u.secondname LIKE '%".$q."%' OR u.matricula LIKE '%".$q."%' ) AND ";
+        }
+        $num_usuarios = $em->createQuery(
+            "SELECT COUNT(r.id),r.username,r.value,u.firstname,u.secondname,u.campus,u.tipo FROM CoreAdminBundle:radcheck r,CoreAdminBundle:Users u WHERE ".$where_search." ".$where_campus." r.username != '' AND r.username = u.username ORDER BY u.firstname,u.secondname"
+        );
 
-            $users_total = count($usuarios);
-            $items_per_page = 50;
-            $total_pages = 0;
-            
-            foreach ($usuarios as $usuario => $value) {
-                $dql = "select a.macaddress from CoreAdminBundle:ssidmacauth a where a.username='".$value->getUsername()."'";
-                $query = $em->createQuery($dql);
-                $value->setValue($query->getResult());
+        $num_usuarios = $num_usuarios->getResult();
+        $users_total = $num_usuarios[0][1];
+        $items_per_page = 100;
+        $total_pages = round($users_total/$items_per_page,0);
+
+        $usuarios = $em->createQuery(
+            "SELECT r.id,r.username,r.value,u.firstname,u.secondname,u.campus,u.tipo FROM CoreAdminBundle:radcheck r,CoreAdminBundle:Users u WHERE ".$where_search." ".$where_campus." r.username != '' AND r.username = u.username AND u.campus = 'TOL' ORDER BY u.firstname,u.secondname"
+        );
+        $usuarios->setMaxResults($items_per_page);
+        $usuarios->setFirstResult(($offset-1)*$items_per_page);
+        $usuarios = $usuarios->getResult();
+        
+        foreach ($usuarios as $usuario => $value) {
+            $dql = "SELECT a.macaddress FROM CoreAdminBundle:ssidmacauth a WHERE a.username='".$value['username']."'";
+            $query = $em->createQuery($dql);
+            $usuarios[$usuario]['value'] = $query->getResult();
+        }
+
+        $mensaje = '';
+
+        return $this->render('CoreAdminBundle:users:listreg.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios, 'offset' => $offset, 'total_pages' => $total_pages ));
+    }
+    /***************************************************************************/
+    public function listunregAction($session,$offset)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $request = Request::createFromGlobals();
+        $q = $request->request->get('q',NULL);
+        $where_search = '';
+
+        $campus = unserialize( $this->get('cache')->fetch('session_admin') );
+
+        switch ( $campus ) {
+            case $campus:
+                $where_campus = " u.campus = '".$campus."' AND ";
+            break;
+
+            default:
+                $where_campus = "";
+            break;
+        }
+
+        if ($q != NULL) {
+            $where_search = " ( u.firstname LIKE '%".$q."%' OR u.secondname LIKE '%".$q."%' OR u.matricula LIKE '%".$q."%' ) AND ";
+        }
+        $num_usuarios = $em->createQuery(
+            "SELECT COUNT(u.id),u.username,u.firstname,u.secondname,u.campus,u.tipo,u.matricula,u.fecha FROM CoreAdminBundle:Users u WHERE ".$where_search." ".$where_campus." u.username != '' AND u.username = '---' ORDER BY u.firstname,u.secondname"
+        );
+
+        $num_usuarios = $num_usuarios->getResult();
+        $users_total = $num_usuarios[0][1];
+        $items_per_page = 100;
+        $total_pages = round($users_total/$items_per_page,0);
+
+        $usuarios = $em->createQuery(
+            "SELECT u.id,u.username,u.firstname,u.secondname,u.campus,u.tipo,u.matricula,u.fecha FROM CoreAdminBundle:Users u WHERE ".$where_search." ".$where_campus." u.username != '' AND u.username = '---' ORDER BY u.firstname,u.secondname"
+        );
+        $usuarios->setMaxResults($items_per_page);
+        $usuarios->setFirstResult(($offset-1)*$items_per_page);
+        $usuarios = $usuarios->getResult();
+
+        //var_dump($usuarios);
+        
+        /*foreach ($usuarios as $usuario => $value) {
+            $dql = "SELECT a.macaddress FROM CoreAdminBundle:ssidmacauth a WHERE a.username='".$value['username']."'";
+            $query = $em->createQuery($dql);
+            $usuarios[$usuario]['value'] = $query->getResult();
+        }*/
+
+        $mensaje = '';
+
+        return $this->render('CoreAdminBundle:users:listunreg.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios, 'offset' => $offset, 'total_pages' => $total_pages ));
+    }
+    /***************************************************************************
+    public function listregAction($session,$offset)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $request = Request::createFromGlobals();
+        $q = $request->request->get('q',NULL);
+
+        if ($q != NULL) {
+
+            switch ( unserialize( $this->get('cache')->fetch('session_admin') ) ) {
+                case 'all':
+                    $usuarios = $em->getRepository("CoreAdminBundle:radcheck")->createQueryBuilder('r')
+                       ->where('r.username LIKE :user')
+                       ->setParameter('user', '%'.$q.'%')
+                       ->getQuery()
+                       ->getResult();
+
+                    $users_total = count($usuarios);
+                    $items_per_page = 50;
+                    $total_pages = 0;
+                    
+                    foreach ($usuarios as $usuario => $value) {
+                        $dql = "select a.macaddress from CoreAdminBundle:ssidmacauth a where a.username='".$value->getUsername()."'";
+                        $query = $em->createQuery($dql);
+                        $value->setValue($query->getResult());
+                    }
+                    break;
+                
+                case 'toluca':
+                    $usuarios = $em->getRepository("CoreAdminBundle:radcheck")->createQueryBuilder('r')
+                       ->where('r.username LIKE :user')
+                       ->setParameter('user', '%'.$q.'%')
+                       ->getQuery()
+                       ->getResult();
+
+                    $users_total = count($usuarios);
+                    $items_per_page = 50;
+                    $total_pages = 0;
+                    
+                    foreach ($usuarios as $usuario => $value) {
+                        $dql = "select a.macaddress from CoreAdminBundle:ssidmacauth a where a.username='".$value->getUsername()."'";
+                        $query = $em->createQuery($dql);
+                        $value->setValue($query->getResult());
+                    }
+                    break;
             }
 
         }else{
@@ -153,7 +278,7 @@ class UsersController extends Controller
 
         return $this->render('CoreAdminBundle:users:listreg.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios, 'offset' => $offset, 'total_pages' => $total_pages ));
     }
-    /***************************************************************************/
+    /***************************************************************************
     public function listunregAction($session,$offset)
     {
         $em = $this->getDoctrine()->getManager();

@@ -4,6 +4,7 @@ namespace Core\AdminBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Cookie;
 
 class AdminController extends Controller
 {
@@ -21,11 +22,13 @@ class AdminController extends Controller
         if( $user == 'admin' ){
             if( $pass == '12345' ){
                 $session = base64_encode( md5( $user.$pass.date('Y-n-d') ) );
+                    $this->get('cache')->save('session_admin', serialize('all'));
                 return $this->redirect( $this->generateUrl('admin_home', array( 'session' => $session )) );
             }else{ return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => 'Usuario y/o contraseña iválidos.' )); }
         }elseif( $user == 'uvmtoluca' ){
             if( $pass == 't01uc4' ){
                 $session = base64_encode( md5( $user.$pass.date('Y-n-d') ) );
+                    $this->get('cache')->save('session_admin', serialize('TOL'));
                 return $this->redirect( $this->generateUrl('admin_home', array( 'session' => $session )) );
             }else{ return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => 'Usuario y/o contraseña iválidos.' )); }
         }else{ return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => 'Usuario y/o contraseña iválidos.' )); }
