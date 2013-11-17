@@ -108,14 +108,13 @@ class UsersController extends Controller
                 $em->flush();
             }
 
-            $mensaje = 'Usuario modificado con éxito !';
-            $usuarios = $em->getRepository('CoreAdminBundle:radcheck')->findAll();
-            return $this->redirect( $this->generateUrl('admin_usuarios_listar_reg', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios, 'offset' => '1' )) );
+            $msg = 'Usuario modificado con éxito !';
+            return $this->render('CoreAdminBundle:users:edit.html.twig', array( 'session' => $session, 'session_id' => $session, 'usuario' => $usuario,'msg' => $msg ));
         }else{
-            $mensaje = '';
+            $msg = '';
         }
 
-        return $this->render('CoreAdminBundle:users:edit.html.twig', array( 'session' => $session, 'session_id' => $session, 'usuario' => $usuario ));
+        return $this->render('CoreAdminBundle:users:edit.html.twig', array( 'session' => $session, 'session_id' => $session, 'usuario' => $usuario,'msg' => $msg ));
     }
     /***************************************************************************/
     public function delAction($session,$id)
