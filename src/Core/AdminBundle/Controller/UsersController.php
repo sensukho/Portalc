@@ -120,6 +120,10 @@ class UsersController extends Controller
         $campus = unserialize( $this->get('cache')->fetch('session_admin') );
 
         switch ( $campus ) {
+            case "all":
+                $where_campus = "";
+            break;
+
             case $campus:
                 $where_campus = " u.campus = '".$campus."' AND ";
             break;
@@ -170,6 +174,10 @@ class UsersController extends Controller
         $campus = unserialize( $this->get('cache')->fetch('session_admin') );
 
         switch ( $campus ) {
+            case "all":
+                $where_campus = "";
+            break;
+
             case $campus:
                 $where_campus = " u.campus = '".$campus."' AND ";
             break;
