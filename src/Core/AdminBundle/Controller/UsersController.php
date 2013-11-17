@@ -88,7 +88,7 @@ class UsersController extends Controller
             )
         );
 
-        if($user && $pass){
+        if($user && $pass && $usuario && $usuario1){
             $usuario->setUsername($user);
             $usuario->setValue($pass);
 
@@ -101,10 +101,12 @@ class UsersController extends Controller
             $em->persist($usuario1);
             $em->flush();
 
-            $usuario2->setUsername($user);
+            if($usuario2){
+                $usuario2->setUsername($user);
 
-            $em->persist($usuario2);
-            $em->flush();
+                $em->persist($usuario2);
+                $em->flush();
+            }
 
             $mensaje = 'Usuario modificado con éxito !';
             $usuarios = $em->getRepository('CoreAdminBundle:radcheck')->findAll();
