@@ -86,7 +86,7 @@ class UsersController extends Controller
 
             $mensaje = 'Usuario modificado con éxito !';
             $usuarios = $em->getRepository('CoreAdminBundle:radcheck')->findAll();
-            return $this->redirect( $this->generateUrl('admin_usuarios_listar', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios )) );
+            return $this->redirect( $this->generateUrl('admin_usuarios_listar_reg', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios, 'offset' => '1' )) );
         }else{
             $mensaje = '';
         }
