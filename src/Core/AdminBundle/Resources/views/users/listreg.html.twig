@@ -5,7 +5,9 @@
 
         <div class="hero-unit">
             <h1>Usuarios :: Registrados</h1>
+            {% if msg %}
             <p><div id="msg">{{ msg }}</div></p>
+            {% endif %}
         </div>
 
         <form name="zd_form" method="POST" action="{{ path('admin_usuarios_listar_reg', {session: session, offset: 1}) }}">
