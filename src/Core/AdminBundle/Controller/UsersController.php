@@ -4,10 +4,10 @@ namespace Core\AdminBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Core\AdminBundle\Entity\radcheck;
-use Core\AdminBundle\Entity\Users;
-use Core\AdminBundle\Entity\ssidmacauth;
 use Doctrine\Common\Collections;
+use Core\AdminBundle\Entity\Users;
+use Core\AdminBundle\Entity\radcheck;
+use Core\AdminBundle\Entity\ssidmacauth;
 
 class UsersController extends Controller
 {
@@ -85,6 +85,105 @@ class UsersController extends Controller
         return $this->render('CoreAdminBundle:users:new.html.twig', array( 'session' => $session, 'session_id' => $session, 'form' => $form->createView(), 'msg' => $msg ));
     }
     /***************************************************************************/
+    public function editAction($session,$id,$usr)
+    {
+        $request = Request::createFromGlobals();
+        $user_form = new Users();
+        $form = $this->createFormBuilder($user_form);
+        $msg = '';
+
+        $em = $this->getDoctrine()->getManager();
+        $usuario = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
+            array(
+                'username'  => $usr
+            )
+        );
+
+        if ($request->isMethod('POST')) {
+
+            $data = $request->request->all();
+
+            $usuario = $em->getRepository('CoreAdminBundle:radcheck')->find($id);
+            $usuario1 = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
+                array(
+                    'username'  => $usr
+                )
+            );
+            $usuario2 = $em->getRepository('CoreAdminBundle:ssidmacauth')->findOneBy(
+                array(
+                    'username'  => $usr,
+                )
+            );
+            if($usuario && $usuario1){
+                $usuario->setUsername($data['form']['username']);
+                $usuario->setValue($data['form']['newpass']);
+
+                $em->persist($usuario);
+                $em->flush();
+
+                $usuario1->setFirstname( $data['form']['firstname'] );
+                $usuario1->setSecondname( $data['form']['secondname'] );
+                $usuario1->setMatricula( $data['form']['matricula'] );
+                $usuario1->setEmail( $data['form']['email'] );
+                $usuario1->setUsername( $data['form']['username'] );
+                $usuario1->setNewpass( $data['form']['newpass'] );
+
+                $em->persist($usuario1);
+                $em->flush();
+
+                if($usuario2){
+                    $usuario2->setUsername($data['form']['username']);
+
+                    $em->persist($usuario2);
+                    $em->flush();
+                }
+                $msg = 'Usuario modificado con éxito !';
+                $usuario = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
+                    array(
+                        'username'  => $data['form']['username']
+                    )
+                );
+
+                $user_form->setFirstname( $usuario->getFirstname() );
+                $user_form->setSecondname( $usuario->getSecondname() );
+                $user_form->setMatricula( $usuario->getMatricula() );
+                $user_form->setEmail( $usuario->getEmail() );
+                $user_form->setUsername( $usuario->getUsername() );
+                $user_form->setNewpass( $usuario->getNewpass() );
+
+                $form = $this->createFormBuilder($user_form)
+                    ->setAction( $this->generateUrl('admin_usuarios_modificar', array( 'session' => $session, 'id' => $id, 'usr' => $data['form']['username'] )) )
+                    ->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
+                    ->add('secondname', 'text', array('label' => 'Apellidos (paterno y materno separados por un espacio)','attr' => array('placeholder' => 'Apellidos')))
+                    ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
+                    ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
+                    ->add('username', 'text', array('label' => 'Usuario (elije un nombre de usuario de por lo menos 5 caracteres)','attr' => array('placeholder' => 'Mínimo de 5 caracteres.')))
+                    ->add('newpass', 'text', array('label' => 'Password (mínimo 6 caracteres, no se diferencian mayúsculas de minúsculas y utiliza solo caracteres alfanuméricos.)','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
+                    ->add('enviar', 'submit')
+                ->getForm();
+            }
+        }else{
+            $user_form->setFirstname( $usuario->getFirstname() );
+            $user_form->setSecondname( $usuario->getSecondname() );
+            $user_form->setMatricula( $usuario->getMatricula() );
+            $user_form->setEmail( $usuario->getEmail() );
+            $user_form->setUsername( $usuario->getUsername() );
+            $user_form->setNewpass( $usuario->getNewpass() );
+
+            $form = $this->createFormBuilder($user_form)
+                ->setAction( $this->generateUrl('admin_usuarios_modificar', array( 'session' => $session, 'id' => $id, 'usr' => $usr )) )
+                ->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
+                ->add('secondname', 'text', array('label' => 'Apellidos (paterno y materno separados por un espacio)','attr' => array('placeholder' => 'Apellidos')))
+                ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
+                ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
+                ->add('username', 'text', array('label' => 'Usuario (elije un nombre de usuario de por lo menos 5 caracteres)','attr' => array('placeholder' => 'Mínimo de 5 caracteres.')))
+                ->add('newpass', 'text', array('label' => 'Password (mínimo 6 caracteres, no se diferencian mayúsculas de minúsculas y utiliza solo caracteres alfanuméricos.)','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
+                ->add('enviar', 'submit')
+            ->getForm();
+        }
+        return $this->render('CoreAdminBundle:users:edit.html.twig', array( 'form' => $form->createView(),'session' => $session, 'session_id' => $session, 'usuario' => $usuario, 'msg' => $msg ));
+    }
+    /***************************************************************************
     public function editAction($session,$id,$usr)
     {
         $request = Request::createFromGlobals();
