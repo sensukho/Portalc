@@ -183,54 +183,6 @@ class UsersController extends Controller
         }
         return $this->render('CoreAdminBundle:users:edit.html.twig', array( 'form' => $form->createView(),'session' => $session, 'session_id' => $session, 'usuario' => $usuario, 'msg' => $msg ));
     }
-    /***************************************************************************
-    public function editAction($session,$id,$usr)
-    {
-        $request = Request::createFromGlobals();
-        $user = $request->request->get('user',NULL);
-        $pass = $request->request->get('pass',NULL);
-
-        $em = $this->getDoctrine()->getManager();
-        $usuario = $em->getRepository('CoreAdminBundle:radcheck')->find($id);
-        $usuario1 = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
-            array(
-                'username'  => $usr
-            )
-        );
-        $usuario2 = $em->getRepository('CoreAdminBundle:ssidmacauth')->findOneBy(
-            array(
-                'username'  => $usr,
-            )
-        );
-
-        if($user && $pass && $usuario && $usuario1){
-            $usuario->setUsername($user);
-            $usuario->setValue($pass);
-
-            $em->persist($usuario);
-            $em->flush();
-
-            $usuario1->setUsername($user);
-            $usuario1->setNewpass($pass);
-
-            $em->persist($usuario1);
-            $em->flush();
-
-            if($usuario2){
-                $usuario2->setUsername($user);
-
-                $em->persist($usuario2);
-                $em->flush();
-            }
-
-            $msg = 'Usuario modificado con éxito !';
-            return $this->render('CoreAdminBundle:users:edit.html.twig', array( 'session' => $session, 'session_id' => $session, 'usuario' => $usuario,'msg' => $msg ));
-        }else{
-            $msg = '';
-        }
-
-        return $this->render('CoreAdminBundle:users:edit.html.twig', array( 'session' => $session, 'session_id' => $session, 'usuario' => $usuario,'msg' => $msg ));
-    }
     /***************************************************************************/
     public function delAction($session,$id)
     {
@@ -272,12 +224,14 @@ class UsersController extends Controller
         return $this->render('CoreAdminBundle:users:del.html.twig', array( 'session' => $session, 'session_id' => $session, 'msg' => $mensaje, 'usuario' => $usuario_radchek ));
     }
     /***************************************************************************/
-    public function listregAction($session,$offset)
+    public function listregAction($session,$q,$offset)
     {
         $em = $this->getDoctrine()->getManager();
 
         $request = Request::createFromGlobals();
-        $q = $request->request->get('q',NULL);
+        if ($request->isMethod('POST')) {
+            $q = $request->request->get('q',NULL);
+        }
         $where_search = '';
 
         $campus = unserialize( $this->get('cache')->fetch('session_admin') );
@@ -296,12 +250,14 @@ class UsersController extends Controller
             break;
         }
 
-        if ($q != NULL) {
+        if ($q != NULL && $q != '0') {
             $where_search = " ( u.username LIKE '%".$q."%' OR u.firstname LIKE '%".$q."%' OR u.secondname LIKE '%".$q."%' OR u.matricula LIKE '%".$q."%' ) AND ";
         }
         $num_usuarios = $em->createQuery(
             "SELECT COUNT(r.id),r.username,r.value,u.firstname,u.secondname,u.campus,u.tipo FROM CoreAdminBundle:radcheck r,CoreAdminBundle:Users u WHERE ".$where_search." ".$where_campus." r.username != '' AND r.username = u.username ORDER BY u.firstname,u.secondname"
         );
+
+        //echo "SELECT COUNT(r.id),r.username,r.value,u.firstname,u.secondname,u.campus,u.tipo FROM CoreAdminBundle:radcheck r,CoreAdminBundle:Users u WHERE ".$where_search." ".$where_campus." r.username != '' AND r.username = u.username ORDER BY u.firstname,u.secondname";
 
         $num_usuarios = $num_usuarios->getResult();
         $users_total = $num_usuarios[0][1];
@@ -323,15 +279,17 @@ class UsersController extends Controller
 
         $mensaje = '';
 
-        return $this->render('CoreAdminBundle:users:listreg.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios, 'offset' => $offset, 'total_pages' => $total_pages ));
+        return $this->render('CoreAdminBundle:users:listreg.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios, 'offset' => $offset, 'total_pages' => $total_pages, 'q' => $q ));
     }
     /***************************************************************************/
-    public function listunregAction($session,$offset)
+    public function listunregAction($session,$q,$offset)
     {
         $em = $this->getDoctrine()->getManager();
 
         $request = Request::createFromGlobals();
-        $q = $request->request->get('q',NULL);
+        if ($request->isMethod('POST')) {
+            $q = $request->request->get('q',NULL);
+        }
         $where_search = '';
 
         $campus = unserialize( $this->get('cache')->fetch('session_admin') );
@@ -350,12 +308,14 @@ class UsersController extends Controller
             break;
         }
 
-        if ($q != NULL) {
+        if ($q != NULL && $q != '0') {
             $where_search = " ( u.firstname LIKE '%".$q."%' OR u.secondname LIKE '%".$q."%' OR u.matricula LIKE '%".$q."%' ) AND ";
         }
         $num_usuarios = $em->createQuery(
             "SELECT COUNT(u.id),u.username,u.firstname,u.secondname,u.campus,u.tipo,u.matricula,u.fecha FROM CoreAdminBundle:Users u WHERE ".$where_search." ".$where_campus." u.username != '' AND u.username = '---' ORDER BY u.firstname,u.secondname"
         );
+
+        //echo "SELECT COUNT(u.id),u.username,u.firstname,u.secondname,u.campus,u.tipo,u.matricula,u.fecha FROM CoreAdminBundle:Users u WHERE ".$where_search." ".$where_campus." u.username != '' AND u.username = '---' ORDER BY u.firstname,u.secondname";
 
         $num_usuarios = $num_usuarios->getResult();
         $users_total = $num_usuarios[0][1];
@@ -371,7 +331,7 @@ class UsersController extends Controller
 
         $mensaje = '';
 
-        return $this->render('CoreAdminBundle:users:listunreg.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios, 'offset' => $offset, 'total_pages' => $total_pages ));
+        return $this->render('CoreAdminBundle:users:listunreg.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios, 'offset' => $offset, 'total_pages' => $total_pages, 'q' => $q ));
     }
     /***************************************************************************/
     public function resetmacsAction()

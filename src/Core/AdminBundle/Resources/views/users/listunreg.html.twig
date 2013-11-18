@@ -8,7 +8,7 @@
             <p></p>
         </div>
 
-        <form name="zd_form" method="POST" action="{{ path('admin_usuarios_listar_unreg', {session: session, offset: 1}) }}">
+        <form name="zd_form" method="POST" action="{{ path('admin_usuarios_listar_unreg', {session: session, q: q, offset: 1}) }}">
             <table border="0" width="80%" align="center">
                 <tr>
                     <th align="right" valign="top"><font size="4"><input type="text" name="q" placeholder="Buscar..." value="" style="height:30px; width: 200px;" required/></font> <input type="submit" name="entrar" style="height:25px; width: 70px;" value="Buscar"></th>
@@ -24,7 +24,7 @@
                 <tr>
                     <th style="background-color:#333; color:#fff;" align="left";>Páginas: 
                 {% for i in range(1, total_pages) %}
-                    <a href="{{ path('admin_usuarios_listar_unreg', {session: session, offset: i}) }}">&nbsp;{{ i }}&nbsp;</a>
+                    <a href="{{ path('admin_usuarios_listar_unreg', {session: session, q: q, offset: i}) }}">&nbsp;{{ i }}&nbsp;</a>
                 {% endfor %}
                     </th>
                 </tr>
@@ -57,7 +57,7 @@
                 <tr>
                     <th style="background-color:#333; color:#fff;" align="left";>Páginas: 
                 {% for i in range(1, total_pages) %}
-                    <a href="{{ path('admin_usuarios_listar_unreg', {session: session, offset: i}) }}">&nbsp;{{ i }}&nbsp;</a>
+                    <a href="{{ path('admin_usuarios_listar_unreg', {session: session, q: q, offset: i}) }}">&nbsp;{{ i }}&nbsp;</a>
                 {% endfor %}
                     </th>
                 </tr>
