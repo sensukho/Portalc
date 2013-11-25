@@ -35,8 +35,8 @@ class UsersController extends Controller
         $msg = '';
         $form = $this->createFormBuilder($usuario)
             ->setAction($this->generateUrl('admin_usuarios_crear', array('session' => $session)))
-            //->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
-            //->add('secondname', 'text', array('label' => 'Apellidos','attr' => array('placeholder' => 'Apellidos')))
+            ->add('firstname', 'hidden', array('attr' => array('value' => '---')))
+            ->add('secondname', 'hidden', array('attr' => array('value' => '---')))
             ->add('username', 'hidden', array('attr' => array('value' => '---')))
             ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'matricula')))
             ->add( 'campus', 'hidden', array('attr' => array('value' => $campus_field)) )
@@ -64,8 +64,8 @@ class UsersController extends Controller
                 $user = new Users();
                 //$formreq->bind($request);
                 //$em = $this->getDoctrine()->getManager();
-                //$user->setFirstname($data['form']['firstname']);
-                //$user->setSecondname($data['form']['secondname']);
+                $user->setFirstname($data['form']['firstname']);
+                $user->setSecondname($data['form']['secondname']);
                 $user->setUsername('---');
                 $user->setMatricula($data['form']['matricula']);
                 $user->setCampus($data['form']['campus']);

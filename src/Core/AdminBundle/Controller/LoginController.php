@@ -244,7 +244,7 @@ class LoginController extends Controller
                         ->add('newpasssecond', 'password', array('label' => 'Ingresa de nuevo el password','attr' => array('placeholder' => 'Reingresa el password', 'pattern' => '.{6,}')))
                         ->add('enviar', 'submit')
                     ->getForm();
-                    $msg = "Datos Inválidos - Verifica que tu nombre y apellidos estén escritos correctamente y sin acentos ni espacios adicionales. Valida también que tu número de matrícula sea correcto. Si el problema persiste, contacta al centro de cómputo de tu plantel.";
+                    $msg = "Datos Inválidos - Valida que tu número de matrícula sea correcto. Si el problema persiste, contacta al centro de cómputo de tu plantel.";
                     return $this->render('CoreAdminBundle:login:register.html.twig', array( 'form' => $form->createView(), 'msg' => $msg, 'errors' => '' ));
                 }
             }else{
