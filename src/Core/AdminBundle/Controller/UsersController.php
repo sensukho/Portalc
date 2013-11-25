@@ -18,36 +18,64 @@ class UsersController extends Controller
 
         switch ( $campus ) {
             case "all":
-                $campus_field = '---';
+                $form = $this->createFormBuilder($usuario)
+                ->setAction($this->generateUrl('admin_usuarios_crear', array('session' => $session)))
+                ->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
+                ->add('secondname', 'text', array('label' => 'Apellidos','attr' => array('placeholder' => 'Apellidos')))
+                ->add('username', 'hidden', array('attr' => array('value' => '---')))
+                ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'matricula')))
+                ->add('campus', 'choice', array('label' => 'Campus', 'choices' => array('CHA' => 'CHA','COY' => 'COY','CUM' => 'CUM','GLD' => 'GLD','HER' => 'HER','HIS' => 'HIS','LOM' => 'LOM','MTY' => 'MTY','PUE' => 'PUE','QRO' => 'QRO','SRA' => 'SRA','TLA' => 'TLA','TOL' => 'TOL','ZAP' => 'ZAP'), 'attr' => array('placeholder' => 'campus')))
+                ->add('tipo', 'choice', array('label' => 'Tipo', 'choices' => array('ALUM' => 'ALUMNO','EMP' => 'EMPLEADO'), 'attr' => array('placeholder' => 'tipo')))
+                ->add('genpass', 'hidden', array('attr' => array('value' => '0')))
+                ->add('newpass', 'hidden', array('attr' => array('value' => '0')))
+                ->add('newpasssecond', 'hidden', array('attr' => array('value' => '0')))
+                ->add('email', 'hidden', array('attr' => array('value' => '0')))
+                ->add('fecha', 'date', array('years' => range(date('Y') -60, date('Y')),'label' => 'Fecha de nacimiento'))
+                ->add('enviar', 'submit')
+            ->getForm();
             break;
 
             case $campus:
                 $campus_field = $campus;
+                $form = $this->createFormBuilder($usuario)
+                ->setAction($this->generateUrl('admin_usuarios_crear', array('session' => $session)))
+                ->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
+                ->add('secondname', 'text', array('label' => 'Apellidos','attr' => array('placeholder' => 'Apellidos')))
+                ->add('username', 'hidden', array('attr' => array('value' => '---')))
+                ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'matricula')))
+                ->add('campus', 'hidden', array('attr' => array('value' => $campus_field)) )
+                ->add('tipo', 'choice', array('label' => 'Tipo', 'choices' => array('ALUM' => 'ALUMNO','EMP' => 'EMPLEADO'), 'attr' => array('placeholder' => 'tipo')))
+                ->add('genpass', 'hidden', array('attr' => array('value' => '0')))
+                ->add('newpass', 'hidden', array('attr' => array('value' => '0')))
+                ->add('newpasssecond', 'hidden', array('attr' => array('value' => '0')))
+                ->add('email', 'hidden', array('attr' => array('value' => '0')))
+                ->add('fecha', 'date', array('years' => range(date('Y') -60, date('Y')),'label' => 'Fecha de nacimiento'))
+                ->add('enviar', 'submit')
+            ->getForm();
             break;
 
             default:
-                $campus_field = '---';
+                $form = $this->createFormBuilder($usuario)
+                ->setAction($this->generateUrl('admin_usuarios_crear', array('session' => $session)))
+                ->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
+                ->add('secondname', 'text', array('label' => 'Apellidos','attr' => array('placeholder' => 'Apellidos')))
+                ->add('username', 'hidden', array('attr' => array('value' => '---')))
+                ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'matricula')))
+                ->add('campus', 'choice', array('label' => 'Campus', 'choices' => array('CHA' => 'CHA','COY' => 'COY','CUM' => 'CUM','GLD' => 'GLD','HER' => 'HER','HIS' => 'HIS','LOM' => 'LOM','MTY' => 'MTY','PUE' => 'PUE','QRO' => 'QRO','SRA' => 'SRA','TLA' => 'TLA','TOL' => 'TOL','ZAP' => 'ZAP'), 'attr' => array('placeholder' => 'campus')))
+                ->add('tipo', 'choice', array('label' => 'Tipo', 'choices' => array('ALUM' => 'ALUMNO','EMP' => 'EMPLEADO'), 'attr' => array('placeholder' => 'tipo')))
+                ->add('genpass', 'hidden', array('attr' => array('value' => '0')))
+                ->add('newpass', 'hidden', array('attr' => array('value' => '0')))
+                ->add('newpasssecond', 'hidden', array('attr' => array('value' => '0')))
+                ->add('email', 'hidden', array('attr' => array('value' => '0')))
+                ->add('fecha', 'date', array('years' => range(date('Y') -60, date('Y')),'label' => 'Fecha de nacimiento'))
+                ->add('enviar', 'submit')
+            ->getForm();
             break;
         }
 
         $usuario = new Users();
         $usuario->setFecha( new \DateTime('today') );
         $msg = '';
-        $form = $this->createFormBuilder($usuario)
-            ->setAction($this->generateUrl('admin_usuarios_crear', array('session' => $session)))
-            ->add('firstname', 'hidden', array('attr' => array('value' => '---')))
-            ->add('secondname', 'hidden', array('attr' => array('value' => '---')))
-            ->add('username', 'hidden', array('attr' => array('value' => '---')))
-            ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'matricula')))
-            ->add( 'campus', 'hidden', array('attr' => array('value' => $campus_field)) )
-            ->add('tipo', 'choice', array('label' => 'Tipo', 'choices' => array('ALUM' => 'ALUMNO','EMP' => 'EMPLEADO'), 'attr' => array('placeholder' => 'tipo')))
-            ->add('genpass', 'hidden', array('attr' => array('value' => '0')))
-            ->add('newpass', 'hidden', array('attr' => array('value' => '0')))
-            ->add('newpasssecond', 'hidden', array('attr' => array('value' => '0')))
-            ->add('email', 'hidden', array('attr' => array('value' => '0')))
-            ->add('fecha', 'date', array('years' => range(date('Y') -60, date('Y')),'label' => 'Fecha de nacimiento'))
-            ->add('enviar', 'submit')
-        ->getForm();
         $formreq = $form;
 
         if ($request->isMethod('POST')) {
@@ -121,8 +149,8 @@ class UsersController extends Controller
                 $em->persist($usuario);
                 $em->flush();
 
-                //$usuario1->setFirstname( $data['form']['firstname'] );
-                //$usuario1->setSecondname( $data['form']['secondname'] );
+                $usuario1->setFirstname( $data['form']['firstname'] );
+                $usuario1->setSecondname( $data['form']['secondname'] );
                 $usuario1->setMatricula( $data['form']['matricula'] );
                 $usuario1->setEmail( $data['form']['email'] );
                 $usuario1->setUsername( $data['form']['username'] );
@@ -144,8 +172,8 @@ class UsersController extends Controller
                     )
                 );
 
-                //$user_form->setFirstname( $usuario->getFirstname() );
-                //$user_form->setSecondname( $usuario->getSecondname() );
+                $user_form->setFirstname( $usuario->getFirstname() );
+                $user_form->setSecondname( $usuario->getSecondname() );
                 $user_form->setMatricula( $usuario->getMatricula() );
                 $user_form->setEmail( $usuario->getEmail() );
                 $user_form->setUsername( $usuario->getUsername() );
@@ -153,8 +181,8 @@ class UsersController extends Controller
 
                 $form = $this->createFormBuilder($user_form)
                     ->setAction( $this->generateUrl('admin_usuarios_modificar', array( 'session' => $session, 'id' => $id, 'usr' => $data['form']['username'] )) )
-                    //->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
-                    //->add('secondname', 'text', array('label' => 'Apellidos (paterno y materno separados por un espacio)','attr' => array('placeholder' => 'Apellidos')))
+                    ->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
+                    ->add('secondname', 'text', array('label' => 'Apellidos (paterno y materno separados por un espacio)','attr' => array('placeholder' => 'Apellidos')))
                     ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
                     ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
                     ->add('username', 'text', array('label' => 'Usuario (elije un nombre de usuario de por lo menos 5 caracteres)','attr' => array('placeholder' => 'Mínimo de 5 caracteres.')))
@@ -163,8 +191,8 @@ class UsersController extends Controller
                 ->getForm();
             }
         }else{
-            //$user_form->setFirstname( $usuario->getFirstname() );
-            //$user_form->setSecondname( $usuario->getSecondname() );
+            $user_form->setFirstname( $usuario->getFirstname() );
+            $user_form->setSecondname( $usuario->getSecondname() );
             $user_form->setMatricula( $usuario->getMatricula() );
             $user_form->setEmail( $usuario->getEmail() );
             $user_form->setUsername( $usuario->getUsername() );
@@ -172,8 +200,8 @@ class UsersController extends Controller
 
             $form = $this->createFormBuilder($user_form)
                 ->setAction( $this->generateUrl('admin_usuarios_modificar', array( 'session' => $session, 'id' => $id, 'usr' => $usr )) )
-                //->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
-                //->add('secondname', 'text', array('label' => 'Apellidos (paterno y materno separados por un espacio)','attr' => array('placeholder' => 'Apellidos')))
+                ->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
+                ->add('secondname', 'text', array('label' => 'Apellidos (paterno y materno separados por un espacio)','attr' => array('placeholder' => 'Apellidos')))
                 ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
                 ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
                 ->add('username', 'text', array('label' => 'Usuario (elije un nombre de usuario de por lo menos 5 caracteres)','attr' => array('placeholder' => 'Mínimo de 5 caracteres.')))
