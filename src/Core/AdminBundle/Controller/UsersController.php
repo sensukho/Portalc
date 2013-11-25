@@ -35,8 +35,8 @@ class UsersController extends Controller
         $msg = '';
         $form = $this->createFormBuilder($usuario)
             ->setAction($this->generateUrl('admin_usuarios_crear', array('session' => $session)))
-            ->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
-            ->add('secondname', 'text', array('label' => 'Apellidos','attr' => array('placeholder' => 'Apellidos')))
+            //->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
+            //->add('secondname', 'text', array('label' => 'Apellidos','attr' => array('placeholder' => 'Apellidos')))
             ->add('username', 'hidden', array('attr' => array('value' => '---')))
             ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'matricula')))
             ->add( 'campus', 'hidden', array('attr' => array('value' => $campus_field)) )
@@ -64,8 +64,8 @@ class UsersController extends Controller
                 $user = new Users();
                 //$formreq->bind($request);
                 //$em = $this->getDoctrine()->getManager();
-                $user->setFirstname($data['form']['firstname']);
-                $user->setSecondname($data['form']['secondname']);
+                //$user->setFirstname($data['form']['firstname']);
+                //$user->setSecondname($data['form']['secondname']);
                 $user->setUsername('---');
                 $user->setMatricula($data['form']['matricula']);
                 $user->setCampus($data['form']['campus']);
@@ -121,8 +121,8 @@ class UsersController extends Controller
                 $em->persist($usuario);
                 $em->flush();
 
-                $usuario1->setFirstname( $data['form']['firstname'] );
-                $usuario1->setSecondname( $data['form']['secondname'] );
+                //$usuario1->setFirstname( $data['form']['firstname'] );
+                //$usuario1->setSecondname( $data['form']['secondname'] );
                 $usuario1->setMatricula( $data['form']['matricula'] );
                 $usuario1->setEmail( $data['form']['email'] );
                 $usuario1->setUsername( $data['form']['username'] );
@@ -144,8 +144,8 @@ class UsersController extends Controller
                     )
                 );
 
-                $user_form->setFirstname( $usuario->getFirstname() );
-                $user_form->setSecondname( $usuario->getSecondname() );
+                //$user_form->setFirstname( $usuario->getFirstname() );
+                //$user_form->setSecondname( $usuario->getSecondname() );
                 $user_form->setMatricula( $usuario->getMatricula() );
                 $user_form->setEmail( $usuario->getEmail() );
                 $user_form->setUsername( $usuario->getUsername() );
@@ -153,8 +153,8 @@ class UsersController extends Controller
 
                 $form = $this->createFormBuilder($user_form)
                     ->setAction( $this->generateUrl('admin_usuarios_modificar', array( 'session' => $session, 'id' => $id, 'usr' => $data['form']['username'] )) )
-                    ->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
-                    ->add('secondname', 'text', array('label' => 'Apellidos (paterno y materno separados por un espacio)','attr' => array('placeholder' => 'Apellidos')))
+                    //->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
+                    //->add('secondname', 'text', array('label' => 'Apellidos (paterno y materno separados por un espacio)','attr' => array('placeholder' => 'Apellidos')))
                     ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
                     ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
                     ->add('username', 'text', array('label' => 'Usuario (elije un nombre de usuario de por lo menos 5 caracteres)','attr' => array('placeholder' => 'Mínimo de 5 caracteres.')))
@@ -163,8 +163,8 @@ class UsersController extends Controller
                 ->getForm();
             }
         }else{
-            $user_form->setFirstname( $usuario->getFirstname() );
-            $user_form->setSecondname( $usuario->getSecondname() );
+            //$user_form->setFirstname( $usuario->getFirstname() );
+            //$user_form->setSecondname( $usuario->getSecondname() );
             $user_form->setMatricula( $usuario->getMatricula() );
             $user_form->setEmail( $usuario->getEmail() );
             $user_form->setUsername( $usuario->getUsername() );
@@ -172,8 +172,8 @@ class UsersController extends Controller
 
             $form = $this->createFormBuilder($user_form)
                 ->setAction( $this->generateUrl('admin_usuarios_modificar', array( 'session' => $session, 'id' => $id, 'usr' => $usr )) )
-                ->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
-                ->add('secondname', 'text', array('label' => 'Apellidos (paterno y materno separados por un espacio)','attr' => array('placeholder' => 'Apellidos')))
+                //->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
+                //->add('secondname', 'text', array('label' => 'Apellidos (paterno y materno separados por un espacio)','attr' => array('placeholder' => 'Apellidos')))
                 ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
                 ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
                 ->add('username', 'text', array('label' => 'Usuario (elije un nombre de usuario de por lo menos 5 caracteres)','attr' => array('placeholder' => 'Mínimo de 5 caracteres.')))

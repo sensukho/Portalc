@@ -32,7 +32,7 @@
             <table id="listuser" border="1" width="90%" align="center">
                 <tr>
                     <th width="5%">ID</th>
-                    <th width="35%">Nombre (Usuario)</th>
+                    <th width="35%">Usuario</th>
                     <th width="20%">MAC ADDRESS 1</th>
                     <th width="20%">MAC ADDRESS 2</th>
                     <th width="5%">Campus</th>
@@ -44,7 +44,7 @@
                 {% for usuario in usuarios %}
                 <tr>
                     <td>{{ j }}</td>
-                    <td>{{ usuario.firstname }} {{ usuario.secondname }} ({{ usuario.username }})</td>
+                    <td>{{ usuario.username }}</td>
                         {% set i = 0 %}
                         {% if usuario.value == true %}
                             {% for data in usuario.value %}
