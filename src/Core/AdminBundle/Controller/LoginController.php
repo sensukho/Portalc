@@ -76,7 +76,7 @@ class LoginController extends Controller
             $raduser4 = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
                 array(
                     'username'  => $user,
-                    'ssid'  => $url['ssid']
+                    'ssid'  => urldecode( $url['ssid'] )
                 )
             );
             if (!$raduser4) {
