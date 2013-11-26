@@ -98,6 +98,13 @@ class Users
      */
     private $tipo;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ssid", type="string", length=100)
+     */
+    private $ssid;
+
 
     /**
      * Get id
@@ -360,5 +367,28 @@ class Users
     public function getTipo()
     {
         return $this->tipo;
+    }
+
+    /**
+     * Set ssid
+     *
+     * @param string $ssid
+     * @return radcheck
+     */
+    public function setSsid($ssid)
+    {
+        $this->ssid = $ssid;
+    
+        return $this;
+    }
+
+    /**
+     * Get ssid
+     *
+     * @return string 
+     */
+    public function getSsid()
+    {
+        return $this->ssid;
     }
 }

@@ -68,7 +68,24 @@ class LoginController extends Controller
             );
 
             if (!$raduser1) {
-                $msg = 'Usuario y/o contraseña inválido';
+                $msg = 'Usuario y/o contraseña inválidos';
+                return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => $user, 'pass' => $pass, 'chk' => $chk, 'msg' => $msg ));
+            }
+
+            /***** VERIFICA SSID *****/
+            $raduser4 = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
+                array(
+                    'username'  => $user,
+                    'ssid'  => $url['ssid']
+                )
+            );
+            if (!$raduser4) {
+                $raduser4 = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
+                array(
+                    'username'  => $user
+                )
+            );
+                $msg = 'No puedes registrarte a esta red, por favor conectate a la red "'.$raduser4->getSsid().'" e intenta de nuevo.';
                 return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => $user, 'pass' => $pass, 'chk' => $chk, 'msg' => $msg ));
             }
 
@@ -89,7 +106,7 @@ class LoginController extends Controller
                     }
                 }
             }
-            /***** VERIFICA MAC EXISTENTE EN OTRAS CENTAS *****/
+            /***** VERIFICA MAC EXISTENTE EN OTRAS CUENTAS *****/
             $raduser3 = $em->getRepository('CoreAdminBundle:ssidmacauth')->findOneBy(
                 array(
                     'macaddress'  => $this->formatMac( $url['client_mac'])
