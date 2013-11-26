@@ -73,14 +73,14 @@ class LoginController extends Controller
             }
 
             /***** VERIFICA SSID *****/
-            $raduser4 = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
+            $raduser2 = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
                 array(
                     'username'  => $user,
                     'ssid'  => urldecode( $url['ssid'] )
                 )
             );
-            if (!$raduser4) {
-                $raduser4 = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
+            if (!$raduser2) {
+                $raduser2 = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
                 array(
                     'username'  => $user
                 )
@@ -89,44 +89,35 @@ class LoginController extends Controller
                 return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => $user, 'pass' => $pass, 'chk' => $chk, 'msg' => $msg ));
             }
 
-            /***** VERIFICA MAC PERTENECIENTE AL USUARIO *****/
-            $raduser2 = $em->getRepository('CoreAdminBundle:ssidmacauth')->findBy(
-                array(
-                    'username'  => $user,
-                    'ssid'  => $url['ssid']
-                )
-            );
-
-            $ver_mac_1 = 1;
-            if (count($raduser2) == 2) {
-                $ver_mac_1 = 0;
-                foreach ($raduser2 as $ruser) {
-                    if ( $ruser->getMacaddress() == $this->formatMac( $url['client_mac']) ) {
-                        $ver_mac_1 = 1;
-                    }
-                }
-            }
-            /***** VERIFICA MAC EXISTENTE EN OTRAS CUENTAS *****/
+            /***** VERIFICA MACADDRESS *****/
             $raduser3 = $em->getRepository('CoreAdminBundle:ssidmacauth')->findOneBy(
                 array(
-                    'macaddress'  => $this->formatMac( $url['client_mac'])
+                    'macaddress'  => $this->formatMac( $url['client_mac'] )
                 )
             );
-            $ver_mac_2 = 1;
+
+            $exist_mac = 0;
+
             if ($raduser3) {
-                $ver_mac_2 = 0;
-                if ( $raduser3->getUsername() == $user ) {
-                    $ver_mac_2 = 1;
+                if ($raduser3->getUsername() == $user ) {
+                    $exist_mac = 1;
+                }else{
+                    $exist_mac = 2;
+                    $msg = 'Ese dispositivo ya está registrado en otra cuenta. No puede registrarse el mismo dispositivo en cuentas diferentes. Favor de utilizar las credenciales de la primer cuenta con la que se conectó el dispositivo.';
+                }
+            }else{
+                $user_mac = $em->getRepository('CoreAdminBundle:ssidmacauth')->findBy(
+                    array(
+                        'username'  => $user,
+                    )
+                );
+                if ($user_mac > 1) {
+                    $exist_mac = 3;
+                    $msg = 'Ya existen dos dispositivos registrados con esa cuenta, lo cual es el máximo permitido por cuenta. Deberás esperar hasta el dia siguiente para poder registrar un dispositivo diferente.';
                 }
             }
-
-            if ($ver_mac_1 == 0) {
-                $msg = 'Ya existen dos dispositivos registrados con esa cuenta, lo cual es el máximo permitido por cuenta. Deberás esperar hasta el dia siguiente para poder registrar un dispositivo diferente.';
-            }elseif ($ver_mac_1 == 0 && $ver_mac_2 == 0) {
-                $msg = 'Ya existen dos dispositivos registrados con esa cuenta, lo cual es el máximo permitido por cuenta. Deberás esperar hasta el dia siguiente para poder registrar un dispositivo diferente.';
-            }elseif ($ver_mac_1 == 1 && $ver_mac_2 == 0) {
-                $msg = 'Ese dispositivo ya está registrado en otra cuenta. No puede registrarse el mismo dispositivo en cuentas diferentes. Favor de utilizar las credenciales de la primer cuenta con la que se conectó el dispositivo.';
-            }elseif ($ver_mac_1 == 1 && $ver_mac_2 == 1) {
+            var_dump($exist_mac);
+            if ($exist_mac == 0 || $exist_mac == 1) {
                 $url = "http://".$url['sip'].":9997/login";
                 return $this->render('CoreAdminBundle:login:layout_zd.html.twig', array( 'user' => $user, 'pass' => $pass, 'url' => $url ));
             }
