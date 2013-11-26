@@ -85,7 +85,7 @@ class LoginController extends Controller
                     'username'  => $user
                 )
             );
-                $msg = 'No puedes registrarte a esta red, por favor conectate a la red "'.$raduser4->getSsid().'" e intenta de nuevo.';
+                $msg = 'No puedes ingresar a esta red, por favor conectate a la red "'.$raduser4->getSsid().'" e intenta de nuevo.';
                 return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => $user, 'pass' => $pass, 'chk' => $chk, 'msg' => $msg ));
             }
 
