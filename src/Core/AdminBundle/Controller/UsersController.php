@@ -26,6 +26,7 @@ class UsersController extends Controller
                 ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'matricula')))
                 ->add('campus', 'choice', array('label' => 'Campus', 'choices' => array('CHA' => 'CHA','COY' => 'COY','CUM' => 'CUM','GLD' => 'GLD','HER' => 'HER','HIS' => 'HIS','LOM' => 'LOM','MTY' => 'MTY','PUE' => 'PUE','QRO' => 'QRO','SRA' => 'SRA','TLA' => 'TLA','TOL' => 'TOL','ZAP' => 'ZAP'), 'attr' => array('placeholder' => 'campus')))
                 ->add('tipo', 'choice', array('label' => 'Tipo', 'choices' => array('ALUM' => 'ALUMNO','EMP' => 'EMPLEADO'), 'attr' => array('placeholder' => 'tipo')))
+                ->add('ssid', 'hidden', array('attr' => array('value' => '0')))
                 ->add('genpass', 'hidden', array('attr' => array('value' => '0')))
                 ->add('newpass', 'hidden', array('attr' => array('value' => '0')))
                 ->add('newpasssecond', 'hidden', array('attr' => array('value' => '0')))
@@ -45,6 +46,7 @@ class UsersController extends Controller
                 ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'matricula')))
                 ->add('campus', 'hidden', array('attr' => array('value' => $campus_field)) )
                 ->add('tipo', 'choice', array('label' => 'Tipo', 'choices' => array('ALUM' => 'ALUMNO','EMP' => 'EMPLEADO'), 'attr' => array('placeholder' => 'tipo')))
+                ->add('ssid', 'hidden', array('attr' => array('value' => '0')))
                 ->add('genpass', 'hidden', array('attr' => array('value' => '0')))
                 ->add('newpass', 'hidden', array('attr' => array('value' => '0')))
                 ->add('newpasssecond', 'hidden', array('attr' => array('value' => '0')))
@@ -63,6 +65,7 @@ class UsersController extends Controller
                 ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'matricula')))
                 ->add('campus', 'choice', array('label' => 'Campus', 'choices' => array('CHA' => 'CHA','COY' => 'COY','CUM' => 'CUM','GLD' => 'GLD','HER' => 'HER','HIS' => 'HIS','LOM' => 'LOM','MTY' => 'MTY','PUE' => 'PUE','QRO' => 'QRO','SRA' => 'SRA','TLA' => 'TLA','TOL' => 'TOL','ZAP' => 'ZAP'), 'attr' => array('placeholder' => 'campus')))
                 ->add('tipo', 'choice', array('label' => 'Tipo', 'choices' => array('ALUM' => 'ALUMNO','EMP' => 'EMPLEADO'), 'attr' => array('placeholder' => 'tipo')))
+                ->add('ssid', 'hidden', array('attr' => array('value' => '0')))
                 ->add('genpass', 'hidden', array('attr' => array('value' => '0')))
                 ->add('newpass', 'hidden', array('attr' => array('value' => '0')))
                 ->add('newpasssecond', 'hidden', array('attr' => array('value' => '0')))
@@ -90,14 +93,17 @@ class UsersController extends Controller
                 $msg = 'La matricula que ingreso ya existe en el sistema.';
             }else{
                 $user = new Users();
-                //$formreq->bind($request);
-                //$em = $this->getDoctrine()->getManager();
                 $user->setFirstname($data['form']['firstname']);
                 $user->setSecondname($data['form']['secondname']);
                 $user->setUsername('---');
                 $user->setMatricula($data['form']['matricula']);
                 $user->setCampus($data['form']['campus']);
                 $user->setTipo($data['form']['tipo']);
+                if ($data['form']['tipo'] == 'ALUM') {
+                    $user->setSsid('UVM ESTUDIANTES');
+                }elseif ($data['form']['tipo'] == 'EMP') {
+                    $user->setSsid('UVM DOCENTES');
+                }
                 $user->setGenpass(0);
                 $user->setNewpass(0);
                 $user->setNewpasssecond(0);
@@ -152,6 +158,13 @@ class UsersController extends Controller
                 $usuario1->setFirstname( $data['form']['firstname'] );
                 $usuario1->setSecondname( $data['form']['secondname'] );
                 $usuario1->setMatricula( $data['form']['matricula'] );
+                $usuario1->setCampus($data['form']['campus']);
+                $usuario1->setTipo($data['form']['tipo']);
+                if ($data['form']['tipo'] == 'ALUM') {
+                    $usuario1->setSsid('UVM ESTUDIANTES');
+                }elseif ($data['form']['tipo'] == 'EMP') {
+                    $usuario1->setSsid('UVM DOCENTES');
+                }
                 $usuario1->setEmail( $data['form']['email'] );
                 $usuario1->setUsername( $data['form']['username'] );
                 $usuario1->setNewpass( $data['form']['newpass'] );
@@ -177,6 +190,8 @@ class UsersController extends Controller
                 $user_form->setMatricula( $usuario->getMatricula() );
                 $user_form->setEmail( $usuario->getEmail() );
                 $user_form->setUsername( $usuario->getUsername() );
+                $user_form->setCampus( $usuario->getCampus() );
+                $user_form->setTipo( $usuario->getTipo() );
                 $user_form->setNewpass( $usuario->getNewpass() );
 
                 $form = $this->createFormBuilder($user_form)
@@ -184,6 +199,8 @@ class UsersController extends Controller
                     ->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
                     ->add('secondname', 'text', array('label' => 'Apellidos (paterno y materno separados por un espacio)','attr' => array('placeholder' => 'Apellidos')))
                     ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
+                    ->add('campus', 'choice', array('label' => 'Campus', 'choices' => array('CHA' => 'CHA','COY' => 'COY','CUM' => 'CUM','GLD' => 'GLD','HER' => 'HER','HIS' => 'HIS','LOM' => 'LOM','MTY' => 'MTY','PUE' => 'PUE','QRO' => 'QRO','SRA' => 'SRA','TLA' => 'TLA','TOL' => 'TOL','ZAP' => 'ZAP'), 'attr' => array('placeholder' => 'campus')))
+                    ->add('tipo', 'choice', array('label' => 'Tipo', 'choices' => array('ALUM' => 'ALUMNO','EMP' => 'EMPLEADO'), 'attr' => array('placeholder' => 'tipo')))
                     ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
                     ->add('username', 'text', array('label' => 'Usuario (elije un nombre de usuario de por lo menos 5 caracteres)','attr' => array('placeholder' => 'Mínimo de 5 caracteres.')))
                     ->add('newpass', 'text', array('label' => 'Password (mínimo 6 caracteres, no se diferencian mayúsculas de minúsculas y utiliza solo caracteres alfanuméricos.)','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
@@ -196,6 +213,8 @@ class UsersController extends Controller
             $user_form->setMatricula( $usuario->getMatricula() );
             $user_form->setEmail( $usuario->getEmail() );
             $user_form->setUsername( $usuario->getUsername() );
+            $user_form->setCampus( $usuario->getCampus() );
+            $user_form->setTipo( $usuario->getTipo() );
             $user_form->setNewpass( $usuario->getNewpass() );
 
             $form = $this->createFormBuilder($user_form)
@@ -203,6 +222,8 @@ class UsersController extends Controller
                 ->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
                 ->add('secondname', 'text', array('label' => 'Apellidos (paterno y materno separados por un espacio)','attr' => array('placeholder' => 'Apellidos')))
                 ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
+                ->add('campus', 'choice', array('label' => 'Campus', 'choices' => array('CHA' => 'CHA','COY' => 'COY','CUM' => 'CUM','GLD' => 'GLD','HER' => 'HER','HIS' => 'HIS','LOM' => 'LOM','MTY' => 'MTY','PUE' => 'PUE','QRO' => 'QRO','SRA' => 'SRA','TLA' => 'TLA','TOL' => 'TOL','ZAP' => 'ZAP'), 'attr' => array('placeholder' => 'campus')))
+                ->add('tipo', 'choice', array('label' => 'Tipo', 'choices' => array('ALUM' => 'ALUMNO','EMP' => 'EMPLEADO'), 'attr' => array('placeholder' => 'tipo')))
                 ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
                 ->add('username', 'text', array('label' => 'Usuario (elije un nombre de usuario de por lo menos 5 caracteres)','attr' => array('placeholder' => 'Mínimo de 5 caracteres.')))
                 ->add('newpass', 'text', array('label' => 'Password (mínimo 6 caracteres, no se diferencian mayúsculas de minúsculas y utiliza solo caracteres alfanuméricos.)','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
@@ -293,7 +314,7 @@ class UsersController extends Controller
         $total_pages = round($users_total/$items_per_page,0);
 
         $usuarios = $em->createQuery(
-            "SELECT r.id,r.username,r.value,u.firstname,u.secondname,u.campus,u.tipo FROM CoreAdminBundle:radcheck r,CoreAdminBundle:Users u WHERE ".$where_search." ".$where_campus." r.username != '' AND r.username = u.username AND u.campus = 'TOL' ORDER BY u.firstname,u.secondname"
+            "SELECT r.id,r.username,r.value,u.firstname,u.secondname,u.campus,u.tipo FROM CoreAdminBundle:radcheck r,CoreAdminBundle:Users u WHERE ".$where_search." ".$where_campus." r.username != '' AND r.username = u.username ORDER BY u.firstname,u.secondname"
         );
         $usuarios->setMaxResults($items_per_page);
         $usuarios->setFirstResult(($offset-1)*$items_per_page);

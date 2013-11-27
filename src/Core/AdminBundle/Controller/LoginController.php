@@ -59,6 +59,7 @@ class LoginController extends Controller
             }
 
             $em = $this->getDoctrine()->getManager();
+
             /***** VERIFICA USUARIO *****/
             $raduser1 = $em->getRepository('CoreAdminBundle:radcheck')->findOneBy(
                 array(
@@ -67,7 +68,7 @@ class LoginController extends Controller
                 )
             );
 
-            if (!$raduser1) {
+            if (count($raduser1) < 1) {
                 $msg = 'Usuario y/o contraseña inválidos';
                 return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => $user, 'pass' => $pass, 'chk' => $chk, 'msg' => $msg ));
             }
@@ -80,12 +81,13 @@ class LoginController extends Controller
                 )
             );
             if (count($raduser2) < 1) {
-                $raduser4 = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
+                $user_data = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
                     array(
                         'username'  => $user
                     )
                 );
-                $msg = 'No puedes ingresar a esta red, por favor conectate a la red "'.$raduser4->getSsid().'" e intenta de nuevo.';
+                $msg = 'A este usuario le corresponde la red "'.$user_data->getSsid().'". Por favor cambie de red WiFi e intente de nuevo.';
+                $msg = '';
                 return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => $user, 'pass' => $pass, 'chk' => $chk, 'msg' => $msg ));
             }
 
