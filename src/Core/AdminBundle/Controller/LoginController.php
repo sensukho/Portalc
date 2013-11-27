@@ -98,7 +98,7 @@ class LoginController extends Controller
 
             $exist_mac = 0;
 
-            if ($raduser3) {
+            if (count($raduser3)) {
                 if ($raduser3->getUsername() == $user ) {
                     $exist_mac = 1;
                 }else{
@@ -111,12 +111,11 @@ class LoginController extends Controller
                         'username'  => $user,
                     )
                 );
-                if ($user_mac > 1) {
+                if (count($user_mac) > 1) {
                     $exist_mac = 3;
                     $msg = 'Ya existen dos dispositivos registrados con esa cuenta, lo cual es el máximo permitido por cuenta. Deberás esperar hasta el dia siguiente para poder registrar un dispositivo diferente.';
                 }
             }
-            var_dump($exist_mac);
             if ($exist_mac == 0 || $exist_mac == 1) {
                 $url = "http://".$url['sip'].":9997/login";
                 return $this->render('CoreAdminBundle:login:layout_zd.html.twig', array( 'user' => $user, 'pass' => $pass, 'url' => $url ));
