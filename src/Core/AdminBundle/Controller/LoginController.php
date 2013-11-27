@@ -79,12 +79,12 @@ class LoginController extends Controller
                     'ssid'  => urldecode( $url['ssid'] )
                 )
             );
-            if (!$raduser2) {
-                $raduser2 = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
-                array(
-                    'username'  => $user
-                )
-            );
+            if (count($raduser2) < 1) {
+                $raduser4 = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
+                    array(
+                        'username'  => $user
+                    )
+                );
                 $msg = 'No puedes ingresar a esta red, por favor conectate a la red "'.$raduser4->getSsid().'" e intenta de nuevo.';
                 return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => $user, 'pass' => $pass, 'chk' => $chk, 'msg' => $msg ));
             }
