@@ -100,9 +100,9 @@ class UsersController extends Controller
                 $user->setCampus($data['form']['campus']);
                 $user->setTipo($data['form']['tipo']);
                 if ($data['form']['tipo'] == 'ALUM') {
-                    $user->setSsid('UVM ESTUDIANTES');
+                    $user->setSsid('UVM TOL ESTUDIANTES');
                 }elseif ($data['form']['tipo'] == 'EMP') {
-                    $user->setSsid('UVM DOCENTES');
+                    $user->setSsid('UVM TOL DOCENTES');
                 }
                 $user->setGenpass(0);
                 $user->setNewpass(0);
@@ -161,9 +161,9 @@ class UsersController extends Controller
                 $usuario1->setCampus($data['form']['campus']);
                 $usuario1->setTipo($data['form']['tipo']);
                 if ($data['form']['tipo'] == 'ALUM') {
-                    $usuario1->setSsid('UVM ESTUDIANTES');
+                    $usuario1->setSsid('UVM TOL ESTUDIANTES');
                 }elseif ($data['form']['tipo'] == 'EMP') {
-                    $usuario1->setSsid('UVM DOCENTES');
+                    $usuario1->setSsid('UVM TOL DOCENTES');
                 }
                 $usuario1->setEmail( $data['form']['email'] );
                 $usuario1->setUsername( $data['form']['username'] );
