@@ -28,6 +28,8 @@ class LoginController extends Controller
             $params .= $key.'='.$value.'&';
         }
 
+        //var_dump(urldecode( $url['ssid']));
+
         $request = Request::createFromGlobals();
         $user = $request->request->get('username',NULL);
         $pass = $request->request->get('password',NULL);
@@ -80,13 +82,17 @@ class LoginController extends Controller
                     'ssid'  => urldecode( $url['ssid'] )
                 )
             );
+
+            //var_dump(count($raduser2));
+
             if (count($raduser2) < 1) {
                 $user_data = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
                     array(
                         'username'  => $user
                     )
                 );
-                $msg = 'A este usuario le corresponde la red "'.$user_data->getSsid().'". Por favor cambie de red WiFi e intente de nuevo.';
+                $ssid = str_replace('TOL ', '', $user_data->getSsid());
+                $msg = 'A este usuario le corresponde la red "'.$ssid.'". Por favor cambie de red WiFi e intente de nuevo.';
                 return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => $user, 'pass' => $pass, 'chk' => $chk, 'msg' => $msg ));
             }
 
