@@ -23,7 +23,7 @@ class LoginController extends Controller
             $url = unserialize($url);
         }
 
-        var_dump($url);
+        //var_dump($url);
 
         $params = '?';
         foreach ($url as $key => $value) {
@@ -92,7 +92,7 @@ class LoginController extends Controller
                     )
                 );
                 $ssid = str_replace('TOL ', '', $user_data->getSsid());
-                $msg = 'A este usuario le corresponde la red "'.$ssid.'". Por favor cambie de red WiFi e intente de nuevo.';
+                $msg = 'A este usuario le corresponde la red "'.$ssid.'( '.$user_data->getSsid().' )". Por favor cambie de red WiFi e intente de nuevo.';
                 return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => $user, 'pass' => $pass, 'chk' => $chk, 'msg' => $msg ));
             }
 
