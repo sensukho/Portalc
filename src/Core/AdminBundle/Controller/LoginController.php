@@ -77,7 +77,7 @@ class LoginController extends Controller
                 return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => $user, 'pass' => $pass, 'chk' => $chk, 'msg' => $msg ));
             }
 
-            /***** VERIFICA SSID *****
+            /***** VERIFICA SSID *****/
             $raduser2 = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
                 array(
                     'username'  => $user,
