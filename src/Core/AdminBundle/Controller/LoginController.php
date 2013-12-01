@@ -23,6 +23,8 @@ class LoginController extends Controller
             $url = unserialize($url);
         }
 
+        var_dump($url);
+
         $params = '?';
         foreach ($url as $key => $value) {
             $params .= $key.'='.$value.'&';
@@ -75,15 +77,13 @@ class LoginController extends Controller
                 return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => $user, 'pass' => $pass, 'chk' => $chk, 'msg' => $msg ));
             }
 
-            /***** VERIFICA SSID *****/
+            /***** VERIFICA SSID *****
             $raduser2 = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
                 array(
                     'username'  => $user,
                     'ssid'  => urldecode( $url['ssid'] )
                 )
             );
-
-            //var_dump(count($raduser2));
 
             if (count($raduser2) < 1) {
                 $user_data = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
