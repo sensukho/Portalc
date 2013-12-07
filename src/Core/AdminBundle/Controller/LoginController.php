@@ -120,7 +120,7 @@ class LoginController extends Controller
                 );
                 if (count($user_mac) > 1) {
                     $exist_mac = 3;
-                    $msg = 'Ya existen dos dispositivos registrados con esa cuenta, lo cual es el máximo permitido por cuenta. Deberás esperar hasta el dia siguiente para poder registrar un dispositivo diferente.';
+                    $msg = 'Ya existen dos dispositivos registrados con esta cuenta, lo cual es el máximo permitido. Por favor espera a mañana para poder registrar este dispositivo';
                 }
             }
             if ($exist_mac == 0 || $exist_mac == 1) {
@@ -174,7 +174,7 @@ class LoginController extends Controller
                     ->setAction($this->generateUrl('portal_register'))
                     //->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
                     //->add('secondname', 'text', array('label' => 'Apellidos (paterno y materno separados por un espacio)','attr' => array('placeholder' => 'Apellidos')))
-                    ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
+                    ->add('matricula', 'text', array('label' => 'Matrícula','attr' => array('placeholder' => 'Matrícula')))
                     ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
                     ->add('username', 'text', array('label' => 'Usuario (elije un nombre de usuario de por lo menos 5 caracteres)','attr' => array('placeholder' => 'Mínimo de 5 caracteres.', 'pattern' => '.{5,}')))
                     ->add('newpass', 'password', array('label' => 'Password (mínimo 6 caracteres, no se diferencian mayúsculas de minúsculas y utiliza solo caracteres alfanuméricos.)','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
@@ -208,7 +208,7 @@ class LoginController extends Controller
                             ->setAction($this->generateUrl('portal_register'))
                                 //->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
                                 //->add('secondname', 'text', array('label' => 'Apellidos (paterno y materno separados por un espacio)','attr' => array('placeholder' => 'Apellidos')))
-                                ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
+                                ->add('matricula', 'text', array('label' => 'Matrícula','attr' => array('placeholder' => 'Matrícula')))
                                 ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
                                 ->add('username', 'text', array('label' => 'Usuario (elije un nombre de usuario de por lo menos 5 caracteres)','attr' => array('placeholder' => 'Mínimo de 5 caracteres.')))
                                 ->add('newpass', 'password', array('label' => 'Password (mínimo 6 caracteres, no se diferencian mayúsculas de minúsculas y utiliza solo caracteres alfanuméricos.)','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
@@ -251,14 +251,14 @@ class LoginController extends Controller
                         ->setAction($this->generateUrl('portal_register'))
                         //->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
                         //->add('secondname', 'text', array('label' => 'Apellidos (paterno y materno separados por un espacio)','attr' => array('placeholder' => 'Apellidos')))
-                        ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
+                        ->add('matricula', 'text', array('label' => 'Matrícula','attr' => array('placeholder' => 'Matrícula')))
                         ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
                         ->add('username', 'text', array('label' => 'Usuario (elije un nombre de usuario de por lo menos 5 caracteres)','attr' => array('placeholder' => 'Mínimo de 5 caracteres.', 'pattern' => '.{5,}')))
                         ->add('newpass', 'password', array('label' => 'Password (mínimo 6 caracteres, no se diferencian mayúsculas de minúsculas y utiliza solo caracteres alfanuméricos.)','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
                         ->add('newpasssecond', 'password', array('label' => 'Ingresa de nuevo el password','attr' => array('placeholder' => 'Reingresa el password', 'pattern' => '.{6,}')))
                         ->add('enviar', 'submit')
                     ->getForm();
-                    $msg = "Datos Inválidos - Valida que tu número de matrícula sea correcto. Si el problema persiste, contacta al centro de cómputo de tu plantel.";
+                    $msg = "Datos Inválidos - Valida que tu número de matrícula sea correcta. Si el problema persiste, contacta al Centro de Cómputo de tu plantel.";
                     return $this->render('CoreAdminBundle:login:register.html.twig', array( 'form' => $form->createView(), 'msg' => $msg, 'errors' => '' ));
                 }
             }else{
@@ -267,14 +267,14 @@ class LoginController extends Controller
                     ->setAction($this->generateUrl('portal_register'))
                     //->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
                     //->add('secondname', 'text', array('label' => 'Apellidos (paterno y materno separados por un espacio)','attr' => array('placeholder' => 'Apellidos')))
-                    ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
+                    ->add('matricula', 'text', array('label' => 'Matrícula','attr' => array('placeholder' => 'Matrícula')))
                     ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
                     ->add('username', 'text', array('label' => 'Usuario (elije un nombre de usuario de por lo menos 5 caracteres)','attr' => array('placeholder' => 'Mínimo de 5 caracteres.', 'pattern' => '.{5,}')))
                     ->add('newpass', 'password', array('label' => 'Password (mínimo 6 caracteres, no se diferencian mayúsculas de minúsculas y utiliza solo caracteres alfanuméricos.)','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
                     ->add('newpasssecond', 'password', array('label' => 'Ingresa de nuevo el password','attr' => array('placeholder' => 'Reingresa el password', 'pattern' => '.{6,}')))
                     ->add('enviar', 'submit')
                 ->getForm();
-                $msg = "El nombre de usuario ya esta registrado, por favor eliga otro para continuar.";
+                $msg = "Tu usuario ya había sido registrado con anterioridad, por favor emplea tu user y contraseña para ingresar. Si tienes alguna duda por favor acude al Centro de Cómputo de tu campus.";
                 return $this->render('CoreAdminBundle:login:register.html.twig', array( 'form' => $form->createView(), 'msg' => $msg, 'errors' => '' ));
             }
         }else{
@@ -283,7 +283,7 @@ class LoginController extends Controller
                 ->setAction($this->generateUrl('portal_register'))
                     //->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
                     //->add('secondname', 'text', array('label' => 'Apellidos (paterno y materno separados por un espacio)','attr' => array('placeholder' => 'Apellidos')))
-                    ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
+                    ->add('matricula', 'text', array('label' => 'Matrícula','attr' => array('placeholder' => 'Matrícula')))
                     ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
                     ->add('username', 'text', array('label' => 'Usuario (elije un nombre de usuario de por lo menos 5 caracteres)','attr' => array('placeholder' => 'Mínimo de 5 caracteres.')))
                     ->add('newpass', 'password', array('label' => 'Password (mínimo 6 caracteres, no se diferencian mayúsculas de minúsculas y utiliza solo caracteres alfanuméricos.)','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
@@ -331,26 +331,26 @@ class LoginController extends Controller
                         $em->flush();
                     }
 
-                    $msg = "Tu password se ha cambiado con éxito, ya puedes ingresar.";
+                    $msg = "Tu contraseña se ha cambiado con éxito, ya puedes ingresar.";
                     return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => '', 'pass' => '', 'chk' => '', 'msg' => $msg ));
                 }else{
                     $form = $this->createFormBuilder($usuario)
                         ->setAction($this->generateUrl('portal_change_pass'))
                         ->add('username', 'text', array('label' => 'Usuario','attr' => array('placeholder' => 'Usuario', 'pattern' => '.{5,}')))
-                        ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
+                        ->add('matricula', 'text', array('label' => 'Matrícula','attr' => array('placeholder' => 'Matrícula')))
                         ->add('genpass', 'text', array('label' => 'Ingresa el password que te enviamos por mail','attr' => array('placeholder' => '8 caracteres.', 'pattern' => '.{6,}')))
                         ->add('newpass', 'password', array('label' => 'Nuevo password','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
                         ->add('newpasssecond', 'password', array('label' => 'Ingresa de nuevo el password','attr' => array('placeholder' => 'Reingresa el password', 'pattern' => '.{6,}')))
                         ->add('enviar', 'submit')
                     ->getForm();
-                    $msg = "Datos Inválidos - verifica e intenta de nuevo.";
+                    $msg = "Datos Inválidos - Valida que tus datos sean correctos. Si el problema persiste, contacta al Centro de Cómputo de tu plantel.";
                     return $this->render('CoreAdminBundle:login:change.html.twig', array( 'form' => $form->createView(), 'msg' => $msg ));
                 }
             }else{
                 $form = $this->createFormBuilder($usuario)
                     ->setAction($this->generateUrl('portal_change_pass'))
                     ->add('username', 'text', array('label' => 'Usuario','attr' => array('placeholder' => 'Usuario', 'pattern' => '.{5,}')))
-                    ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
+                    ->add('matricula', 'text', array('label' => 'Matrícula','attr' => array('placeholder' => 'Matrícula')))
                     ->add('genpass', 'text', array('label' => 'Ingresa el password que te enviamos por mail','attr' => array('placeholder' => '8 caracteres.', 'pattern' => '.{6,}')))
                     ->add('newpass', 'password', array('label' => 'Nuevo password','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
                     ->add('newpasssecond', 'password', array('label' => 'Ingresa de nuevo el password','attr' => array('placeholder' => 'Reingresa el password', 'pattern' => '.{6,}')))
@@ -363,7 +363,7 @@ class LoginController extends Controller
             $form = $this->createFormBuilder($usuario)
                 ->setAction($this->generateUrl('portal_change_pass'))
                 ->add('username', 'text', array('label' => 'Usuario','attr' => array('placeholder' => 'Usuario', 'pattern' => '.{5,}')))
-                ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
+                ->add('matricula', 'text', array('label' => 'Matrícula','attr' => array('placeholder' => 'Matrícula')))
                 ->add('genpass', 'text', array('label' => 'Ingresa el password que te enviamos por mail','attr' => array('placeholder' => '8 caracteres.', 'pattern' => '.{6,}')))
                 ->add('newpass', 'password', array('label' => 'Nuevo password','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
                 ->add('newpasssecond', 'password', array('label' => 'Ingresa de nuevo el password','attr' => array('placeholder' => 'Reingresa el password', 'pattern' => '.{6,}')))

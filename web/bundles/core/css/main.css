@@ -3,6 +3,10 @@
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
+a:link {color:blue;text-decoration:underline;}      /* unvisited link */
+a:visited {color:blue;text-decoration:underline;}  /* visited link */
+a:hover {color:blue;text-decoration:underline;}  /* mouse over link */
+a:active {color:blue;text-decoration:underline;}  /* selected link */ 
 
 body {
     background-color: #fff;
