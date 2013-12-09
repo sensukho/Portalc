@@ -50,12 +50,20 @@ admin_reportes_historial:
 
 ##### PORTAL :: LOGIN #####
 
-start:
-    pattern:  /
-    defaults: { _controller: CoreAdminBundle:Login:login }
+#start:
+#    pattern:  /
+#    defaults: { _controller: CoreAdminBundle:Login:login }
 
 portal:
     pattern:  /login
+    defaults: { _controller: CoreAdminBundle:Login:login }
+
+portal_alums:
+    pattern:  /login/estudiantes/
+    defaults: { _controller: CoreAdminBundle:Login:login }
+
+portal_profesors:
+    pattern:  /login/docentes/
     defaults: { _controller: CoreAdminBundle:Login:login }
 
 portal_register:

@@ -23,14 +23,12 @@ class LoginController extends Controller
             $url = unserialize($url);
         }
 
-        //var_dump($url);
+        //var_dump( urldecode( $url['ssid'] ) );
 
         $params = '?';
         foreach ($url as $key => $value) {
             $params .= $key.'='.$value.'&';
         }
-
-        //var_dump(urldecode( $url['ssid']));
 
         $request = Request::createFromGlobals();
         $user = $request->request->get('username',NULL);
