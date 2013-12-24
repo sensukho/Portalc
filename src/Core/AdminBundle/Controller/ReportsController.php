@@ -15,7 +15,7 @@ class ReportsController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $query = $em->createQuery(
-            "SELECT r.username,r.id,r.framedipaddress,r.calledstationid,SUM(r.acctinputoctets),SUM(r.acctoutputoctets),SUM(r.acctsessiontime)
+            "SELECT r.username,r.radacctid,r.framedipaddress,r.calledstationid,SUM(r.acctinputoctets),SUM(r.acctoutputoctets),SUM(r.acctsessiontime)
             FROM CoreAdminBundle:radacct r
             WHERE r.acctstoptime = '0000-00-00 00:00:00'
             GROUP BY r.username
@@ -42,7 +42,7 @@ class ReportsController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $query = $em->createQuery(
-            'SELECT r.username,r.id,r.framedipaddress,r.calledstationid,SUM(r.acctinputoctets),SUM(r.acctoutputoctets),SUM(r.acctsessiontime)
+            'SELECT r.username,r.radacctid,r.framedipaddress,r.calledstationid,SUM(r.acctinputoctets),SUM(r.acctoutputoctets),SUM(r.acctsessiontime)
             FROM CoreAdminBundle:radacct r
             GROUP BY r.username
             ORDER BY r.username ASC'
