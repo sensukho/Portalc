@@ -16,10 +16,15 @@ class LoginController extends Controller
     public function loginAction(Request $request)
     {
 
+        var_dump( $request->query->all() );
+
         if( $url = $request->query->all()){
-            $this->get('cache')->save('url', serialize($url));
+            $cache = $this->get('cache');
+            $cache->setNamespace('uvm.cache');
+            //if(false === ( $url = $cache->fetch( 'url'.date('dnY') ) ) )
+            $cache->save('url'.date('dnY'), serialize($url), 600);
         }else{
-            $url = $this->get('cache')->fetch('url');
+            $url = $this->get('cache')->fetch('url'.date('dnY'));
             $url = unserialize($url);
         }
 
@@ -152,7 +157,7 @@ class LoginController extends Controller
     {
         var_dump( $url );
 
-        if ($url = $this->get('cache')->fetch('url')) {
+        if ($url = $this->get('cache')->fetch('url'.date('dnY'))) {
             $url = unserialize($url);
         }
 
