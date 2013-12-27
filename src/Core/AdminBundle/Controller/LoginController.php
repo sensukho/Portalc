@@ -23,7 +23,7 @@ class LoginController extends Controller
             $url = unserialize($url);
         }
 
-        var_dump( urldecode( $url ) );
+        var_dump( $url );
 
         $params = '?';
         foreach ($url as $key => $value) {
@@ -150,7 +150,7 @@ class LoginController extends Controller
     /***************************************************************************/
     public function registerAction(Request $request)
     {
-        var_dump( urldecode( $url ) );            
+        var_dump( $url );
 
         if ($url = $this->get('cache')->fetch('url')) {
             $url = unserialize($url);
