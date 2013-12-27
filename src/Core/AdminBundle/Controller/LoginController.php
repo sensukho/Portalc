@@ -89,7 +89,8 @@ class LoginController extends Controller
                         'username'  => $user
                     )
                 );
-                $msg = 'A este usuario le corresponde la red "'.$user_data->getSsid().'". Por favor cambie de red WiFi e intente de nuevo.';
+                //$msg = 'A este usuario le corresponde la red "'.$user_data->getSsid().'". Por favor cambie de red WiFi e intente de nuevo.';
+                $msg = 'A este usuario le corresponde la red "'.$user_data->getSsid().'( '.urldecode( $url['ssid'] ).' )". Por favor cambie de red WiFi e intente de nuevo.';
                 return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => $user, 'pass' => $pass, 'chk' => $chk, 'msg' => $msg ));
             }
 
