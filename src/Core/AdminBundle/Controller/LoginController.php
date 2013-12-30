@@ -380,7 +380,7 @@ class LoginController extends Controller
                     }
 
                     $msg = "Tu contraseña se ha cambiado con éxito, ya puedes ingresar.";
-                    return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => '', 'pass' => '', 'chk' => '', 'msg' => $msg ));
+                    return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => '', 'pass' => '', 'chk' => '', 'msg' => $msg, 'params' => 0 ));
                 }else{
                     $form = $this->createFormBuilder($usuario)
                         ->setAction($this->generateUrl('portal_change_pass'))
