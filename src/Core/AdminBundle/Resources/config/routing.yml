@@ -58,6 +58,10 @@ portal:
     pattern:  /login/
     defaults: { _controller: CoreAdminBundle:Login:login }
 
+portal_error:
+    pattern:  /login/error/
+    defaults: { _controller: CoreAdminBundle:Login:error }
+
 portal_alums:
     pattern:  /login/estudiantes/
     defaults: { _controller: CoreAdminBundle:Login:login }

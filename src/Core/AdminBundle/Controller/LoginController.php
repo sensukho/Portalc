@@ -33,9 +33,22 @@ class LoginController extends Controller
             foreach ($request->query->all() as $key => $value) {
                 $params .= $key.'='.$value.'&';
             }
+            $url = explode('&', $params);
         }else{
             $params = $request->request->get('params',NULL);
             $url = explode('&', $params);
+        }
+
+        foreach ($url as $value) {
+            $pos = strpos($value, "auth");
+            if ($pos === false) {  }
+            else {
+                $auth = explode('=', $value);
+            }
+        }
+
+        if ( isset($auth) && $auth[1] == "failed" ) {
+            return $this->redirect( "/web/login/error/" );
         }
 
         $request = Request::createFromGlobals();
@@ -169,6 +182,11 @@ class LoginController extends Controller
         }
 
         return $this->render('CoreAdminBundle:login:plantilla.html.twig', array( 'user' => $user, 'pass' => $pass, 'chk' => $chk, 'msg' => $msg, 'params' => $params ));
+    }
+    /***************************************************************************/
+    public function errorAction()
+    {
+        return $this->render('CoreAdminBundle:login:error.html.twig', array());
     }
     /***************************************************************************/
     public function welcomeAction()
