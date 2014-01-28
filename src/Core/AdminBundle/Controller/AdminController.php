@@ -33,7 +33,6 @@ class AdminController extends Controller
                     $this->get('cache')->save('session_admin', serialize('CUM'));
                 return $this->redirect( $this->generateUrl('admin_home', array( 'session' => $session )) );
             }else{ return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => 'Usuario y/o contraseña iválidos.' )); }
-        }else{ return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => 'Usuario y/o contraseña iválidos.' ));
         }
 
         elseif( $user == 'uvmcumbres' ){
