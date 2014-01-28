@@ -49,10 +49,14 @@ class AdminController extends Controller
     {
         $s1 = base64_encode( md5('admin'.'12345'.date('Y-n-d') ) );
         $s2 = base64_encode( md5('uvmtoluca'.'t01uc4'.date('Y-n-d') ) );
+        $s3 = base64_encode( md5('uvmcumbres'.'cumbr3s'.date('Y-n-d') ) );
         if ($s1 === $session ) {
             return $this->render('CoreAdminBundle:admin:lpg.html.twig', array( 'session' => $session, 'session_id' => $s1 ));
         }elseif ($s2 === $session ) {
             return $this->render('CoreAdminBundle:admin:lpg.html.twig', array( 'session' => $session, 'session_id' => $s2 ));
+        }
+        elseif ($s3 === $session ) {
+            return $this->render('CoreAdminBundle:admin:lpg.html.twig', array( 'session' => $session, 'session_id' => $s3 ));
         }else{
             return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => 'Su sesión ha caducado, ingrese de nuevo por favor.' ));
         }
