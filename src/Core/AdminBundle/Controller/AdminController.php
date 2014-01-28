@@ -30,7 +30,7 @@ class AdminController extends Controller
         elseif( $user == 'uvmtoluca' ){
             if( $pass == 't01uc4' ){
                 $session = base64_encode( md5( $user.$pass.date('Y-n-d') ) );
-                    $this->get('cache')->save('session_admin', serialize('CUM'));
+                    $this->get('cache')->save('session_admin', serialize('TOL'));
                 return $this->redirect( $this->generateUrl('admin_home', array( 'session' => $session )) );
             }else{ return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => 'Usuario y/o contraseña iválidos.' )); }
         }
@@ -38,7 +38,7 @@ class AdminController extends Controller
         elseif( $user == 'uvmcumbres' ){
             if( $pass == 'cumbr3s' ){
                 $session = base64_encode( md5( $user.$pass.date('Y-n-d') ) );
-                    $this->get('cache')->save('session_admin', serialize('CMB'));
+                    $this->get('cache')->save('session_admin', serialize('CUM'));
                 return $this->redirect( $this->generateUrl('admin_home', array( 'session' => $session )) );
             }else{ return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => 'Usuario y/o contraseña iválidos.' )); }
         }else{ return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => 'Usuario y/o contraseña iválidos.' ));
