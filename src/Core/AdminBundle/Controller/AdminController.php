@@ -5,24 +5,32 @@ namespace Core\AdminBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class AdminController extends Controller
 {
 ########## ADMINISTRATOR ##########
     public function adminAction()
     {
+        $sesssion = $this->getRequest()->getSession();
+        $sesssion->invalidate();
+
         return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => '' ));
     }
     /***************************************************************************/
     public function loginAction()
     {
+        $sesssion = new Session();
+        $sesssion->start();
+
         $request = Request::createFromGlobals();
         $user = $request->request->get('user',NULL);
         $pass = $request->request->get('pass',NULL);
         if( $user == 'admin' ){
             if( $pass == '12345' ){
                 $session = base64_encode( md5( $user.$pass.date('Y-n-d') ) );
-                    $this->get('cache')->save('session_admin', serialize('all'));
+                    //$this->get('cache')->save('session_admin', serialize('all'));
+                    $sesssion->set('session_admin', 'all');
                 return $this->redirect( $this->generateUrl('admin_home', array( 'session' => $session )) );
             }else{ return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => 'Usuario y/o contraseña iválidos.' )); }
         }
@@ -30,7 +38,8 @@ class AdminController extends Controller
         elseif( $user == 'uvmtoluca' ){
             if( $pass == 't01uc4' ){
                 $session = base64_encode( md5( $user.$pass.date('Y-n-d') ) );
-                    $this->get('cache')->save('session_admin', serialize('TOL'));
+                    //$this->get('cache')->save('session_admin', serialize('TOL'));
+                    $sesssion->set('session_admin', 'TOL');
                 return $this->redirect( $this->generateUrl('admin_home', array( 'session' => $session )) );
             }else{ return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => 'Usuario y/o contraseña iválidos.' )); }
         }
@@ -38,7 +47,8 @@ class AdminController extends Controller
         elseif( $user == 'uvmcumbres' ){
             if( $pass == 'cumbr3s' ){
                 $session = base64_encode( md5( $user.$pass.date('Y-n-d') ) );
-                    $this->get('cache')->save('session_admin', serialize('CUM'));
+                    //$this->get('cache')->save('session_admin', serialize('CUM'));
+                    $sesssion->set('session_admin', 'CUM');
                 return $this->redirect( $this->generateUrl('admin_home', array( 'session' => $session )) );
             }else{ return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => 'Usuario y/o contraseña iválidos.' )); }
         }else{ return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => 'Usuario y/o contraseña iválidos.' ));

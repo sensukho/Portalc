@@ -67,6 +67,6 @@ swiftmailer:
     password:  %mailer_password%
     spool:     { type: memory }
 
-services:
-    cache:
-        class: Doctrine\Common\Cache\ApcCache
+#services:
+#    cache:
+#        class: Doctrine\Common\Cache\ApcCache

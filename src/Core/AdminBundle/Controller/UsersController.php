@@ -8,13 +8,18 @@ use Doctrine\Common\Collections;
 use Core\AdminBundle\Entity\Users;
 use Core\AdminBundle\Entity\radcheck;
 use Core\AdminBundle\Entity\ssidmacauth;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class UsersController extends Controller
 {
 ########## USERS ##########
     public function newAction(Request $request,$session)
     {
-        $campus = unserialize( $this->get('cache')->fetch('session_admin') );
+        $sesssion = $this->getRequest()->getSession();
+        $campus = $sesssion->get('session_admin');
+
+        $usuario = new Users();
+        $usuario->setFecha( new \DateTime('today') );
 
         switch ( $campus ) {
             case "all":
@@ -76,8 +81,6 @@ class UsersController extends Controller
             break;
         }
 
-        $usuario = new Users();
-        $usuario->setFecha( new \DateTime('today') );
         $msg = '';
         $formreq = $form;
 
@@ -100,9 +103,9 @@ class UsersController extends Controller
                 $user->setCampus($data['form']['campus']);
                 $user->setTipo($data['form']['tipo']);
                 if ($data['form']['tipo'] == 'ALUM') {
-                    $user->setSsid('UVM TOL ESTUDIANTES');
+                    $user->setSsid('UVM '.$data['form']['campus'].' ESTUDIANTES');
                 }elseif ($data['form']['tipo'] == 'EMP') {
-                    $user->setSsid('UVM TOL DOCENTES');
+                    $user->setSsid('UVM '.$data['form']['campus'].' DOCENTES');
                 }
                 $user->setGenpass(0);
                 $user->setNewpass(0);
@@ -161,9 +164,9 @@ class UsersController extends Controller
                 $usuario1->setCampus($data['form']['campus']);
                 $usuario1->setTipo($data['form']['tipo']);
                 if ($data['form']['tipo'] == 'ALUM') {
-                    $usuario1->setSsid('UVM TOL ESTUDIANTES');
+                    $usuario1->setSsid('UVM '.$data['form']['campus'].' ESTUDIANTES');
                 }elseif ($data['form']['tipo'] == 'EMP') {
-                    $usuario1->setSsid('UVM TOL DOCENTES');
+                    $usuario1->setSsid('UVM '.$data['form']['campus'].' DOCENTES');
                 }
                 $usuario1->setEmail( $data['form']['email'] );
                 $usuario1->setUsername( $data['form']['username'] );
@@ -283,7 +286,8 @@ class UsersController extends Controller
         }
         $where_search = '';
 
-        $campus = unserialize( $this->get('cache')->fetch('session_admin') );
+        $sesssion = $this->getRequest()->getSession();
+        $campus = $sesssion->get('session_admin');
 
         switch ( $campus ) {
             case "all":
@@ -341,7 +345,8 @@ class UsersController extends Controller
         }
         $where_search = '';
 
-        $campus = unserialize( $this->get('cache')->fetch('session_admin') );
+        $sesssion = $this->getRequest()->getSession();
+        $campus = $sesssion->get('session_admin');
 
         switch ( $campus ) {
             case "all":

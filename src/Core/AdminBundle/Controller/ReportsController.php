@@ -12,12 +12,29 @@ class ReportsController extends Controller
 ########## REPORTS ##########
 	public function activeAction($session)
     {
+        $sesssion = $this->getRequest()->getSession();
+        $campus = $sesssion->get('session_admin');
+
         $em = $this->getDoctrine()->getManager();
+
+        switch ( $campus ) {
+            case "all":
+                $where_campus = "";
+            break;
+
+            case $campus:
+                $where_campus = "AND u.campus = '".$campus."'";
+            break;
+
+            default:
+                $where_campus = "";
+            break;
+        }
 
         $query = $em->createQuery(
             "SELECT r.username,r.id,r.framedipaddress,r.calledstationid,SUM(r.acctinputoctets),SUM(r.acctoutputoctets),SUM(r.acctsessiontime)
-            FROM CoreAdminBundle:radacct r
-            WHERE r.acctstoptime = '0000-00-00 00:00:00'
+            FROM CoreAdminBundle:radacct r,CoreAdminBundle:Users u
+            WHERE r.acctstoptime = '0000-00-00 00:00:00'  AND r.username = u.username ".$where_campus."
             GROUP BY r.username
             ORDER BY r.username ASC"
         );
@@ -41,13 +58,31 @@ class ReportsController extends Controller
     /***************************************************************************/
     public function historyAction($session)
     {
+        $sesssion = $this->getRequest()->getSession();
+        $campus = $sesssion->get('session_admin');
+
         $em = $this->getDoctrine()->getManager();
 
+        switch ( $campus ) {
+            case "all":
+                $where_campus = "";
+            break;
+
+            case $campus:
+                $where_campus = "AND u.campus = '".$campus."'";
+            break;
+
+            default:
+                $where_campus = "";
+            break;
+        }
+
         $query = $em->createQuery(
-            'SELECT r.username,r.id,r.framedipaddress,r.calledstationid,SUM(r.acctinputoctets),SUM(r.acctoutputoctets),SUM(r.acctsessiontime)
-            FROM CoreAdminBundle:radacct r
+            "SELECT r.username,r.id,r.framedipaddress,r.calledstationid,SUM(r.acctinputoctets),SUM(r.acctoutputoctets),SUM(r.acctsessiontime)
+            FROM CoreAdminBundle:radacct r,CoreAdminBundle:Users u
+            WHERE r.username = u.username  ".$where_campus."
             GROUP BY r.username
-            ORDER BY r.username ASC'
+            ORDER BY r.username ASC"
         );
 
         $usuarios = $query->getResult();
