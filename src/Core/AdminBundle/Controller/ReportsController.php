@@ -53,7 +53,7 @@ class ReportsController extends Controller
             $i++;
         }
 
-        return $this->render('CoreAdminBundle:reports:active.html.twig', array( 'session' => $session, 'session_id' => $session, 'usuarios' => $usuarios ));
+        return $this->render('CoreAdminBundle:reports:active.html.twig', array( 'session' => $session, 'session_id' => $session, 'usuarios' => $usuarios, 'campus' => $campus ));
     }
     /***************************************************************************/
     public function historyAction($session)
@@ -97,7 +97,7 @@ class ReportsController extends Controller
             $i++;
         }
 
-        return $this->render('CoreAdminBundle:reports:history.html.twig', array( 'session' => $session, 'session_id' => $session, 'usuarios' => $usuarios ));
+        return $this->render('CoreAdminBundle:reports:history.html.twig', array( 'session' => $session, 'session_id' => $session, 'usuarios' => $usuarios, 'campus' => $campus ));
     }
 ########## COMODIN FUNCTIONS  ##########
     /***************************************************************************/

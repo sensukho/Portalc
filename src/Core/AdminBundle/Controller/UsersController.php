@@ -119,11 +119,14 @@ class UsersController extends Controller
             }
         }
 
-        return $this->render('CoreAdminBundle:users:new.html.twig', array( 'session' => $session, 'session_id' => $session, 'form' => $form->createView(), 'msg' => $msg ));
+        return $this->render('CoreAdminBundle:users:new.html.twig', array( 'session' => $session, 'session_id' => $session, 'form' => $form->createView(), 'msg' => $msg, 'campus' => $campus ));
     }
     /***************************************************************************/
     public function editAction($session,$id,$usr)
     {
+        $sesssion = $this->getRequest()->getSession();
+        $campus = $sesssion->get('session_admin');
+
         $request = Request::createFromGlobals();
         $user_form = new Users();
         $form = $this->createFormBuilder($user_form);
@@ -233,11 +236,14 @@ class UsersController extends Controller
                 ->add('enviar', 'submit')
             ->getForm();
         }
-        return $this->render('CoreAdminBundle:users:edit.html.twig', array( 'form' => $form->createView(),'session' => $session, 'session_id' => $session, 'usuario' => $usuario, 'msg' => $msg ));
+        return $this->render('CoreAdminBundle:users:edit.html.twig', array( 'form' => $form->createView(),'session' => $session, 'session_id' => $session, 'usuario' => $usuario, 'msg' => $msg, 'campus' => $campus ));
     }
     /***************************************************************************/
     public function delAction($session,$id)
     {
+        $sesssion = $this->getRequest()->getSession();
+        $campus = $sesssion->get('session_admin');
+
         $request = Request::createFromGlobals();
         $confirm = $request->request->get('confirm',NULL);
 
@@ -273,7 +279,7 @@ class UsersController extends Controller
             $mensaje = '¿Seguro que desea eliminar al usuario?';
         }
 
-        return $this->render('CoreAdminBundle:users:del.html.twig', array( 'session' => $session, 'session_id' => $session, 'msg' => $mensaje, 'usuario' => $usuario_radchek ));
+        return $this->render('CoreAdminBundle:users:del.html.twig', array( 'session' => $session, 'session_id' => $session, 'msg' => $mensaje, 'usuario' => $usuario_radchek, 'campus' => $campus ));
     }
     /***************************************************************************/
     public function listregAction($session,$q,$offset)
@@ -332,7 +338,7 @@ class UsersController extends Controller
 
         $mensaje = '';
 
-        return $this->render('CoreAdminBundle:users:listreg.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios, 'offset' => $offset, 'total_pages' => $total_pages, 'q' => $q ));
+        return $this->render('CoreAdminBundle:users:listreg.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios, 'offset' => $offset, 'total_pages' => $total_pages, 'q' => $q, 'campus' => $campus ));
     }
     /***************************************************************************/
     public function listunregAction($session,$q,$offset)
@@ -385,7 +391,7 @@ class UsersController extends Controller
 
         $mensaje = '';
 
-        return $this->render('CoreAdminBundle:users:listunreg.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios, 'offset' => $offset, 'total_pages' => $total_pages, 'q' => $q ));
+        return $this->render('CoreAdminBundle:users:listunreg.html.twig', array( 'session' => $session, 'session_id' => $session, 'mensaje' => $mensaje, 'usuarios' => $usuarios, 'offset' => $offset, 'total_pages' => $total_pages, 'q' => $q, 'campus' => $campus ));
     }
     /***************************************************************************/
     public function resetmacsAction()
