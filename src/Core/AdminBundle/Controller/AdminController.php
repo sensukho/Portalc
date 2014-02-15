@@ -83,7 +83,7 @@ class AdminController extends Controller
         elseif( $user == 'uvmgdl' ){
             if( $pass == 'gu4d4l4j4r4' ){
                 $session = base64_encode( md5( $user.$pass.date('Y-n-d') ) );
-                    $sesssion->set('session_admin', 'GDL');
+                    $sesssion->set('session_admin', 'GDLSUR');
                     $sesssion->set('session_id', $session);
                 return $this->redirect( $this->generateUrl('admin_home', array( 'session' => $session )) );
             }else{ return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => 'Usuario y/o contraseña iválidos.' )); }
@@ -110,7 +110,7 @@ class AdminController extends Controller
         elseif( $user == 'uvmmty' ){
             if( $pass == 'm0nt3rr3y' ){
                 $session = base64_encode( md5( $user.$pass.date('Y-n-d') ) );
-                    $sesssion->set('session_admin', 'MTY');
+                    $sesssion->set('session_admin', 'SN');
                     $sesssion->set('session_id', $session);
                 return $this->redirect( $this->generateUrl('admin_home', array( 'session' => $session )) );
             }else{ return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => 'Usuario y/o contraseña iválidos.' )); }
@@ -156,6 +156,15 @@ class AdminController extends Controller
             if( $pass == 'c0y04c4n' ){
                 $session = base64_encode( md5( $user.$pass.date('Y-n-d') ) );
                     $sesssion->set('session_admin', 'COY');
+                    $sesssion->set('session_id', $session);
+                return $this->redirect( $this->generateUrl('admin_home', array( 'session' => $session )) );
+            }else{ return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => 'Usuario y/o contraseña iválidos.' )); }
+        }
+
+        elseif( $user == 'uvmmarina' ){
+            if( $pass == 'm4rin4' ){
+                $session = base64_encode( md5( $user.$pass.date('Y-n-d') ) );
+                    $sesssion->set('session_admin', 'MAR');
                     $sesssion->set('session_id', $session);
                 return $this->redirect( $this->generateUrl('admin_home', array( 'session' => $session )) );
             }else{ return $this->render('CoreAdminBundle:admin:index.html.twig', array( 'msg' => 'Usuario y/o contraseña iválidos.' )); }
