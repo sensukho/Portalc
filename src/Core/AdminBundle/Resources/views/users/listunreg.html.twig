@@ -32,13 +32,10 @@
             <table id="listuser" border="1" width="98%" align="center">
                 <tr>
                     <th width="5%">ID</th>
-                    <th width="25%">Nombre</th>
+                    <th width="55%">Nombre</th>
                     <th width="20%">Matricula</th>
                     <th width="10%">Campus</th>
                     <th width="10%">Categoria</th>
-                    <!--<th width="20%">Fecha</th>-->
-                    <!--<th width="5%">Editar</th>
-                    <th width="5%">Eliminar</th>-->
                 </tr>
                 {% set i = 1 %}
                 {% for usuario in usuarios %}
@@ -48,7 +45,6 @@
                      <td align="center">{{ usuario.matricula }}</td>
                      <td align="center">{{ usuario.campus }}</td>
                      <td align="center">{{ usuario.tipo }}</td>
-                     <td align="center"></td>
                 </tr>
                 {% set i = i + 1 %}
                 {% endfor %}
