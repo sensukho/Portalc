@@ -29,7 +29,7 @@ class UsersController extends Controller
                 ->add('secondname', 'text', array('label' => 'Apellidos','attr' => array('placeholder' => 'Apellidos')))
                 ->add('username', 'hidden', array('attr' => array('value' => '---')))
                 ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'matricula')))
-                ->add('campus', 'choice', array('label' => 'Campus', 'choices' => array('CHA' => 'CHA','COY' => 'COY','CUM' => 'CUM','GLD' => 'GLD','HER' => 'HER','HIS' => 'HIS','LOM' => 'LOM','MTY' => 'MTY','PUE' => 'PUE','QRO' => 'QRO','SRA' => 'SRA','TLA' => 'TLA','TOL' => 'TOL','ZAP' => 'ZAP'), 'attr' => array('placeholder' => 'campus')))
+                ->add('campus', 'choice', array('label' => 'Campus', 'choices' => array('CHA' => 'CHA','COY' => 'COY','CUM' => 'CUM','GLDSUR' => 'GLDSUR','HER' => 'HER','HIS' => 'HIS','LOM' => 'LOM','SN' => 'SN','PUE' => 'PUE','QRO' => 'QRO','SRA' => 'SRA','TLA' => 'TLA','TOL' => 'TOL','ZAP' => 'ZAP'), 'attr' => array('placeholder' => 'campus')))
                 ->add('tipo', 'choice', array('label' => 'Tipo', 'choices' => array('ALUM' => 'ALUMNO','EMP' => 'EMPLEADO'), 'attr' => array('placeholder' => 'tipo')))
                 ->add('ssid', 'hidden', array('attr' => array('value' => '0')))
                 ->add('genpass', 'hidden', array('attr' => array('value' => '0')))
@@ -68,7 +68,7 @@ class UsersController extends Controller
                 ->add('secondname', 'text', array('label' => 'Apellidos','attr' => array('placeholder' => 'Apellidos')))
                 ->add('username', 'hidden', array('attr' => array('value' => '---')))
                 ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'matricula')))
-                ->add('campus', 'choice', array('label' => 'Campus', 'choices' => array('CHA' => 'CHA','COY' => 'COY','CUM' => 'CUM','GLD' => 'GLD','HER' => 'HER','HIS' => 'HIS','LOM' => 'LOM','MTY' => 'MTY','PUE' => 'PUE','QRO' => 'QRO','SRA' => 'SRA','TLA' => 'TLA','TOL' => 'TOL','ZAP' => 'ZAP'), 'attr' => array('placeholder' => 'campus')))
+                ->add('campus', 'choice', array('label' => 'Campus', 'choices' => array('CHA' => 'CHA','COY' => 'COY','CUM' => 'CUM','GLDSUR' => 'GLDSUR','HER' => 'HER','HIS' => 'HIS','LOM' => 'LOM','SN' => 'SN','PUE' => 'PUE','QRO' => 'QRO','SRA' => 'SRA','TLA' => 'TLA','TOL' => 'TOL','ZAP' => 'ZAP'), 'attr' => array('placeholder' => 'campus')))
                 ->add('tipo', 'choice', array('label' => 'Tipo', 'choices' => array('ALUM' => 'ALUMNO','EMP' => 'EMPLEADO'), 'attr' => array('placeholder' => 'tipo')))
                 ->add('ssid', 'hidden', array('attr' => array('value' => '0')))
                 ->add('genpass', 'hidden', array('attr' => array('value' => '0')))
@@ -205,7 +205,7 @@ class UsersController extends Controller
                     ->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
                     ->add('secondname', 'text', array('label' => 'Apellidos (paterno y materno separados por un espacio)','attr' => array('placeholder' => 'Apellidos')))
                     ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
-                    ->add('campus', 'choice', array('label' => 'Campus', 'choices' => array('CHA' => 'CHA','COY' => 'COY','CUM' => 'CUM','GLD' => 'GLD','HER' => 'HER','HIS' => 'HIS','LOM' => 'LOM','MTY' => 'MTY','PUE' => 'PUE','QRO' => 'QRO','SRA' => 'SRA','TLA' => 'TLA','TOL' => 'TOL','ZAP' => 'ZAP'), 'attr' => array('placeholder' => 'campus')))
+                    ->add('campus', 'choice', array('label' => 'Campus', 'choices' => array($data['form']['campus'] => $data['form']['campus'],'CHA' => 'CHA','COY' => 'COY','CUM' => 'CUM','GLDSUR' => 'GLDSUR','HER' => 'HER','HIS' => 'HIS','LOM' => 'LOM','SN' => 'NS','PUE' => 'PUE','QRO' => 'QRO','SRA' => 'SRA','TLA' => 'TLA','TOL' => 'TOL','ZAP' => 'ZAP'), 'attr' => array('placeholder' => 'campus')))
                     ->add('tipo', 'choice', array('label' => 'Tipo', 'choices' => array('ALUM' => 'ALUMNO','EMP' => 'EMPLEADO'), 'attr' => array('placeholder' => 'tipo')))
                     ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
                     ->add('username', 'text', array('label' => 'Usuario (elije un nombre de usuario de por lo menos 5 caracteres)','attr' => array('placeholder' => 'Mínimo de 5 caracteres.')))
@@ -223,18 +223,37 @@ class UsersController extends Controller
             $user_form->setTipo( $usuario->getTipo() );
             $user_form->setNewpass( $usuario->getNewpass() );
 
-            $form = $this->createFormBuilder($user_form)
-                ->setAction( $this->generateUrl('admin_usuarios_modificar', array( 'session' => $session, 'id' => $id, 'usr' => $usr )) )
-                ->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
-                ->add('secondname', 'text', array('label' => 'Apellidos (paterno y materno separados por un espacio)','attr' => array('placeholder' => 'Apellidos')))
-                ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
-                ->add('campus', 'choice', array('label' => 'Campus', 'choices' => array('CHA' => 'CHA','COY' => 'COY','CUM' => 'CUM','GLD' => 'GLD','HER' => 'HER','HIS' => 'HIS','LOM' => 'LOM','MTY' => 'MTY','PUE' => 'PUE','QRO' => 'QRO','SRA' => 'SRA','TLA' => 'TLA','TOL' => 'TOL','ZAP' => 'ZAP'), 'attr' => array('placeholder' => 'campus')))
-                ->add('tipo', 'choice', array('label' => 'Tipo', 'choices' => array('ALUM' => 'ALUMNO','EMP' => 'EMPLEADO'), 'attr' => array('placeholder' => 'tipo')))
-                ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
-                ->add('username', 'text', array('label' => 'Usuario (elije un nombre de usuario de por lo menos 5 caracteres)','attr' => array('placeholder' => 'Mínimo de 5 caracteres.')))
-                ->add('newpass', 'text', array('label' => 'Password (mínimo 6 caracteres, no se diferencian mayúsculas de minúsculas y utiliza solo caracteres alfanuméricos.)','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
-                ->add('enviar', 'submit')
-            ->getForm();
+            switch ( $campus ) {
+                case "all":
+
+                    $form = $this->createFormBuilder($user_form)
+                        ->setAction( $this->generateUrl('admin_usuarios_modificar', array( 'session' => $session, 'id' => $id, 'usr' => $usr )) )
+                        ->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
+                        ->add('secondname', 'text', array('label' => 'Apellidos (paterno y materno separados por un espacio)','attr' => array('placeholder' => 'Apellidos')))
+                        ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
+                        ->add('campus', 'choice', array('label' => 'Campus', 'choices' => array('CHA' => 'CHA','COY' => 'COY','CUM' => 'CUM','GLDSUR' => 'GLDSUR','HER' => 'HER','HIS' => 'HIS','LOM' => 'LOM','SN' => 'NS','PUE' => 'PUE','QRO' => 'QRO','SRA' => 'SRA','TLA' => 'TLA','TOL' => 'TOL','ZAP' => 'ZAP'), 'attr' => array('placeholder' => 'campus')))
+                        ->add('tipo', 'choice', array('label' => 'Tipo', 'choices' => array('ALUM' => 'ALUMNO','EMP' => 'EMPLEADO'), 'attr' => array('placeholder' => 'tipo')))
+                        ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
+                        ->add('username', 'text', array('label' => 'Usuario (elije un nombre de usuario de por lo menos 5 caracteres)','attr' => array('placeholder' => 'Mínimo de 5 caracteres.')))
+                        ->add('newpass', 'text', array('label' => 'Password (mínimo 6 caracteres, no se diferencian mayúsculas de minúsculas y utiliza solo caracteres alfanuméricos.)','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
+                        ->add('enviar', 'submit')
+                    ->getForm();
+                    break;
+                case $campus:
+                    $form = $this->createFormBuilder($user_form)
+                        ->setAction( $this->generateUrl('admin_usuarios_modificar', array( 'session' => $session, 'id' => $id, 'usr' => $usr )) )
+                        ->add('firstname', 'text', array('label' => 'Nombre','attr' => array('placeholder' => 'Nombre')))
+                        ->add('secondname', 'text', array('label' => 'Apellidos (paterno y materno separados por un espacio)','attr' => array('placeholder' => 'Apellidos')))
+                        ->add('matricula', 'text', array('label' => 'Matricula','attr' => array('placeholder' => 'Matricula')))
+                        ->add('campus', 'choice', array('label' => 'Campus', 'choices' => array( $usuario->getCampus() => $usuario->getCampus()), 'attr' => array('placeholder' => 'campus')))
+                        ->add('tipo', 'choice', array('label' => 'Tipo', 'choices' => array('ALUM' => 'ALUMNO','EMP' => 'EMPLEADO'), 'attr' => array('placeholder' => 'tipo')))
+                        ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
+                        ->add('username', 'text', array('label' => 'Usuario (elije un nombre de usuario de por lo menos 5 caracteres)','attr' => array('placeholder' => 'Mínimo de 5 caracteres.')))
+                        ->add('newpass', 'text', array('label' => 'Password (mínimo 6 caracteres, no se diferencian mayúsculas de minúsculas y utiliza solo caracteres alfanuméricos.)','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
+                        ->add('enviar', 'submit')
+                    ->getForm();
+                    break;
+            }
         }
         return $this->render('CoreAdminBundle:users:edit.html.twig', array( 'form' => $form->createView(),'session' => $session, 'session_id' => $session, 'usuario' => $usuario, 'msg' => $msg, 'campus' => $campus ));
     }
