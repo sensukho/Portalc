@@ -746,6 +746,7 @@ h2    { font-size: 15pt; }
 h3    { font-size: 14pt; }
 h4    { font-size: 12pt; }
 p     { font-size: 10pt; }
+span     { font-size: 20pt; }
 @media (max-width: 1024px) {
     label { font-size: 25pt; }
 }
