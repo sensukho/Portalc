@@ -61,8 +61,18 @@
     }
     #inquiry > ul { float: left; margin-right: 10px; }
     #inquiry > ul > label { display: inline-block; margin: 18px 5px 0 0; vertical-align: top; }
-    #inquiry > ul > input {
+    #inquiry > ul > #conName, #conEmail {
         height: 60px;
+        width: 250px;
+        margin: 5px 0;
+        padding: 5px;
+        -webkit-text-stroke: 0.10px;
+        font-size: 25pt;
+        font-style: normal;
+    }
+
+    #inquiry > ul > #entrar {
+        height: 80px;
         width: 250px;
         margin: 5px 0;
         padding: 5px;
@@ -82,8 +92,28 @@
     }
     #inquiry > ul { float: right; margin-right: 10px; }
     #inquiry > ul > label { display: inline-block; margin: 10px 5px 0 0; vertical-align: top; }
-    #inquiry > ul > input {
+    #inquiry > ul > #conName, #conEmail {
         height: 25px;
+        width: 220px;
+        margin: 5px 0;
+        padding: 5px;
+        -webkit-text-stroke: 0.10px;
+        font-size: 12pt;
+        font-style: normal;
+    }
+
+    #inquiry > ul > #entrar {
+        height: 45px;
+        width: 220px;
+        margin: 5px 0;
+        padding: 5px;
+        -webkit-text-stroke: 0.10px;
+        font-size: 16pt;
+        font-style: normal;
+    }
+
+    #inquiry > ul > input > button {
+        height: 35px;
         width: 220px;
         margin: 5px 0;
         padding: 5px;
