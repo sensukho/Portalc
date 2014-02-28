@@ -212,6 +212,50 @@ class LoginController extends Controller
 
         if ($request->isMethod('POST')) {
             $data = $request->request->all();
+
+            $usuario->setFecha( new \DateTime('today') );
+            $form = $this->createFormBuilder($usuario)
+                ->setAction($this->generateUrl('portal_register'))
+                    ->add('matricula', 'text', array('label' => 'Matrícula','attr' => array('placeholder' => 'Matrícula')))
+                    ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
+                    ->add('username', 'text', array('label' => 'Usuario (elije un nombre de usuario de por lo menos 5 caracteres)','attr' => array('placeholder' => 'Mínimo de 5 caracteres.', 'pattern' => '.{5,}')))
+                    ->add('genpass', 'hidden', array('attr' => array('value' => $params)))
+                    ->add('newpass', 'password', array('label' => 'Password (mínimo 6 caracteres, no se diferencian mayúsculas de minúsculas y utiliza solo caracteres alfanuméricos.)','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
+                    ->add('newpasssecond', 'password', array('label' => 'Ingresa de nuevo el password','attr' => array('placeholder' => 'Reingresa el password', 'pattern' => '.{6,}')))
+                    ->add('enviar', 'submit')
+            ->getForm();
+            
+            ##### VALIDATE #####
+            if ( $data['form']['username'] == '' ) {
+                $msg = "El campo de usuario no debe estar vacío";
+                return $this->render('CoreAdminBundle:login:register.html.twig', array( 'form' => $form->createView(), 'msg' => $msg, 'errors' => '', 'params' => $params ));
+            }
+            elseif(preg_match('/[^a-z_\-0-9]/i', $data['form']['username'])) {
+                $msg = "El campo de usuario debe ser alfanumérico";
+                return $this->render('CoreAdminBundle:login:register.html.twig', array( 'form' => $form->createView(), 'msg' => $msg, 'errors' => '', 'params' => $params ));
+            }
+            elseif ( $data['form']['newpass'] == '' ) {
+                $msg = "El campo de password no debe estar vacío";
+                return $this->render('CoreAdminBundle:login:register.html.twig', array( 'form' => $form->createView(), 'msg' => $msg, 'errors' => '', 'params' => $params ));
+            }
+            elseif(preg_match('/[^a-z_\-0-9]/i', $data['form']['newpass'])) {
+                $msg = "El campo de password debe ser alfanumérico";
+                return $this->render('CoreAdminBundle:login:register.html.twig', array( 'form' => $form->createView(), 'msg' => $msg, 'errors' => '', 'params' => $params ));
+            }
+            elseif ( $data['form']['newpasssecond'] == '' ) {
+                $msg = "El campo de password secundario no debe estar vacío";
+                return $this->render('CoreAdminBundle:login:register.html.twig', array( 'form' => $form->createView(), 'msg' => $msg, 'errors' => '', 'params' => $params ));
+            }
+            elseif(preg_match('/[^a-z_\-0-9]/i', $data['form']['newpasssecond'])) {
+                $msg = "El campo de password secundario debe ser alfanumérico";
+                return $this->render('CoreAdminBundle:login:register.html.twig', array( 'form' => $form->createView(), 'msg' => $msg, 'errors' => '', 'params' => $params ));
+            }
+            elseif ( $data['form']['newpass'] !== $data['form']['newpasssecond'] ) {
+                $msg = "Los campos de password deben coincidir.";
+                return $this->render('CoreAdminBundle:login:register.html.twig', array( 'form' => $form->createView(), 'msg' => $msg, 'errors' => '', 'params' => $params ));
+            }
+            #####  #####
+
             $em = $this->getDoctrine()->getManager();
             $user = $em->getRepository('CoreAdminBundle:Users')->findOneBy(
                 array(
@@ -250,25 +294,6 @@ class LoginController extends Controller
                         $user->setNewpass($data['form']['newpass']);
                         $user->setUsername($data['form']['username']);
                         $user->setEmail($data['form']['email']);
-
-                        $errores = $this->get('validator')->validate($user);
-
-                        if(count($errores) > 0)
-                        {
-                            var_dump(count($errores));
-                            $usuario->setFecha( new \DateTime('today') );
-                            $form = $this->createFormBuilder($usuario)
-                                ->setAction($this->generateUrl('portal_register'))
-                                    ->add('matricula', 'text', array('label' => 'Matrícula','attr' => array('placeholder' => 'Matrícula')))
-                                    ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
-                                    ->add('username', 'text', array('label' => 'Usuario (elije un nombre de usuario de por lo menos 5 caracteres)','attr' => array('placeholder' => 'Mínimo de 5 caracteres.')))
-                                    ->add('genpass', 'hidden', array('attr' => array('value' => $params)))
-                                    ->add('newpass', 'password', array('label' => 'Password (mínimo 6 caracteres, no se diferencian mayúsculas de minúsculas y utiliza solo caracteres alfanuméricos.)','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
-                                    ->add('newpasssecond', 'password', array('label' => 'Ingresa de nuevo el password','attr' => array('placeholder' => 'Reingresa el password', 'pattern' => '.{6,}')))
-                                    ->add('enviar', 'submit')
-                            ->getForm();
-                            return $this->render('CoreAdminBundle:login:register.html.twig', array( 'form' => $form->createView(), 'msg' => '', 'errors' => $errores, 'params' => $params ));
-                        }
 
                         $em->persist($user);
                         $em->flush();
@@ -309,7 +334,6 @@ class LoginController extends Controller
                             ->add('newpasssecond', 'password', array('label' => 'Ingresa de nuevo el password','attr' => array('placeholder' => 'Reingresa el password', 'pattern' => '.{6,}')))
                             ->add('enviar', 'submit')
                         ->getForm();
-                        //$msg = "Esta matrícula ya fue registrada con anterioridad - Utiliza el usuario y password que registraste para unirte a la red. Si el problema persiste, contacta al Centro de Cómputo de tu plantel.";
                         $msg = "El nombre de usuario seleccionado ya está utilizado por otra cuenta. Favor de elegir otro.";
                         return $this->render('CoreAdminBundle:login:register.html.twig', array( 'form' => $form->createView(), 'msg' => $msg, 'errors' => '', 'params' => $params ));
                     }
@@ -340,7 +364,6 @@ class LoginController extends Controller
                     ->add('newpasssecond', 'password', array('label' => 'Ingresa de nuevo el password','attr' => array('placeholder' => 'Reingresa el password', 'pattern' => '.{6,}')))
                     ->add('enviar', 'submit')
                 ->getForm();
-                //$msg = "Tu usuario ya había sido registrado con anterioridad, por favor emplea tu user y contraseña para ingresar. Si tienes alguna duda por favor acude al Centro de Cómputo de tu campus.";
                 $msg = "Esta mátrícula no existe en el sistema. Favor de acudir al Centro de Cómputo para recibir asistencia.";
                 return $this->render('CoreAdminBundle:login:register.html.twig', array( 'form' => $form->createView(), 'msg' => $msg, 'errors' => '', 'params' => $params ));
             }
@@ -350,7 +373,7 @@ class LoginController extends Controller
                 ->setAction($this->generateUrl('portal_register'))
                     ->add('matricula', 'text', array('label' => 'Matrícula','attr' => array('placeholder' => 'Matrícula')))
                     ->add('email', 'email', array('label' => 'E-mail','attr' => array('placeholder' => 'correo electronico')))
-                    ->add('username', 'text', array('label' => 'Usuario (elije un nombre de usuario de por lo menos 5 caracteres)','attr' => array('placeholder' => 'Mínimo de 5 caracteres.')))
+                    ->add('username', 'text', array('label' => 'Usuario (elije un nombre de usuario de por lo menos 5 caracteres)','attr' => array('placeholder' => 'Mínimo de 5 caracteres.', 'pattern' => '.{5,}')))
                     ->add('genpass', 'hidden', array('attr' => array('value' => $params)))
                     ->add('newpass', 'password', array('label' => 'Password (mínimo 6 caracteres, no se diferencian mayúsculas de minúsculas y utiliza solo caracteres alfanuméricos.)','attr' => array('placeholder' => 'Mínimo de 6 caracteres.', 'pattern' => '.{6,}')))
                     ->add('newpasssecond', 'password', array('label' => 'Ingresa de nuevo el password','attr' => array('placeholder' => 'Reingresa el password', 'pattern' => '.{6,}')))

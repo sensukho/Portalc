@@ -1,10 +1,21 @@
 Core\AdminBundle\Entity\Users:
     properties:
         username:
+            - NotBlank: ~
             - Length:
                 min: 5
-                minMessage: "El campo usuario debe contener mínimo {{ limit }} caracteres."
+                minMessage: El campo usuario debe contener mínimo {{ limit }} caracteres.
+            - Regex:
+                pattern: "^[a-zA-Z0-9_]*$"
+                match:   false
+                message: El nombre de usuario debe ser alfanumérico
         newpass:
+            - NotBlank: ~
             - Length:
                 min: 6
-                minMessage: "El password1 debe contener mínimo {{ limit }} caracteres."
+                minMessage: El password debe contener mínimo {{ limit }} caracteres.
+        newpasssecond:
+            - NotBlank: ~
+            - Length:
+                min: 6
+                minMessage: El password debe contener mínimo {{ limit }} caracteres.
